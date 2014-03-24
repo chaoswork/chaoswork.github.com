@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+<channel>
+        <title>HuangChao's Blog</title>
+        <description>HuangChao's Blog - Huang Chao</description>
+        <link>http://username.github.io</link>
+        <link>http://username.github.io</link>
+        <lastBuildDate>2014-03-24T19:14:29+08:00</lastBuildDate>
+        <pubDate>2014-03-24T19:14:29+08:00</pubDate>
+        <ttl>1800</ttl>
+
+
+        <item>
+                <title>Jekyll Introduction</title>
+                <description>&lt;p&gt;This Jekyll introduction will outline specifically what Jekyll is and why you would want to use it. Directly following the intro we’ll learn exactly &lt;em&gt;how&lt;/em&gt; Jekyll does what it does.&lt;/p&gt;
+
+&lt;h2 id=&quot;overview&quot;&gt;Overview&lt;/h2&gt;
+
+&lt;h3 id=&quot;what_is_jekyll&quot;&gt;What is Jekyll?&lt;/h3&gt;
+
+&lt;p&gt;Jekyll is a parsing engine bundled as a ruby gem used to build static websites from dynamic components such as templates, partials, liquid code, markdown, etc. Jekyll is known as “a simple, blog aware, static site generator”.&lt;/p&gt;
+
+&lt;h3 id=&quot;examples&quot;&gt;Examples&lt;/h3&gt;
+
+&lt;p&gt;This website is created with Jekyll. &lt;a href=&quot;https://github.com/mojombo/jekyll/wiki/Sites&quot;&gt;Other Jekyll websites&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;what_does_jekyll_do&quot;&gt;What does Jekyll Do?&lt;/h3&gt;
+
+&lt;p&gt;Jekyll is a ruby gem you install on your local system. Once there you can call &lt;code&gt;jekyll --server&lt;/code&gt; on a directory and provided that directory is setup in a way jekyll expects, it will do magic stuff like parse markdown/textile files, compute categories, tags, permalinks, and construct your pages from layout templates and partials.&lt;/p&gt;
+
+&lt;p&gt;Once parsed, Jekyll stores the result in a self-contained static &lt;code&gt;_site&lt;/code&gt; folder. The intention here is that you can serve all contents in this folder statically from a plain static web-server.&lt;/p&gt;
+
+&lt;p&gt;You can think of Jekyll as a normalish dynamic blog but rather than parsing content, templates, and tags on each request, Jekyll does this once &lt;em&gt;beforehand&lt;/em&gt; and caches the &lt;em&gt;entire website&lt;/em&gt; in a folder for serving statically.&lt;/p&gt;
+
+&lt;h3 id=&quot;jekyll_is_not_blogging_software&quot;&gt;Jekyll is Not Blogging Software&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Jekyll is a parsing engine.&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Jekyll does not come with any content nor does it have any templates or design elements. This is a common source of confusion when getting started. Jekyll does not come with anything you actually use or see on your website - you have to make it.&lt;/p&gt;
+
+&lt;h3 id=&quot;why_should_i_care&quot;&gt;Why Should I Care?&lt;/h3&gt;
+
+&lt;p&gt;Jekyll is very minimalistic and very efficient. The most important thing to realize about Jekyll is that it creates a static representation of your website requiring only a static web-server. Traditional dynamic blogs like Wordpress require a database and server-side code. Heavily trafficked dynamic blogs must employ a caching layer that ultimately performs the same job Jekyll sets out to do; serve static content.&lt;/p&gt;
+
+&lt;p&gt;Therefore if you like to keep things simple and you prefer the command-line over an admin panel UI then give Jekyll a try.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Developers like Jekyll because we can write content like we write code:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Ability to write content in markdown or textile in your favorite text-editor.&lt;/li&gt;
+
+&lt;li&gt;Ability to write and preview your content via localhost.&lt;/li&gt;
+
+&lt;li&gt;No internet connection required.&lt;/li&gt;
+
+&lt;li&gt;Ability to publish via git.&lt;/li&gt;
+
+&lt;li&gt;Ability to host your blog on a static web-server.&lt;/li&gt;
+
+&lt;li&gt;Ability to host freely on GitHub Pages.&lt;/li&gt;
+
+&lt;li&gt;No database required.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1 id=&quot;how_jekyll_works&quot;&gt;How Jekyll Works&lt;/h1&gt;
+
+&lt;p&gt;The following is a complete but concise outline of exactly how Jekyll works.&lt;/p&gt;
+
+&lt;p&gt;Be aware that core concepts are introduced in rapid succession without code examples. This information is not intended to specifically teach you how to do anything, rather it is intended to give you the &lt;em&gt;full picture&lt;/em&gt; relative to what is going on in Jekyll-world.&lt;/p&gt;
+
+&lt;p&gt;Learning these core concepts should help you avoid common frustrations and ultimately help you better understand the code examples contained throughout Jekyll-Bootstrap.&lt;/p&gt;
+
+&lt;h2 id=&quot;initial_setup&quot;&gt;Initial Setup&lt;/h2&gt;
+
+&lt;p&gt;After &lt;a href=&quot;/index.html#start-now&quot;&gt;installing jekyll&lt;/a&gt; you’ll need to format your website directory in a way jekyll expects. Jekyll-bootstrap conveniently provides the base directory format.&lt;/p&gt;
+
+&lt;h3 id=&quot;the_jekyll_application_base_format&quot;&gt;The Jekyll Application Base Format&lt;/h3&gt;
+
+&lt;p&gt;Jekyll expects your website directory to be laid out like so:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;.
+|-- _config.yml
+|-- _includes
+|-- _layouts
+|   |-- default.html
+|   |-- post.html
+|-- _posts
+|   |-- 2011-10-25-open-source-is-good.markdown
+|   |-- 2011-04-26-hello-world.markdown
+|-- _site
+|-- index.html
+|-- assets
+    |-- css
+        |-- style.css
+    |-- javascripts&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;_config.yml&lt;/strong&gt; Stores configuration data.&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;_includes&lt;/strong&gt; This folder is for partial views.&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;_layouts&lt;/strong&gt; This folder is for the main templates your content will be inserted into. You can have different layouts for different pages or page sections.&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;_posts&lt;/strong&gt; This folder contains your dynamic content/posts. the naming format is required to be &lt;code&gt;@YEAR-MONTH-DATE-title.MARKUP@&lt;/code&gt;.&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;_site&lt;/strong&gt; This is where the generated site will be placed once Jekyll is done transforming it.&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;assets&lt;/strong&gt; This folder is not part of the standard jekyll structure. The assets folder represents &lt;em&gt;any generic&lt;/em&gt; folder you happen to create in your root directory. Directories and files not properly formatted for jekyll will be left untouched for you to serve normally.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;(read more: &lt;a href=&quot;https://github.com/mojombo/jekyll/wiki/Usage&quot;&gt;https://github.com/mojombo/jekyll/wiki/Usage&lt;/a&gt;)&lt;/p&gt;
+
+&lt;h3 id=&quot;jekyll_configuration&quot;&gt;Jekyll Configuration&lt;/h3&gt;
+
+&lt;p&gt;Jekyll supports various configuration options that are fully outlined here: (&lt;a href=&quot;https://github.com/mojombo/jekyll/wiki/Configuration&quot;&gt;https://github.com/mojombo/jekyll/wiki/Configuration&lt;/a&gt;)&lt;/p&gt;
+
+&lt;h2 id=&quot;content_in_jekyll&quot;&gt;Content in Jekyll&lt;/h2&gt;
+
+&lt;p&gt;Content in Jekyll is either a post or a page. These content “objects” get inserted into one or more templates to build the final output for its respective static-page.&lt;/p&gt;
+
+&lt;h3 id=&quot;posts_and_pages&quot;&gt;Posts and Pages&lt;/h3&gt;
+
+&lt;p&gt;Both posts and pages should be written in markdown, textile, or HTML and may also contain Liquid templating syntax. Both posts and pages can have meta-data assigned on a per-page basis such as title, url path, as well as arbitrary custom meta-data.&lt;/p&gt;
+
+&lt;h3 id=&quot;working_with_posts&quot;&gt;Working With Posts&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Creating a Post&lt;/strong&gt; Posts are created by properly formatting a file and placing it the &lt;code&gt;_posts&lt;/code&gt; folder.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Formatting&lt;/strong&gt; A post must have a valid filename in the form &lt;code&gt;YEAR-MONTH-DATE-title.MARKUP&lt;/code&gt; and be placed in the &lt;code&gt;_posts&lt;/code&gt; directory. If the data format is invalid Jekyll will not recognize the file as a post. The date and title are automatically parsed from the filename of the post file. Additionally, each file must have &lt;a href=&quot;https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter&quot;&gt;YAML Front-Matter&lt;/a&gt; prepended to its content. YAML Front-Matter is a valid YAML syntax specifying meta-data for the given file.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Order&lt;/strong&gt; Ordering is an important part of Jekyll but it is hard to specify a custom ordering strategy. Only reverse chronological and chronological ordering is supported in Jekyll.&lt;/p&gt;
+
+&lt;p&gt;Since the date is hard-coded into the filename format, to change the order, you must change the dates in the filenames.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Tags&lt;/strong&gt; Posts can have tags associated with them as part of their meta-data. Tags may be placed on posts by providing them in the post’s YAML front matter. You have access to the post-specific tags in the templates. These tags also get added to the sitewide collection.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Categories&lt;/strong&gt; Posts may be categorized by providing one or more categories in the YAML front matter. Categories offer more significance over tags in that they can be reflected in the URL path to the given post. Note categories in Jekyll work in a specific way. If you define more than one category you are defining a category hierarchy “set”. Example:&lt;/p&gt;
+&lt;hr /&gt;
+&lt;pre&gt;&lt;code&gt;title :  Hello World
+categories : [lessons, beginner]&lt;/code&gt;&lt;/pre&gt;
+&lt;hr /&gt;
+&lt;p&gt;This defines the category hierarchy “lessons/beginner”. Note this is &lt;em&gt;one category&lt;/em&gt; node in Jekyll. You won’t find “lessons” and “beginner” as two separate categories unless you define them elsewhere as singular categories.&lt;/p&gt;
+
+&lt;h3 id=&quot;working_with_pages&quot;&gt;Working With Pages&lt;/h3&gt;
+
+&lt;p&gt;&lt;strong&gt;Creating a Page&lt;/strong&gt; Pages are created by properly formatting a file and placing it anywhere in the root directory or subdirectories that do &lt;em&gt;not&lt;/em&gt; start with an underscore.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Formatting&lt;/strong&gt; In order to register as a Jekyll page the file must contain &lt;a href=&quot;https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter&quot;&gt;YAML Front-Matter&lt;/a&gt;. Registering a page means 1) that Jekyll will process the page and 2) that the page object will be available in the &lt;code&gt;site.pages&lt;/code&gt; array for inclusion into your templates.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Categories and Tags&lt;/strong&gt; Pages do not compute categories nor tags so defining them will have no effect.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Sub-Directories&lt;/strong&gt; If pages are defined in sub-directories, the path to the page will be reflected in the url. Example:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;.
+|-- people
+    |-- bob
+        |-- essay.html&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This page will be available at &lt;code&gt;http://yourdomain.com/people/bob/essay.html&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Recommended Pages&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;index.html&lt;/strong&gt; You will always want to define the root index.html page as this will display on your root URL.&lt;/li&gt;
+
+&lt;li&gt;&lt;strong&gt;404.html&lt;/strong&gt; Create a root 404.html page and GitHub Pages will serve it as your 404 response.&lt;/li&gt;
+
+&lt;li&gt;&lt;strong&gt;sitemap.html&lt;/strong&gt; Generating a sitemap is good practice for SEO.&lt;/li&gt;
+
+&lt;li&gt;&lt;strong&gt;about.html&lt;/strong&gt; A nice about page is easy to do and gives the human perspective to your website.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;templates_in_jekyll&quot;&gt;Templates in Jekyll&lt;/h2&gt;
+
+&lt;p&gt;Templates are used to contain a page’s or post’s content. All templates have access to a global site object variable: &lt;code&gt;site&lt;/code&gt; as well as a page object variable: &lt;code&gt;page&lt;/code&gt;. The site variable holds all accessible content and metadata relative to the site. The page variable holds accessible data for the given page or post being rendered at that point.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Create a Template&lt;/strong&gt; Templates are created by properly formatting a file and placing it in the &lt;code&gt;_layouts&lt;/code&gt; directory.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Formatting&lt;/strong&gt; Templates should be coded in HTML and contain YAML Front Matter. All templates can contain Liquid code to work with your site’s data.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Rending Page/Post Content in a Template&lt;/strong&gt; There is a special variable in all templates named : &lt;code&gt;content&lt;/code&gt;. The &lt;code&gt;content&lt;/code&gt; variable holds the page/post content including any sub-template content previously defined. Render the content variable wherever you want your main content to be injected into your template:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;...
+&amp;lt;body&amp;gt;
+  &amp;lt;div id=&quot;sidebar&quot;&amp;gt; ... &amp;lt;/div&amp;gt;
+  &amp;lt;div id=&quot;main&quot;&amp;gt;
+    &amp;#123;{content}&amp;#125;
+  &amp;lt;/div&amp;gt;
+&amp;lt;/body&amp;gt;
+...&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;subtemplates&quot;&gt;Sub-Templates&lt;/h3&gt;
+
+&lt;p&gt;Sub-templates are exactly templates with the only difference being they define another “root” layout/template within their YAML Front Matter. This essentially means a template will render inside of another template.&lt;/p&gt;
+
+&lt;h3 id=&quot;includes&quot;&gt;Includes&lt;/h3&gt;
+
+&lt;p&gt;In Jekyll you can define include files by placing them in the &lt;code&gt;_includes&lt;/code&gt; folder. Includes are NOT templates, rather they are just code snippets that get included into templates. In this way, you can treat the code inside includes as if it was native to the parent template.&lt;/p&gt;
+
+&lt;p&gt;Any valid template code may be used in includes.&lt;/p&gt;
+
+&lt;h2 id=&quot;using_liquid_for_templating&quot;&gt;Using Liquid for Templating&lt;/h2&gt;
+
+&lt;p&gt;Templating is perhaps the most confusing and frustrating part of Jekyll. This is mainly due to the fact that Jekyll templates must use the Liquid Templating Language.&lt;/p&gt;
+
+&lt;h3 id=&quot;what_is_liquid&quot;&gt;What is Liquid?&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/Shopify/liquid&quot;&gt;Liquid&lt;/a&gt; is a secure templating language developed by &lt;a href=&quot;http://shopify.com&quot;&gt;Shopify&lt;/a&gt;. Liquid is designed for end-users to be able to execute logic within template files without imposing any security risk on the hosting server.&lt;/p&gt;
+
+&lt;p&gt;Jekyll uses Liquid to generate the post content within the final page layout structure and as the primary interface for working with your site and post/page data.&lt;/p&gt;
+
+&lt;h3 id=&quot;why_do_we_have_to_use_liquid&quot;&gt;Why Do We Have to Use Liquid?&lt;/h3&gt;
+
+&lt;p&gt;GitHub uses Jekyll to power &lt;a href=&quot;http://pages.github.com/&quot;&gt;GitHub Pages&lt;/a&gt;. GitHub cannot afford to run arbitrary code on their servers so they lock developers down via Liquid.&lt;/p&gt;
+
+&lt;h3 id=&quot;liquid_is_not_programmerfriendly&quot;&gt;Liquid is Not Programmer-Friendly.&lt;/h3&gt;
+
+&lt;p&gt;The short story is liquid is not real code and its not intended to execute real code. The point being you can’t do jackshit in liquid that hasn’t been allowed explicitly by the implementation. What’s more you can only access data-structures that have been explicitly passed to the template.&lt;/p&gt;
+
+&lt;p&gt;In Jekyll’s case it is not possible to alter what is passed to Liquid without hacking the gem or running custom plugins. Both of which cannot be supported by GitHub Pages.&lt;/p&gt;
+
+&lt;p&gt;As a programmer - this is very frustrating.&lt;/p&gt;
+
+&lt;p&gt;But rather than look a gift horse in the mouth we are going to suck it up and view it as an opportunity to work around limitations and adopt client-side solutions when possible.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Aside&lt;/strong&gt; My personal stance is to not invest time trying to hack liquid. It’s really unnecessary &lt;em&gt;from a programmer’s&lt;/em&gt; perspective. That is to say if you have the ability to run custom plugins (i.e. run arbitrary ruby code) you are better off sticking with ruby. Toward that end I’ve built &lt;a href=&quot;http://github.com/plusjade/mustache-with-jekyll&quot;&gt;Mustache-with-Jekyll&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;static_assets&quot;&gt;Static Assets&lt;/h2&gt;
+
+&lt;p&gt;Static assets are any file in the root or non-underscored subfolders that are not pages. That is they have no valid YAML Front Matter and are thus not treated as Jekyll Pages.&lt;/p&gt;
+
+&lt;p&gt;Static assets should be used for images, css, and javascript files.&lt;/p&gt;
+
+&lt;h2 id=&quot;how_jekyll_parses_files&quot;&gt;How Jekyll Parses Files&lt;/h2&gt;
+
+&lt;p&gt;Remember Jekyll is a processing engine. There are two main types of parsing in Jekyll.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Content parsing.&lt;/strong&gt; This is done with textile or markdown.&lt;/li&gt;
+
+&lt;li&gt;&lt;strong&gt;Template parsing.&lt;/strong&gt; This is done with the liquid templating language.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;And thus there are two main types of file formats needed for this parsing.&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Post and Page files.&lt;/strong&gt; All content in Jekyll is either a post or a page so valid posts and pages are parsed with markdown or textile.&lt;/li&gt;
+
+&lt;li&gt;&lt;strong&gt;Template files.&lt;/strong&gt; These files go in &lt;code&gt;_layouts&lt;/code&gt; folder and contain your blogs &lt;strong&gt;templates&lt;/strong&gt;. They should be made in HTML with the help of Liquid syntax. Since include files are simply injected into templates they are essentially parsed as if they were native to the template.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;Arbitrary files and folders.&lt;/strong&gt; Files that &lt;em&gt;are not&lt;/em&gt; valid pages are treated as static content and pass through Jekyll untouched and reside on your blog in the exact structure and format they originally existed in.&lt;/p&gt;
+
+&lt;h3 id=&quot;formatting_files_for_parsing&quot;&gt;Formatting Files for Parsing.&lt;/h3&gt;
+
+&lt;p&gt;We’ve outlined the need for valid formatting using &lt;strong&gt;YAML Front Matter&lt;/strong&gt;. Templates, posts, and pages all need to provide valid YAML Front Matter even if the Matter is empty. This is the only way Jekyll knows you want the file processed.&lt;/p&gt;
+
+&lt;p&gt;YAML Front Matter must be prepended to the top of template/post/page files:&lt;/p&gt;
+&lt;hr /&gt;
+&lt;pre&gt;&lt;code&gt;layout: post
+category : pages
+tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
+&lt;hr /&gt;
+&lt;pre&gt;&lt;code&gt;... contents ...&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Three hyphens on a new line start the Front-Matter block and three hyphens on a new line end the block. The data inside the block must be valid YAML.&lt;/p&gt;
+
+&lt;p&gt;Configuration parameters for YAML Front-Matter is outlined here: &lt;a href=&quot;https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter&quot;&gt;A comprehensive explanation of YAML Front Matter&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id=&quot;defining_layouts_for_posts_and_templates_parsing&quot;&gt;Defining Layouts for Posts and Templates Parsing.&lt;/h4&gt;
+
+&lt;p&gt;The &lt;code&gt;layout&lt;/code&gt; parameter in the YAML Front Matter defines the template file for which the given post or template should be injected into. If a template file specifies its own layout, it is effectively being used as a &lt;code&gt;sub-template.&lt;/code&gt; That is to say loading a post file into a template file that refers to another template file with work in the way you’d expect; as a nested sub-template.&lt;/p&gt;
+
+&lt;h2 id=&quot;how_jekyll_generates_the_final_static_files&quot;&gt;How Jekyll Generates the Final Static Files.&lt;/h2&gt;
+
+&lt;p&gt;Ultimately, Jekyll’s job is to generate a static representation of your website. The following is an outline of how that’s done:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Jekyll collects data.&lt;/strong&gt; Jekyll scans the posts directory and collects all posts files as post objects. It then scans the layout assets and collects those and finally scans other directories in search of pages.&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Jekyll computes data.&lt;/strong&gt; Jekyll takes these objects, computes metadata (permalinks, tags, categories, titles, dates) from them and constructs one big &lt;code&gt;site&lt;/code&gt; object that holds all the posts, pages, layouts, and respective metadata. At this stage your site is one big computed ruby object.&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Jekyll liquifies posts and templates.&lt;/strong&gt; Next jekyll loops through each post file and converts (through markdown or textile) and &lt;strong&gt;liquifies&lt;/strong&gt; the post inside of its respective layout(s). Once the post is parsed and liquified inside the the proper layout structure, the layout itself is “liquified”. &lt;strong&gt;Liquification&lt;/strong&gt; is defined as follows: Jekyll initiates a Liquid template, and passes a simpler hash representation of the ruby site object as well as a simpler hash representation of the ruby post object. These simplified data structures are what you have access to in the templates.&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Jekyll generates output.&lt;/strong&gt; Finally the liquid templates are “rendered”, thereby processing any liquid syntax provided in the templates and saving the final, static representation of the file.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;strong&gt;Notes.&lt;/strong&gt; Because Jekyll computes the entire site in one fell swoop, each template is given access to a global &lt;code&gt;site&lt;/code&gt; hash that contains useful data. It is this data that you’ll iterate through and format using the Liquid tags and filters in order to render it onto a given page.&lt;/p&gt;
+
+&lt;p&gt;Remember, in Jekyll you are an end-user. Your API has only two components:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;The manner in which you setup your directory.&lt;/li&gt;
+
+&lt;li&gt;The liquid syntax and variables passed into the liquid templates.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;All the data objects available to you in the templates via Liquid are outlined in the &lt;strong&gt;API Section&lt;/strong&gt; of Jekyll-Bootstrap. You can also read the original documentation here: &lt;a href=&quot;https://github.com/mojombo/jekyll/wiki/Template-Data&quot;&gt;https://github.com/mojombo/jekyll/wiki/Template-Data&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;conclusion&quot;&gt;Conclusion&lt;/h2&gt;
+
+&lt;p&gt;I hope this paints a clearer picture of what Jekyll is doing and why it works the way it does. As noted, our main programming constraint is the fact that our API is limited to what is accessible via Liquid and Liquid only.&lt;/p&gt;
+
+&lt;p&gt;Jekyll-bootstrap is intended to provide helper methods and strategies aimed at making it more intuitive and easier to work with Jekyll =)&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Thank you&lt;/strong&gt; for reading this far.&lt;/p&gt;
+
+&lt;h2 id=&quot;next_steps&quot;&gt;Next Steps&lt;/h2&gt;
+
+&lt;p&gt;Please take a look at &lt;a href=&quot;&quot;&gt;&lt;/a&gt; or jump right into &lt;a href=&quot;&quot;&gt;Usage&lt;/a&gt; if you’d like.&lt;/p&gt;</description>
+                <link>http://username.github.io/lessons/2011/12/29/jekyll-introduction</link>
+                <guid>http://username.github.io/lessons/2011/12/29/jekyll-introduction</guid>
+                <pubDate>2011-12-29T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>感动</title>
+                <description>&lt;p&gt;昨天写了两次日记.&lt;/p&gt;
+
+&lt;p&gt;首先是昨天的凌晨,你突然问:“知道今天是什么日子么?”我一看农历，冬至，吃饺子？我知道不会这么的简单，于是说不知道，然后她说伤心了，让我再想想，我突然想起我4号那天和她聊到早上4点，于是我马上翻开日记本，果然，那天你终于答应了我。想想，我真的没记住，真的是有点不应该，于是在日记了自责了一下。&lt;/p&gt;
+
+&lt;p&gt;然后晚上，你说有东西给我，我已经知道你给我买了盆碧玉，然后让我猜还有件啥？然后说是我一直想要的。我想这一阵我想换个包，你该不会给我买了个包吧？宝贝。她说不是，然后我想了想，就知道了，我以前一直让她给我写封情书呢，嘿嘿~晚上给我了，看了后，彻底的感动了，语言十分朴实，但是句句说到了我的心里。执子之手，与子偕老，这句话虽然老，但是当时我的第一感觉就是这样的。&lt;/p&gt;
+
+&lt;p&gt;培，为了我们的未来，加油。&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/biyu.jpg&quot; /&gt;&lt;/p&gt;</description>
+                <link>http://username.github.io/2010/11/08/moved</link>
+                <guid>http://username.github.io/2010/11/08/moved</guid>
+                <pubDate>2010-11-08T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>成长</title>
+                <description>&lt;p&gt;前几天和同学聊天，他们都说我老了，说我老爱怀念以前的时光。想想确实也是，这一阵确实想了不少东西。&lt;/p&gt;
+
+&lt;p&gt;中秋的假期刚完，这是我在西安度过的第5个中秋节，5年了，在这个团圆的日子里却没有呆在父母的旁边。那天给爸妈打电话，我问爸妈晚饭吃了什么，他们说吃 了“芸豆”，我当时就想哭，只有我在家的时候他们才吃点好的。我工作后的第一份的工资一定要打到爸妈的卡上。不过还好，这个中秋我和她算是一起度过的吧， 真的很希望以后每个中秋都在一起。&lt;/p&gt;
+
+&lt;p&gt;其实我现在还以为自己是个孩子，上周和同学出去办业务的时候，不认识路，刚好看到一个警察，年纪不大，估计也就30左右，我直接就喊了声“警察叔叔”，我同学当时就拉了我一下，后来才反应过来，叫警察叔叔确实不合适。。。&lt;/p&gt;
+
+&lt;p&gt;成长，总是伴随的改变。&lt;/p&gt;
+
+&lt;p&gt;小时候年年盼着过年，盼望着有压岁钱，虽然钱基本上都被爸妈没收了；现在回去下一辈的一大堆了，喊个叔叔我不给钱自己都觉得不太好意思了。&lt;/p&gt;
+
+&lt;p&gt;小时候衣来伸手饭来张口，即使是高中在外面住校，也是脏衣服背回家。。。那个时候我还嫌衣服少；现在自己洗自己的衣服，虽然有时候腰疼（小时候妈妈总是说小孩子哪有腰，现在终于有了。。）。&lt;/p&gt;
+
+&lt;p&gt;小时候一到冬天做饭不是豆角就是白菜，那时候老是抱怨吃的不好；现在在外面，食堂的饭再难吃也是先填饱肚子再说。&lt;/p&gt;
+
+&lt;p&gt;小时候我自己睡一张双人床，我还老是抱怨为啥不是席梦思；现在在这个城市里面有个落足的地方都感觉很惬意了，虽然是硬板床，还上下铺。&lt;/p&gt;
+
+&lt;p&gt;小时候骑着自己的破自行车就有周游世界的梦想；现在只能是做梦有辆宝马，能载着她常回家看看。&lt;/p&gt;
+
+&lt;p&gt;小时候和同学回家讨论的话题都是这个题目怎么做，那个题目怎么做；现在和同学回宿舍，除了讨论学习，其余什么都讨论。&lt;/p&gt;
+
+&lt;p&gt;小时候爸妈让我练毛笔字还老不乐意，练来练去连玩的时间都没有；现在两只手基本让键盘给废了，写字再也没有了章法，除了名字写的还有点样子外，用个词来形容“心乱如麻”。&lt;/p&gt;
+
+&lt;p&gt;小时候听到《同桌的你》基本没啥感觉，和同桌吵过架，抄过作业；现在想找个同桌都难，上课两边基本都不认识，再次听到《同桌的你》，却发现再也找不到一个同桌了。&lt;/p&gt;
+
+&lt;p&gt;小时候没有手机，过年电话拜个年都要聊半天的，还意犹未足；现在有手机了，收发短信简直就是种痛苦，还那么多重复的，不回又不太好。&lt;/p&gt;
+
+&lt;p&gt;小时候一本小说或者漫画书都要看上好几遍，上面的台词还记得那么清晰，有事没事喊两句；现在mp3里面小说一大堆，网上动漫也是铺天盖地，能看上一遍就不错了，懒得看。&lt;/p&gt;
+
+&lt;p&gt;小时候非常崇拜动画里或者电影里的英雄人物，幻想着有一天能像他们那样；现在一部部的动漫都有了结局，演员们也逐渐老去，也慢慢的没了偶像。&lt;/p&gt;
+
+&lt;p&gt;小时候经常偷偷的去同学家玩小霸王，还要有个人在外面放风，家长回来了赶紧收起来然后打扑克；现在游戏那么多，可是却都是越玩越寂寞，关键是不刺激！&lt;/p&gt;
+
+&lt;p&gt;小时候看人家早恋的人手拉手，晚上树下面亲个嘴，我却在家长和老师的教育下视早恋为猛虎，傻啊；现在想早恋了，可是却快成王老五了。。。悲剧的是还没钻石。&lt;/p&gt;
+
+&lt;p&gt;小时候总是烦父母的唠叨，管得严，总是羡慕其他同学父母多么好；现在才知道父母无论做什么都是为我好，但是好久以来都没再听到父母熊我了。。。&lt;/p&gt;
+
+&lt;p&gt;小时候总是盼望长大，长大了可以过自己想过的日子；现在，却发现却一直想回到小时候，再次无忧无虑的生活。&lt;/p&gt;
+
+&lt;p&gt;虽然不想承认，但是我真的是个大人了。。。&lt;/p&gt;
+
+&lt;p&gt;这么多年来，最想感谢的是Google和Wikipedia，这两个伟大的网站让我知道了我想知道的，学到了我想学的。虽说没有做到“秀才不出门，便知天 下事”的那种境界，但是却能让我站在客观的角度来看待整个世界。我想，这也算是成长的一部分吧，终于从那个井底爬了出来。&lt;/p&gt;</description>
+                <link>http://username.github.io/2010/09/28/grow-up</link>
+                <guid>http://username.github.io/2010/09/28/grow-up</guid>
+                <pubDate>2010-09-28T00:00:00+08:00</pubDate>
+        </item>
+
+        <item>
+                <title>我的大学四年</title>
+                <description>&lt;p&gt;可以说我的大学四年虽然没有什么成就感，但是也学到了很多。关键字就是学习和游戏。&lt;/p&gt;
+
+&lt;p&gt;既然没有什么文采，那就流水账那样记一下吧。&lt;/p&gt;
+
+&lt;p&gt;首先是大一。时间比较久远了，记忆也比较模糊了。但是军训是记得很清楚的。我们宿舍有个每天用火影的悲情曲子呼唤我们起床，以至于现在听到那首曲子都感觉有些紧张。当时每天6点就起床，训练一天，比下地干活都累。最讨厌的就是下蹲了，难受的很，干吗要整的那么别扭?想不通。而且吃饭要一起吃，悲剧的是我们宿舍几个能吃的都和我在一起，结果就是我们这边的饭菜瞬间就没了，然后看着别人吃。一共军训了23天吧我记得，而且由于去年那一届枪走火，我们也没打靶。这一段的军训生活可以说是又苦又累。一直到现在，也没有再有类似的经历。军训完了自然我们要好好的玩一下。当时人生地不熟，也不知去哪玩，结果网吧就成为了我们的最佳选择。而且通宵的那天晚上可以说对我以后大学的影响还是比较大的。因为那天晚上接触了魔兽争霸3，而魔兽系列则贯穿了我的大学四年。在清晰的记得当时我是选择了山丘之王，而且刚开始不会玩，连人在哪不知道。在以后的日子里，网吧成了我们经常驻足的地方，火爆的“精彩在线”经常要站着等座位，有人抢的了座位后就洋洋得意的做下去开始玩了。而没去网吧的时候，宿舍的娱乐活动就剩下看电视了，陕西8频道经常放一些比较新的电影，可惜每晚上2部电影我们只能看一部半，剩下的半部因为断电也就没法看了。当然，那个时候刚从高中毕业，对学习还是比较看重的，也不敢逃课，像高数之类的课还要提前去占座。可以说，这一段时间是我大学四年学习最认真的时候，听课也是聚精会神，哎，现在很难达到这种境界了。而且大一的课程自我感觉学的也不错，也第一次体验到了编程的乐趣，刚开始什么都不会啊，连个判断素数都无从下手，当时还是百度上搜的。奥对了，当时我是十分看好百度的，李彦宏也算是当时我的偶像，而且即使现在我还是觉得“百度”这个名字起的真是赞，“众里寻他千百度”，又有技术又有诗意，可惜一个竞价排名彻底的毁了。课外活动当时也是参加的，还加入了一个社团“网迷协会”，当时因为同学认识上一届的部长，我还混了个宣传部的部长，进去后才发现，其实社团就是骗钱的，那社团收的钱虽然不是说全部，但是一部分是被我们吃掉的。知道了这点后，我对这种社团活动全然失去了兴趣，以至于后来这个社团在我们手中葬送了，虽然这和团长的没有经验有关系，但是我们的不积极肯定也是原因之一。这可能和我们学校这种十分偏向工科的氛围有关，有活动也懒得参加，搞活动的更是不容易。就这样，曾经的明星社团走向了末路。通过这次的经历，我也发现我对这些管理之类的东西很没有天赋的，于是就想技术上要有点突破，所以C语言还是学的比较认真的。可以说大一的生活虽然不是十分的丰富，但是还是很充实的，而且找到了一项自己比较喜欢的事情，就是编程，看着代码实现了各种各样的功能，有时候甚至感觉自己是个艺术家，哈哈~&lt;/p&gt;
+
+&lt;p&gt;大二的主题就是玩。什么都玩，这个时候的我们都已经习惯了逃课，也都知道了期末考试考前突击一下就能过，而且关键问题是我们自己有电脑了，也上网了，游戏以及网络的诱惑我们确实抵抗不住了。而且自从有了电脑，宿舍的电视也没人动了，十分怀念当时宿舍8个人一起看《武林外传》的时光。就这样，游戏开始占据了我们生活的一大部分，经常是宿舍这边打那边，而我确实很菜，而且我们那边会玩的也就一个，所以基本都是输的，无论是真三还是DotA。每次都是输，那有什么意思，于是我开始玩一些其他的游戏，单机的比较多，不过最让我们沉迷的还是三国志11，对面宿舍有个刚开始玩也迷上了，当然刚开始还不怎么会玩，通宵打到明天早上7点，还是一个城没打下来。我也不用说了，举个例子，就是当时舍长给我带饭，我正玩的开心，于是说放饭盒里面，到了晚上八九点钟的样子，我就说怎么感觉有点饿，这才发现我的饭都凉了，还是我当时比较爱吃的羊肉面。这也许就真正达到了“废寝忘食”的境界。当然学习中这种情况却从来没发生过。虽然玩的也比较多，但是程序还是编一点的，我记得还拿了个校一等奖，当然那题目相对简单，这也没什么值得夸耀的。纵观大二一年，玩的多学的少，以至于后来都有点后悔。&lt;/p&gt;
+
+&lt;p&gt;大三的时候应该说学的还是比较认真的。因为都是计算机专业的核心课程，所以说强迫自己去上课，游戏也尽量控制这不完。那时经常将魔兽争霸的文件夹给压缩起来，我把这个过程成为“封印”，当然没事就解开封印玩一玩=。=，我的自制力真的不是很强。后来就准备参加竞赛了，可是由于大二没怎么练习，大三就要开始比赛了，所以准备真的不是很充分，去北京参赛的时候我们组就做出了一道题，而且算法还不是我想出来的，也许是由于第一次参加这种大型的比赛，当时状态十分的差，很多题目虽然有点思路，但是老是考虑问题不够全面，这次比赛真正让我意识到这个世界上牛人真的是太多了，而且人才真的是让人觉得害怕。清华的大一的学生我记得做出了9道题，现在想想都觉得以自己的实力去参加这种高水平的比赛，真的是贻笑大方。当时还梦想的有一天能达到ACRush，Petr这样的水平，当时觉得真的是不自量力了。可以说大三对我的打击非常的大，甚至多多少少影响了我的人生观，从小就觉得我自己很聪明，肯定能够出人头地，现在突然发现自己是“鸡立鹤群”了，于是当时就想，干吗活的这么累，做个普通人就行了。用我同学的话说就是能够“老婆孩子热炕头”就行了。于是我辞掉了比赛，开始比较懒散的学习着。那个时候真的是比较迷茫，比大一刚来的时候还要迷茫。完全不知道该干什么。还好这个时候杨老师不知从哪里知道了我，说是有个项目，其实我的水平并不比别人好多少，尤其是看到那么多的牛人之后，完全是自卑的当时。但是摆在我面前的是个机会，于是我就加入到了项目之中。于是暑假都没回，最后项目虽然不是很完美的结束，但是也算达到了各个需求说明的功能。由于是第一次做，美工布局之类的真是难登大雅之堂。可以说这次的项目经历对我自己的提升还是比较大的。最重要的是重新给了我自信。刚开始也是完全的不会，我甚至连MFC都没怎么学过，因为当时我对开源的东西比较感兴趣，微软的东西我一直是持观望的态度。但是定下工作计划后，一步一步的做，不会就现学，最终项目还是完成了。这基本就是大三的生活，迷茫着并学习着。&lt;/p&gt;
+
+&lt;p&gt;然后大三下学期就要准备考研了，虽然有保研的希望，但是准备工作还是要做好。讽刺的是那次对我重重打击的比赛，竟然在保送研究生的时候起到了关键的作用，这让我感到十分的无语，也十分的愧疚。我的感觉就是打了次败仗回来，结果这次败仗还成为了自己人生中少有的亮点，真的是十分的悲剧。保送后的日子就十分的清闲了，人有的时候真的是非常的贱，为什么贱人叫起来这么好听?没有了压力，没人逼你，自己就放纵自己了。就这样，我进入了堕落了大四生活。&lt;/p&gt;
+
+&lt;p&gt;这一年的时间可以说是完完全全的浪费了，因为迷上了网游。网游这个东西确实有瘾，一旦迷上了，要沉迷很长的时间，建议没有玩过的人就不要去尝试着玩了，玩一下独立小游戏之类的放松一下就行了。不过我现在虽然对网游有点抵触，但是还是不得不承认暴雪是个伟大的公司，做的每一款游戏都是那么的成功，那么的动人。我刚开始是在自己机子上架了个私服，宿舍一起玩，不过bug真的是很多，而且人少也没意思。于是就玩起了国服，从此一发不可收拾，虽然现在我拿上了双刀，台服也推倒了巫妖王，但是失去了现实中很多美好的东西。从客观角度讲，魔兽世界也不能说是一无是处，因为从里面也学到了团队的配合，也要处理很多纠纷，也多少训练了一些全局观，甚至有时候要自己想战术来击败boss，玩的时候也很有成就感，但是这些最终还是在另外的一个世界中，虽然这个世界给我们的感觉是那么的真实和动人。所以说我的大四虽然从游戏中获得很多乐趣，但是还是十分的后悔浪费了一年的时间。一年的时间能做多少事啊。而且当时游戏中为了拿上双刀付出了多少时间和努力，要是用到学习上，肯定会获得的更多。&lt;/p&gt;
+
+&lt;p&gt;这基本就是我的大学四年了，可以说是比较失败的，大部分时间都在混，只有少数时间做了点有意义的事。而且悲剧的是4年了，也没谈个恋爱，看着人家都牵着女朋友的手，而我牵的估计也就只有鼠标了。感觉最大的收获就是学会了编程，最失败的就是迷上了网游。&lt;/p&gt;
+
+&lt;p&gt;现在研究生马上就要开始了，不出意外应该是我在校园里待得最后一段时光了。而且毕业面临的就是社会了，好好努力吧，即使达不到牛人的那种高度，但是自己努力了就好。希望以后总结研究生生活的时候，不要再后悔了。&lt;/p&gt;</description>
+                <link>http://username.github.io/2010/09/06/four-years-in-xdu</link>
+                <guid>http://username.github.io/2010/09/06/four-years-in-xdu</guid>
+                <pubDate>2010-09-06T00:00:00+08:00</pubDate>
+        </item>
+
+
+</channel>
+</rss>

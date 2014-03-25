@@ -15,6 +15,7 @@ http://username.github.io/blog/2012/04/06/tcpdump%E6%9F%A5%E7%9C%8B%E4%B8%89%E6%
 http://username.github.io/blog/2011/12/30/unix-network-programming-study-note-l
 http://username.github.io/blog/2011/12/29/jekyll-introduction
 http://username.github.io/blog/2011/06/14/kmp%E7%AE%97%E6%B3%95%E5%B0%8F%E7%BB%93
+http://username.github.io/blog/2011/03/19/geometry-basic-1
 http://username.github.io/blog/2011/03/02/binary-search
 http://username.github.io/blog/2010/11/08/moved
 http://username.github.io/blog/2010/09/28/grow-up

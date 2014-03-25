@@ -181,8 +181,8 @@ bzero(s,sizeof(s));//相当于memset(s,0,sizeof(s));
 而Little-Endian形式的为  
 |78|56|34|12|  
 网络上的传输采用的是Big-Endian类型的，所以将本地的数字在进行网络传输之前要先进行转换，利用的就是上面提到的几个函数。  
-第15行，赋值通信的ip地址。这里有个函数inet_pton(int family,const char * strptr,void * addrptr);就是将点分十进制串转换成网络字节序二进制值，同样要指定下协议族。  
-第17行，connect(sockfd,(SA*)&servaddr,sizeof(servaddr))，建立一个指定地址的连接。连接的服务器地址为servaddr。这里先给出它的声明int connect(int sockfdFD,struct sockaddr*,int addrlength);  
+第15行，赋值通信的ip地址。这里有个函数`inet_pton(int family,const char * strptr,void * addrptr);`就是将点分十进制串转换成网络字节序二进制值，同样要指定下协议族。  
+第17行，`connect(sockfd,(SA*)&servaddr,sizeof(servaddr))`，建立一个指定地址的连接。连接的服务器地址为servaddr。这里先给出它的声明`int connect(int sockfdFD,struct sockaddr*,int addrlength);`  
 这里就有一个问题，我们是把一个sockaddr_in类型的数据强制转换成了sockaddr类型。其实sockaddr的存储结构和sockaddr_in的存储结构是一样的，sockaddr是通用套接口地址结构(Generic Socket Address Structure)，而sockaddr_in可以看作是sockaddr的一个子集，至于后面的in的含义，我猜是internet的意思。这也解释了为什么sockaddr_in中会有冗余的数据，就是为了将结构体的大小设置成和sockaddr相等。而sockaddr.sa_data中数据可以看作是一种协议地址，不同协议所会有差别，这本书主要讲Internet协议。  
 第19行，read函数其实是系统函数，从指定的文件读取数据，这里的文件描述符是创建socket时返回的描述符，也就是从网络读取。这也反映了在Unix系统中一切都是文件的思想。  
 剩下的内容都很容易理解了，都是写基本的C语言的语法。  

@@ -4,7 +4,7 @@
  <title>HuangChao's Blog</title>
  <link href="http://username.github.io/" rel="self"/>
  <link href="http://username.github.io"/>
- <updated>2014-03-25T22:40:50+08:00</updated>
+ <updated>2014-03-25T23:07:13+08:00</updated>
  <id>http://username.github.io</id>
  <author>
    <name>Huang Chao</name>
@@ -617,7 +617,7 @@
 &lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c++'&gt;&lt;span class='kt'&gt;char&lt;/span&gt; &lt;span class='n'&gt;s&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='mi'&gt;10&lt;/span&gt;&lt;span class='p'&gt;];&lt;/span&gt;
 &lt;span class='n'&gt;bzero&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;s&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;s&lt;/span&gt;&lt;span class='p'&gt;));&lt;/span&gt;&lt;span class='c1'&gt;//相当于memset(s,0,sizeof(s));&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;这一行代码的作用是将servaddr中的内容全部置零。&lt;br /&gt;第13行，指定通信地址的协议族。&lt;br /&gt;第14行，指定通信地址的端口。这里有个htons函数，和这个函数类似的函数还有htonl,ntohs,ntohl,这一系列函数中，h代表host，也就是主机，to是转换，n是network，网络，l代表long，s代表short，这里的host和network应该怎么理解，这其实牵扯到主机字节顺序(Host Byte Order)和网络字节顺序(Network Byte Order)这两个概念有关。现在的CPU有两大派系，PowerPC系列CPU和Intel的x86系列CPU。PowerPC系列采用big endian方式存储数据，而x86系列则采用little endian方式存储数据。Big-Endian表示高字节存放在最后(Big End first)，Little-Endian表示低字节放在最后(Litter End first)，举例来说：比如一个数字0x12345678,Big-Endian形式下这4个字节在内存中存放的顺序是&lt;br /&gt;|12|34|56|78|&lt;br /&gt;而Little-Endian形式的为&lt;br /&gt;|78|56|34|12|&lt;br /&gt;网络上的传输采用的是Big-Endian类型的，所以将本地的数字在进行网络传输之前要先进行转换，利用的就是上面提到的几个函数。&lt;br /&gt;第15行，赋值通信的ip地址。这里有个函数inet_pton(int family,const char * strptr,void * addrptr);就是将点分十进制串转换成网络字节序二进制值，同样要指定下协议族。&lt;br /&gt;第17行，connect(sockfd,(SA&lt;em&gt;)&amp;amp;servaddr,sizeof(servaddr))，建立一个指定地址的连接。连接的服务器地址为servaddr。这里先给出它的声明int connect(int sockfdFD,struct sockaddr&lt;/em&gt;,int addrlength);&lt;br /&gt;这里就有一个问题，我们是把一个sockaddr_in类型的数据强制转换成了sockaddr类型。其实sockaddr的存储结构和sockaddr_in的存储结构是一样的，sockaddr是通用套接口地址结构(Generic Socket Address Structure)，而sockaddr_in可以看作是sockaddr的一个子集，至于后面的in的含义，我猜是internet的意思。这也解释了为什么sockaddr_in中会有冗余的数据，就是为了将结构体的大小设置成和sockaddr相等。而sockaddr.sa_data中数据可以看作是一种协议地址，不同协议所会有差别，这本书主要讲Internet协议。&lt;br /&gt;第19行，read函数其实是系统函数，从指定的文件读取数据，这里的文件描述符是创建socket时返回的描述符，也就是从网络读取。这也反映了在Unix系统中一切都是文件的思想。&lt;br /&gt;剩下的内容都很容易理解了，都是写基本的C语言的语法。&lt;br /&gt;上面的文件只是一个获取服务器时间的客户端代码，那么服务器端肯定要首先有这个服务，服务器端的代码如下：&lt;/p&gt;
+&lt;p&gt;这一行代码的作用是将servaddr中的内容全部置零。&lt;br /&gt;第13行，指定通信地址的协议族。&lt;br /&gt;第14行，指定通信地址的端口。这里有个htons函数，和这个函数类似的函数还有htonl,ntohs,ntohl,这一系列函数中，h代表host，也就是主机，to是转换，n是network，网络，l代表long，s代表short，这里的host和network应该怎么理解，这其实牵扯到主机字节顺序(Host Byte Order)和网络字节顺序(Network Byte Order)这两个概念有关。现在的CPU有两大派系，PowerPC系列CPU和Intel的x86系列CPU。PowerPC系列采用big endian方式存储数据，而x86系列则采用little endian方式存储数据。Big-Endian表示高字节存放在最后(Big End first)，Little-Endian表示低字节放在最后(Litter End first)，举例来说：比如一个数字0x12345678,Big-Endian形式下这4个字节在内存中存放的顺序是&lt;br /&gt;|12|34|56|78|&lt;br /&gt;而Little-Endian形式的为&lt;br /&gt;|78|56|34|12|&lt;br /&gt;网络上的传输采用的是Big-Endian类型的，所以将本地的数字在进行网络传输之前要先进行转换，利用的就是上面提到的几个函数。&lt;br /&gt;第15行，赋值通信的ip地址。这里有个函数&lt;code&gt;inet_pton(int family,const char * strptr,void * addrptr);&lt;/code&gt;就是将点分十进制串转换成网络字节序二进制值，同样要指定下协议族。&lt;br /&gt;第17行，&lt;code&gt;connect(sockfd,(SA*)&amp;amp;servaddr,sizeof(servaddr))&lt;/code&gt;，建立一个指定地址的连接。连接的服务器地址为servaddr。这里先给出它的声明&lt;code&gt;int connect(int sockfdFD,struct sockaddr*,int addrlength);&lt;/code&gt;&lt;br /&gt;这里就有一个问题，我们是把一个sockaddr_in类型的数据强制转换成了sockaddr类型。其实sockaddr的存储结构和sockaddr_in的存储结构是一样的，sockaddr是通用套接口地址结构(Generic Socket Address Structure)，而sockaddr_in可以看作是sockaddr的一个子集，至于后面的in的含义，我猜是internet的意思。这也解释了为什么sockaddr_in中会有冗余的数据，就是为了将结构体的大小设置成和sockaddr相等。而sockaddr.sa_data中数据可以看作是一种协议地址，不同协议所会有差别，这本书主要讲Internet协议。&lt;br /&gt;第19行，read函数其实是系统函数，从指定的文件读取数据，这里的文件描述符是创建socket时返回的描述符，也就是从网络读取。这也反映了在Unix系统中一切都是文件的思想。&lt;br /&gt;剩下的内容都很容易理解了，都是写基本的C语言的语法。&lt;br /&gt;上面的文件只是一个获取服务器时间的客户端代码，那么服务器端肯定要首先有这个服务，服务器端的代码如下：&lt;/p&gt;
 
 &lt;p&gt;daytimetcpsrv.c&lt;/p&gt;
 &lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c++'&gt;&lt;span class='cp'&gt;#include &amp;quot;unp.h&amp;quot; &lt;/span&gt;
@@ -1122,6 +1122,77 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 &lt;blockquote&gt;
 &lt;p&gt;回复：我每年新交1个MM，我100年内会失恋200次吗？&lt;/p&gt;
 &lt;/blockquote&gt;</content>
+ </entry>
+ 
+ <entry>
+   <title>计算几何初步</title>
+   <link href="http://username.github.io/blog/2011/03/19/geometry-basic-1"/>
+   <updated>2011-03-19T11:48:23Z</updated>
+   <id>http://username.github.io/blog/2011/03/19/geometry-basic-1</id>
+   <content type="html">&lt;p&gt;以前看到计算几何的题目就心虚，USACO的计算几何题目基本都跳过了，今天认真看了一下，发现其实计算几何没有想象中的那么难。本来做到USACO的fence3的题目，其中关键的一步就是求点到线段的最短距离，我本来想用解析几何做，也就是求出点到直线的距离，不过这样做我推导了半天，十分繁琐，后来想用海伦-秦九昭公式先算出三角形的面积，然后就出来了。但是看了TC的&lt;a href=&quot;http://www.topcoder.com/tc?module=Static&amp;d1=tutorials&amp;d2=alg_index&quot;&gt;Algorithm Tutorial&lt;/a&gt;，发现原来求解的过程这么的简单。。。&lt;/p&gt;
+
+&lt;p&gt;首先介绍计算几何中的基本概念：&lt;/p&gt;
+
+&lt;p&gt;1.向量，这个不用多说了，最基本的概念。&lt;/p&gt;
+
+&lt;p&gt;2.点积(Dot Product),也叫数量积，是接受在实数R上的两个向量并返回一个实数值标量的二元运算。这里只考虑2维的向量，&lt;code&gt;A=[x1,y1],B=[x2,y2]&lt;/code&gt;,则&lt;code&gt;A*B=x1*x1+y1*y1;&lt;/code&gt;在欧式几何空间中，点积可形象的表示为&lt;code&gt;A*B=|A||B|cos(θ)&lt;/code&gt;,θ为两个向量之间的角度，图示如下。&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/topcoder/image_thumb2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;根据这个公式，可以计算向量的夹角，所以，一般点积可以判断点之间的关系。如下图，如果&lt;code&gt;AB*AC&amp;lt;0&lt;/code&gt;,则说明&lt;code&gt;90&amp;lt;θ&amp;lt;27&lt;/code&gt;0,则说明C点在A的外面。&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/topcoder/image_thumb3.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;根据点积的概念可以写出计算点积的代码：&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c++'&gt;&lt;span class='kt'&gt;double&lt;/span&gt; &lt;span class='nf'&gt;dot&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;point&lt;/span&gt; &lt;span class='n'&gt;a&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;point&lt;/span&gt; &lt;span class='n'&gt;b&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;point&lt;/span&gt; &lt;span class='n'&gt;c&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;&lt;span class='c1'&gt;//ab*ac&lt;/span&gt;
+&lt;span class='p'&gt;{&lt;/span&gt;
+    &lt;span class='n'&gt;point&lt;/span&gt; &lt;span class='n'&gt;ab&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;b&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;x&lt;/span&gt;&lt;span class='o'&gt;-&lt;/span&gt;&lt;span class='n'&gt;a&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;x&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;b&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;y&lt;/span&gt;&lt;span class='o'&gt;-&lt;/span&gt;&lt;span class='n'&gt;a&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;y&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+    &lt;span class='n'&gt;point&lt;/span&gt; &lt;span class='n'&gt;ac&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;c&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;x&lt;/span&gt;&lt;span class='o'&gt;-&lt;/span&gt;&lt;span class='n'&gt;a&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;x&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;c&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;y&lt;/span&gt;&lt;span class='o'&gt;-&lt;/span&gt;&lt;span class='n'&gt;a&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;y&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+    &lt;span class='k'&gt;return&lt;/span&gt; &lt;span class='n'&gt;ab&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;x&lt;/span&gt;&lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;ac&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;x&lt;/span&gt;&lt;span class='o'&gt;+&lt;/span&gt;&lt;span class='n'&gt;ab&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;y&lt;/span&gt;&lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;ac&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;y&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='p'&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;3.叉积(Cross Product),也叫向量积，需要注意的是ABxAC的结果也是一个向量，而且方向和这两个向量都垂直，由于只考虑平面，所以这个方向并不做考虑，有兴趣再看。&lt;/p&gt;
+
+&lt;p&gt;设&lt;code&gt;AB=[x1,y1],AC=[x2,y2]&lt;/code&gt;,则&lt;code&gt;ABxAC=x1*y2-x2*y1&lt;/code&gt;;&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;ABxAC=|AB||AC|sin(θ)&lt;/code&gt;,这个结果在平面上可形象的表示为：&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/topcoder/image_thumb4.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这个平行四边形的面积，当然是不考虑其方向。&lt;/p&gt;
+
+&lt;p&gt;同理，叉积的代码如下：&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c++'&gt;&lt;span class='kt'&gt;double&lt;/span&gt; &lt;span class='nf'&gt;cross&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;point&lt;/span&gt; &lt;span class='n'&gt;a&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;point&lt;/span&gt; &lt;span class='n'&gt;b&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;point&lt;/span&gt; &lt;span class='n'&gt;c&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;&lt;span class='c1'&gt;//abXac&lt;/span&gt;
+&lt;span class='p'&gt;{&lt;/span&gt;
+    &lt;span class='n'&gt;point&lt;/span&gt; &lt;span class='n'&gt;ab&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;b&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;x&lt;/span&gt;&lt;span class='o'&gt;-&lt;/span&gt;&lt;span class='n'&gt;a&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;x&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;b&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;y&lt;/span&gt;&lt;span class='o'&gt;-&lt;/span&gt;&lt;span class='n'&gt;a&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;y&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+    &lt;span class='n'&gt;point&lt;/span&gt; &lt;span class='n'&gt;ac&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;c&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;x&lt;/span&gt;&lt;span class='o'&gt;-&lt;/span&gt;&lt;span class='n'&gt;a&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;x&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;c&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;y&lt;/span&gt;&lt;span class='o'&gt;-&lt;/span&gt;&lt;span class='n'&gt;a&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;y&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+    &lt;span class='k'&gt;return&lt;/span&gt; &lt;span class='n'&gt;ab&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;x&lt;/span&gt;&lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;ac&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;y&lt;/span&gt;&lt;span class='o'&gt;-&lt;/span&gt;&lt;span class='n'&gt;ab&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;y&lt;/span&gt;&lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='n'&gt;ac&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;x&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='p'&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;4.点到线段的距离，点到直线的最短距离无非就在点和线段上的3个点确定，两个端点和点到这条线段直线的垂线相交的点，当然，如果相交的点不在线段上，则最短距离就是两个点中的一个，否则就是点到这条直线的最短距离。&lt;/p&gt;
+
+&lt;p&gt;可以通过点积来判断点和线段的相对位置，并且利用叉积计算出点到直线的最短距离,比如上图2，ABxAC为一个平行四边形的面积，而这个面积又等于&lt;code&gt;|AB|*h&lt;/code&gt;,h就是C点到AB所在直线的最短距离。代码如下：&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c++'&gt;&lt;span class='kt'&gt;double&lt;/span&gt; &lt;span class='nf'&gt;Dist2Seg&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;point&lt;/span&gt; &lt;span class='n'&gt;c&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;segment&lt;/span&gt; &lt;span class='n'&gt;AB&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;span class='p'&gt;{&lt;/span&gt;
+    &lt;span class='k'&gt;if&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;AB&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;pa&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;x&lt;/span&gt;&lt;span class='o'&gt;==&lt;/span&gt;&lt;span class='n'&gt;AB&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;pb&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;x&lt;/span&gt; &lt;span class='o'&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class='n'&gt;AB&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;pa&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;y&lt;/span&gt;&lt;span class='o'&gt;==&lt;/span&gt;&lt;span class='n'&gt;AB&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;pb&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;y&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+        &lt;span class='k'&gt;return&lt;/span&gt; &lt;span class='n'&gt;dist&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;c&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;AB&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;pa&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+ 
+    &lt;span class='kt'&gt;double&lt;/span&gt; &lt;span class='n'&gt;d&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='n'&gt;abs&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;cross&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;AB&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;pa&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;AB&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;pb&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;c&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;&lt;span class='o'&gt;/&lt;/span&gt;&lt;span class='n'&gt;dist&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;AB&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;pa&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;AB&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;pb&lt;/span&gt;&lt;span class='p'&gt;));&lt;/span&gt;
+    &lt;span class='k'&gt;if&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;dot&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;AB&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;pa&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;AB&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;pb&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;c&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='mi'&gt;0&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+        &lt;span class='k'&gt;return&lt;/span&gt; &lt;span class='n'&gt;dist&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;AB&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;pa&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;c&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+    &lt;span class='k'&gt;if&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;dot&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;AB&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;pb&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;AB&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;pa&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;c&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='mi'&gt;0&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+        &lt;span class='k'&gt;return&lt;/span&gt; &lt;span class='n'&gt;dist&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;AB&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;pb&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;c&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+    &lt;span class='k'&gt;return&lt;/span&gt; &lt;span class='n'&gt;d&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+ 
+&lt;span class='p'&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;未完待续。。。&lt;/p&gt;
+
+&lt;p&gt;注：图片和相关资料来自wikipedia和TC Algorithm Tutorial&lt;/p&gt;
+
+&lt;p&gt;1.Wikipedia关于&lt;a href=&quot;http://zh.wikipedia.org/zh/%E6%95%B0%E9%87%8F%E7%A7%AF&quot;&gt;点积&lt;/a&gt;和&lt;a href=&quot;http://zh.wikipedia.org/wiki/%E5%90%91%E9%87%8F%E7%A7%AF&quot;&gt;叉积&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;2.TC Algorithm Tutorial 的&lt;a href=&quot;http://www.topcoder.com/tc?module=Static&amp;d1=tutorials&amp;d2=geometry1&quot;&gt;计算几何&lt;/a&gt;部分。&lt;/p&gt;</content>
  </entry>
  
  <entry>

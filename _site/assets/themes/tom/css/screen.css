@@ -155,10 +155,11 @@ ul.posts {
   /* standard */
 
   #post pre {
-    border: 1px solid #ddd;
-    background-color: #2C001E;
+    border: 5px solid #ccc;
+    background-color: #fff;
     padding: 0 .4em;
     line-height: normal;
+    border-radius: 15px
   }
 
   #post ul,

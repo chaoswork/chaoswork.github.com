@@ -167,11 +167,13 @@ ul.posts {
 
   #post code {
     font-size: 85%;
+    font-family: Courier New;
     padding: 0 .2em;
   }
 
     #post pre code {
       border: none;
+      line-height: normal;
     }
 
   /* terminal */

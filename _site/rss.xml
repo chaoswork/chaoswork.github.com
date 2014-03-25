@@ -5,8 +5,8 @@
         <description>HuangChao's Blog - Huang Chao</description>
         <link>http://username.github.io</link>
         <link>http://username.github.io</link>
-        <lastBuildDate>2014-03-25T19:29:27+08:00</lastBuildDate>
-        <pubDate>2014-03-25T19:29:27+08:00</pubDate>
+        <lastBuildDate>2014-03-25T22:40:50+08:00</lastBuildDate>
+        <pubDate>2014-03-25T22:40:50+08:00</pubDate>
         <ttl>1800</ttl>
 
 
@@ -18,11 +18,11 @@
 
 &lt;p&gt;比如我来一段这样的代码：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/effectivecpp/truefalse.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/effectivecpp/truefalse.jpg&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;直觉上觉得应该是编译不通过吧，可是：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/effectivecpp/run.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/effectivecpp/run.jpg&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;如果有个坏蛋把这一条加到某个头文件中，估计找bug也会找晕吧。&lt;/p&gt;
 
@@ -52,7 +52,7 @@
     &lt;span class='err'&gt;#&lt;/span&gt;&lt;span class='n'&gt;define&lt;/span&gt; &lt;span class='n'&gt;A&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;n&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='err'&gt;#&lt;/span&gt;&lt;span class='n'&gt;n&lt;/span&gt;&lt;span class='err'&gt;，则&lt;/span&gt;&lt;span class='n'&gt;A&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='o'&gt;+&lt;/span&gt;&lt;span class='mi'&gt;2&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;&lt;span class='err'&gt;则是&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;1+2&amp;quot;&lt;/span&gt;
     
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;/images/effectivecpp/define.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/effectivecpp/define.jpg&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;有个想法，以前在指定函数指针的时候，总感觉不能按照规律来调用某个函数，现在能否借助define的##来实现不同函数指针的调用呢？&lt;/p&gt;
 
@@ -144,7 +144,7 @@
 
 &lt;p&gt;其中，在0-0xFFFFFFFF的虚拟地址空间中，高地址的1G(0xC0000000-0xFFFFFFFF)范围被linux用作内核空间，用户空间是低的3G范围。如下图所示(来自上面链接的文章)：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/csapp/linuxFlexibleAddressSpaceLayout.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/linuxFlexibleAddressSpaceLayout.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;这里吗可以看出中间有许多random offset，这也加大了缓冲区溢出攻击的难度，其中栈区是有固定大小的，可以输入ulimit -s来确定，我的机子返回的是8192，也就是8M的空间，当你写了一个无限递归的函数时，这个空间就会很快被填满，然后导致stack overflow,堆区理论上可以一直向上申请到Memory Mapping Segment,不过一般没有程序会使用这么大的内存。&lt;/p&gt;
 
@@ -152,7 +152,7 @@
 
 &lt;p&gt;每个进程的虚拟内存布局可以通过查看/proc/pid/maps这个文件来查看，其中pid换成想要查看的进程编号，比如实验的./bufbomb布局如下：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/csapp/part_017.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/part_017.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;这里可以看到0x08048000以下的地址被用来映射许多动态链接库，比如libc和ld，这和上图的布局有些出入，估计是因为linux的内核升级，将memory mapping segment存放到了0x08048000下面？以前最下面的空白区是不做任何用途的。&lt;/p&gt;
 
@@ -200,7 +200,7 @@
 
 &lt;p&gt;然后通过gdb调试可以得到下面的栈帧图,我保存在了google doc里面：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/csapp/part_020.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/part_020.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;左边绿色的部分是test函数的栈帧，黄色的部分是getbuf函数的栈帧，蓝色部分是下面的栈帧执行完后要跳转到的指令地址，这个地址每次call的时候自动填充，所以理论上应该是属于上衣个栈帧的内容，这里由于返回后的esp并没有指向这个返回地址，所以没有将其包含进栈帧。目前我明确的参数都有所注释，还有许多地址中的数据我还不明白其中的含义，所以这里还值得研究一下。目前该图含有的信息:&lt;/p&gt;
 
@@ -208,7 +208,7 @@
 
 &lt;p&gt;printf的参数放在第27,28行，分别表示printf的第0个参数,第一个参数是1，因为最后printf只会打印一个1出来，第0个参数则是字符串的地址，用gdb可以获得其数据：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/csapp/part_021.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/part_021.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;需要注意的是栈帧图中的28行为0x080486c0,而不是上面gdb调试中的0x080486d1,是因为0x080486c0是第一次printf的参数，也就是打印”Type Hex String:”字符串的地址，而0x080486d1才是第二个printf的字符串地址。这个地址怎么得到的？可以通过gdb单指令调试，其实汇编语言中就有，见上文汇编代码中注释的那一行。&lt;/p&gt;
 
@@ -228,11 +228,11 @@
 
 &lt;p&gt;这样，就完成了一次缓冲区溢出攻击:)&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/csapp/deafbeef2.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/deafbeef2.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;但是，不再gdb下运行的时候，虽然也返回了0xdeadbeef,但是总是伴随着段错误。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/csapp/part_023.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/part_023.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;应该还是有改进的空间，下一步可以尝试在stack protector下的溢出攻击。&lt;/p&gt;</description>
                 <link>http://username.github.io/blog/2012/04/13/csapp-bufbomb-stack-overflow-attack</link>
@@ -250,7 +250,7 @@
 
 &lt;p&gt;-S表明打印TCP 数据包的顺序号时, 使用绝对的顺序号, 而不是相对的顺序号.比如我第一次用tcpdump查看tcp的三次握手时发现第三次握手的ack=1,这个ack就是相对的，因为tcpdump只在SYN包中显示绝对顺序号，而非SYN包则显示相对的，为了便于观察，在抓包时都采用来绝对的顺序号。&lt;/p&gt;
 
-&lt;p&gt;为了能看懂tcpdump输出的格式，首先要知道TCP/IP的数据封装，大体如下图所示：&lt;img src=&quot;https://lh5.googleusercontent.com/AyzucSnu5AdElVtGL7WMJs7HT6QGTaiX8Qg6NYBX8dxfhvagZcinJDiW_srsYOmKT6mYFvkLeE533DYPLwXOM1R6rQ4Eo9zmgIcCqIRp08IIbfIFghM&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;为了能看懂tcpdump输出的格式，首先要知道TCP/IP的数据封装，大体如下图所示：&lt;img alt=&quot;&quot; src=&quot;https://lh5.googleusercontent.com/AyzucSnu5AdElVtGL7WMJs7HT6QGTaiX8Qg6NYBX8dxfhvagZcinJDiW_srsYOmKT6mYFvkLeE533DYPLwXOM1R6rQ4Eo9zmgIcCqIRp08IIbfIFghM&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;图片来自&lt;a href=&quot;http://www2.meps.tp.edu.tw/documents/memo/TCP%EF%BC%8FIP%E6%A6%82%E8%AB%96/index.htm&quot;&gt;http://www2.meps.tp.edu.tw/documents/memo/TCP%EF%BC%8FIP%E6%A6%82%E8%AB%96/index.htm&lt;/a&gt;&lt;/p&gt;
 
@@ -258,7 +258,7 @@
 
 &lt;p&gt;首先看IP Header的结构:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/tcpdump/image_thumb.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/tcpdump/image_thumb.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;关于IP Header的结构，我还没有深入的学习，简单的字段解释如下：&lt;/p&gt;
 
@@ -313,7 +313,7 @@
 &lt;span class='o'&gt;+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&lt;/span&gt;
     
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;下面是TCP Header的结构：&lt;a href=&quot;http://chaoswork.com/blog/wp-content/uploads/2012/04/image1.png&quot;&gt;&lt;img src=&quot;http://chaoswork.com/blog/wp-content/uploads/2012/04/image_thumb1.png&quot; alt=&quot;image&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;下面是TCP Header的结构：&lt;a href=&quot;http://chaoswork.com/blog/wp-content/uploads/2012/04/image1.png&quot;&gt;&lt;img alt=&quot;image&quot; src=&quot;http://chaoswork.com/blog/wp-content/uploads/2012/04/image_thumb1.png&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;
@@ -490,6 +490,200 @@
                 <link>http://username.github.io/blog/2012/04/06/tcpdump%E6%9F%A5%E7%9C%8B%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B</link>
                 <guid>http://username.github.io/blog/2012/04/06/tcpdump查看三次握手</guid>
                 <pubDate>2012-04-06T13:51:57Z</pubDate>
+        </item>
+
+        <item>
+                <title>Unix Network Programming 读书笔记1:daytimetcp注解</title>
+                <description>&lt;p&gt;最近在看Stevens大师的《Unix Network Programming：V1》.虽然已经写的十分清晰，但是有些地方对于我这样的新手还是很吃力，可能第一章只是进行介绍，详细讲解在后面。&lt;br /&gt;下面是我第一章的学习笔记。&lt;br /&gt;环境编译：&lt;br /&gt;由于本书已经有第三版，所以我到网上下载了第三版的源码，README已经写的很清楚了，整个编译过程轻松加愉快。其实主要是为了生成libunp.a这个库文件。&lt;br /&gt;简单的时间客户端代码&lt;br /&gt;daytimetcpcli.c&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c++'&gt;&lt;span class='cp'&gt;#include &amp;quot;unp.h&amp;quot;&lt;/span&gt;
+&lt;span class='kt'&gt;int&lt;/span&gt; &lt;span class='nf'&gt;main&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;int&lt;/span&gt; &lt;span class='n'&gt;argc&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;char&lt;/span&gt; &lt;span class='o'&gt;**&lt;/span&gt;&lt;span class='n'&gt;argv&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;span class='p'&gt;{&lt;/span&gt;
+    &lt;span class='kt'&gt;int&lt;/span&gt; &lt;span class='n'&gt;sockfd&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;n&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+    &lt;span class='kt'&gt;char&lt;/span&gt; &lt;span class='n'&gt;recvline&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;MAXLINE&lt;/span&gt; &lt;span class='o'&gt;+&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;];&lt;/span&gt;
+    &lt;span class='k'&gt;struct&lt;/span&gt; &lt;span class='n'&gt;sockaddr_in&lt;/span&gt; &lt;span class='n'&gt;servaddr&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+    &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;argc&lt;/span&gt; &lt;span class='o'&gt;!=&lt;/span&gt; &lt;span class='mi'&gt;2&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+        &lt;span class='n'&gt;err_quit&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;usage: a.out &amp;lt;IPaddress&amp;gt;&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+    &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;sockfd&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;socket&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;AF_INET&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;SOCK_STREAM&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;0&lt;/span&gt;&lt;span class='p'&gt;))&lt;/span&gt; &lt;span class='o'&gt;&amp;lt;&lt;/span&gt; &lt;span class='mi'&gt;0&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+        &lt;span class='n'&gt;err_sys&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;socket error&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+    &lt;span class='n'&gt;bzero&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;servaddr&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;servaddr&lt;/span&gt;&lt;span class='p'&gt;));&lt;/span&gt;
+    &lt;span class='n'&gt;servaddr&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;sin_family&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;AF_INET&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+    &lt;span class='n'&gt;servaddr&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;sin_port&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;htons&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='mi'&gt;13&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt; &lt;span class='cm'&gt;/* daytime server */&lt;/span&gt;
+    &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;inet_pton&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;AF_INET&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;argv&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;],&lt;/span&gt; &lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;servaddr&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;sin_addr&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;&amp;lt;=&lt;/span&gt; &lt;span class='mi'&gt;0&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+        &lt;span class='n'&gt;err_quit&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;inet_pton error for %s&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;argv&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;]);&lt;/span&gt;
+    &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;connect&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;sockfd&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;SA&lt;/span&gt; &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;servaddr&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;servaddr&lt;/span&gt;&lt;span class='p'&gt;))&lt;/span&gt; &lt;span class='o'&gt;&amp;lt;&lt;/span&gt; &lt;span class='mi'&gt;0&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+        &lt;span class='n'&gt;err_sys&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;connect error&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+    &lt;span class='k'&gt;while&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;n&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;read&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;sockfd&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;recvline&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;MAXLINE&lt;/span&gt;&lt;span class='p'&gt;))&lt;/span&gt; &lt;span class='o'&gt;&amp;gt;&lt;/span&gt; &lt;span class='mi'&gt;0&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='p'&gt;{&lt;/span&gt;
+        &lt;span class='n'&gt;recvline&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;n&lt;/span&gt;&lt;span class='p'&gt;]&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;0&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt; &lt;span class='cm'&gt;/* null terminate */&lt;/span&gt;
+        &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;fputs&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;recvline&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;stdout&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;==&lt;/span&gt; &lt;span class='n'&gt;EOF&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+            &lt;span class='n'&gt;err_sys&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;fputs error&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+    &lt;span class='p'&gt;}&lt;/span&gt;
+    &lt;span class='k'&gt;if&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;n&lt;/span&gt; &lt;span class='o'&gt;&amp;lt;&lt;/span&gt; &lt;span class='mi'&gt;0&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+        &lt;span class='n'&gt;err_sys&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;read error&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+    &lt;span class='n'&gt;exit&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='mi'&gt;0&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+&lt;span class='p'&gt;}&lt;/span&gt;    
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;只有27行，麻雀虽小，五脏俱全。下面进行详细的介绍。&lt;br /&gt;第1行，包含unp.h的头文件，这个头文件是作者自己写的，这里面包含了诸多的系统头文件以及网U络编程所需要的头文件。&lt;br /&gt;第5行，sockfd,全称应该是socket file descriptor，用整形表示，是用来保存socket函数返回值，其余的socket相关操作都要通过这个文件描述符来找到我们生成的socket。n用来保存后面read函数读到的字符流的长度。&lt;br /&gt;第6行，recvline，用来保存字符串。&lt;br /&gt;第7行，servaddr，是个sockaddr_in类型的结构体，书中整个结构体声明如下：&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c++'&gt;&lt;span class='k'&gt;struct&lt;/span&gt; &lt;span class='n'&gt;in_addr&lt;/span&gt;&lt;span class='p'&gt;{&lt;/span&gt;
+    &lt;span class='kt'&gt;in_addr_t&lt;/span&gt; &lt;span class='n'&gt;s_addr&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt; &lt;span class='c1'&gt;//32bit表示的ip地址，一个unsigned int&lt;/span&gt;
+&lt;span class='p'&gt;};&lt;/span&gt;
+&lt;span class='k'&gt;struct&lt;/span&gt; &lt;span class='n'&gt;sockaddr_in&lt;/span&gt;&lt;span class='p'&gt;{&lt;/span&gt;
+    &lt;span class='kt'&gt;uint8_t&lt;/span&gt; &lt;span class='n'&gt;sin_len&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt; &lt;span class='c1'&gt;//OSI协议的支持&lt;/span&gt;
+    &lt;span class='kt'&gt;sa_family_t&lt;/span&gt; &lt;span class='n'&gt;sin_family&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt; &lt;span class='c1'&gt;//协议族，这里是AF_INET&lt;/span&gt;
+    &lt;span class='kt'&gt;in_port_t&lt;/span&gt; &lt;span class='n'&gt;sin_port&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt; &lt;span class='c1'&gt;//16bit端口&lt;/span&gt;
+    &lt;span class='k'&gt;struct&lt;/span&gt; &lt;span class='n'&gt;in_addr&lt;/span&gt; &lt;span class='n'&gt;sin_addr&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt; &lt;span class='c1'&gt;//ipv4地址,32bit&lt;/span&gt;
+    &lt;span class='kt'&gt;char&lt;/span&gt; &lt;span class='n'&gt;sin_zero&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='mi'&gt;8&lt;/span&gt;&lt;span class='p'&gt;];&lt;/span&gt; &lt;span class='c1'&gt;//为了和sockaddr结构大小一样进行的冗余数据&lt;/span&gt;
+&lt;span class='p'&gt;};&lt;/span&gt;
+&lt;span class='k'&gt;struct&lt;/span&gt; &lt;span class='n'&gt;sockaddr&lt;/span&gt;&lt;span class='p'&gt;{&lt;/span&gt;
+    &lt;span class='kt'&gt;uint8_t&lt;/span&gt; &lt;span class='n'&gt;sa_len&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+    &lt;span class='kt'&gt;sa_family_t&lt;/span&gt; &lt;span class='n'&gt;sa_family&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+    &lt;span class='kt'&gt;char&lt;/span&gt; &lt;span class='n'&gt;sa_data&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='mi'&gt;14&lt;/span&gt;&lt;span class='p'&gt;];&lt;/span&gt; &lt;span class='c1'&gt;//14字节的协议&lt;/span&gt;
+&lt;span class='p'&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;由于作者采用的是通用的unix协议，ubuntu等linux版本中有了一些变化，但是仍然遵循POSIX标准。&lt;!-- more --&gt;&lt;br /&gt;ubuntu中是这个样子的：&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c++'&gt;&lt;span class='cp'&gt;#define __SOCKADDR_COMMON(sa_prefix) &lt;/span&gt;
+&lt;span class='kt'&gt;sa_family_t&lt;/span&gt; &lt;span class='n'&gt;sa_prefix&lt;/span&gt;&lt;span class='err'&gt;##&lt;/span&gt;&lt;span class='n'&gt;family&lt;/span&gt; 
+&lt;span class='c1'&gt;//宏定义的函数，##代表字符连接，比如下面代码中的__SOCKADDR_COMMON (sin_);就相当于sin_family_t sin_family;&lt;/span&gt;
+ 
+&lt;span class='cm'&gt;/* Internet address. */&lt;/span&gt;
+&lt;span class='k'&gt;typedef&lt;/span&gt; &lt;span class='kt'&gt;uint32_t&lt;/span&gt; &lt;span class='kt'&gt;in_addr_t&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='k'&gt;struct&lt;/span&gt; &lt;span class='n'&gt;in_addr&lt;/span&gt;
+&lt;span class='p'&gt;{&lt;/span&gt;
+     &lt;span class='kt'&gt;in_addr_t&lt;/span&gt; &lt;span class='n'&gt;s_addr&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;span class='p'&gt;};&lt;/span&gt;
+&lt;span class='cm'&gt;/* &lt;/span&gt;
+&lt;span class='cm'&gt;Structure describing an Internet socket address. */&lt;/span&gt;
+&lt;span class='k'&gt;struct&lt;/span&gt; 
+&lt;span class='n'&gt;sockaddr_in&lt;/span&gt;
+&lt;span class='p'&gt;{&lt;/span&gt;
+     &lt;span class='n'&gt;__SOCKADDR_COMMON&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;sin_&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+ 
+    &lt;span class='kt'&gt;in_port_t&lt;/span&gt; &lt;span class='n'&gt;sin_port&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt; &lt;span class='cm'&gt;/* Port number. */&lt;/span&gt;
+    &lt;span class='k'&gt;struct&lt;/span&gt; &lt;span class='n'&gt;in_addr&lt;/span&gt; &lt;span class='n'&gt;sin_addr&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt; &lt;span class='cm'&gt;/* Internet address. */&lt;/span&gt;
+    &lt;span class='cm'&gt;/* Pad to size of `struct sockaddr&amp;#39;. */&lt;/span&gt;
+    &lt;span class='kt'&gt;unsigned&lt;/span&gt; &lt;span class='kt'&gt;char&lt;/span&gt; &lt;span class='n'&gt;sin_zero&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='k'&gt;sizeof&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='k'&gt;struct&lt;/span&gt; &lt;span class='n'&gt;sockaddr&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;-&lt;/span&gt; 
+    &lt;span class='n'&gt;__SOCKADDR_COMMON_SIZE&lt;/span&gt; &lt;span class='o'&gt;-&lt;/span&gt; 
+    &lt;span class='k'&gt;sizeof&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;in_port_t&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;-&lt;/span&gt; 
+    &lt;span class='k'&gt;sizeof&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='k'&gt;struct&lt;/span&gt; &lt;span class='n'&gt;in_addr&lt;/span&gt;&lt;span class='p'&gt;)];&lt;/span&gt;
+&lt;span class='p'&gt;};&lt;/span&gt;
+&lt;span class='cm'&gt;/* Structure describing a generic socket &lt;/span&gt;
+&lt;span class='cm'&gt;address. */&lt;/span&gt;
+&lt;span class='k'&gt;struct&lt;/span&gt; &lt;span class='n'&gt;sockaddr&lt;/span&gt;
+&lt;span class='p'&gt;{&lt;/span&gt;
+     &lt;span class='n'&gt;__SOCKADDR_COMMON&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;sa_&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt; &lt;span class='cm'&gt;/* Common data: address family and length. */&lt;/span&gt;
+     &lt;span class='kt'&gt;char&lt;/span&gt; &lt;span class='n'&gt;sa_data&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='mi'&gt;14&lt;/span&gt;&lt;span class='p'&gt;];&lt;/span&gt; &lt;span class='cm'&gt;/* Address data. */&lt;/span&gt;
+&lt;span class='p'&gt;};&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;可以看出书中sockaddr.sa_len和sockaddr_in.sin_len在ubuntu的版本中被去掉了。其余的结构都是一样的。&lt;br /&gt;sockaddr_in是IPv4套接口地址的结构，也叫”Internet socket address structure”，POSIX标准中要求其必须含有3个成员，sin_family,sin_port和sin_addr，后两个我们已经知道了他们的大小，sin_family的类型为unsiged short，可能会随着操作系统的不同会有所改变。&lt;br /&gt;第10行，socket函数&lt;br /&gt;用来创建一个新的socket，如果成功，则返回socket的文件描述符，如果失败，则可以根据返回的负数来查询相应的错误。&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c++'&gt;&lt;span class='cm'&gt;/* Create a new socket of type TYPE in domain DOMAIN, using protocol &lt;/span&gt;
+&lt;span class='cm'&gt;PROTOCOL. If PROTOCOL is zero, one is chosen automatically. &lt;/span&gt;
+&lt;span class='cm'&gt;Returns a file descriptor for the new socket, or -1 for errors. &lt;/span&gt;
+&lt;span class='cm'&gt;*/&lt;/span&gt;
+&lt;span class='k'&gt;extern&lt;/span&gt; &lt;span class='kt'&gt;int&lt;/span&gt; &lt;span class='n'&gt;socket&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;int&lt;/span&gt; &lt;span class='n'&gt;__domain&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;int&lt;/span&gt; &lt;span class='n'&gt;__type&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;int&lt;/span&gt; &lt;span class='n'&gt;__protocol&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='n'&gt;__THROW&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;domain参数表示通信的域，一般是指定通信的协议族，比如PF_INET/AF_INET表示IPv4协议，PF_INET6/AF_INET6表示IPv6协议，PF_UNIX/PF_LOCAL/AF_UNIX/AF_LOCAL UNIX表示进程通信协议；type表示socket的类型，比如SOCK_STREAM 提供双向连续且可信赖的数据流，即TCP，SOCK_DGRAM 使用不连续不可信赖的数据包连接，UDP；protocol指定在socket中使用的特定的协议。一般来讲，只存在一个单独的协议来支持给定的协议族中特定的socket类型，&lt;br /&gt;在这种情况下protocol可以用0来代表默认值。然而，有可能很多协议都会存在，在这种情况下特定的协议必须在这种方式下指定。我去源码中找了一下，发现了下面的协议编号。可以根据网络的环境进行选择。&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c++'&gt;    &lt;span class='cm'&gt;/* Standard well-defined IP protocols. */&lt;/span&gt;
+    &lt;span class='k'&gt;enum&lt;/span&gt; &lt;span class='p'&gt;{&lt;/span&gt;
+    &lt;span class='n'&gt;IPPROTO_IP&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;0&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='cm'&gt;/*     Dummy protocol for TCP */&lt;/span&gt;
+    &lt;span class='n'&gt;IPPROTO_ICMP&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='cm'&gt;/* Internet Control Message     Protocol */&lt;/span&gt;
+    &lt;span class='n'&gt;IPPROTO_IGMP&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;2&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='cm'&gt;/* Internet Group Management Protocol     */&lt;/span&gt;
+    &lt;span class='n'&gt;IPPROTO_IPIP&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;4&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='cm'&gt;/* IPIP tunnels (older KA9Q tunnels use 94)     */&lt;/span&gt;
+    &lt;span class='n'&gt;IPPROTO_TCP&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;6&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='cm'&gt;/* Transmission Control Protocol */&lt;/span&gt;
+    &lt;span class='n'&gt;IPPROTO_EGP&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;8&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='cm'&gt;/* Exterior Gateway Protocol */&lt;/span&gt;
+    &lt;span class='n'&gt;IPPROTO_PUP&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;12&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='cm'&gt;/* PUP protocol */&lt;/span&gt;
+    &lt;span class='n'&gt;IPPROTO_UDP&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;17&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='cm'&gt;/* User Datagram Protocol */&lt;/span&gt;
+    &lt;span class='n'&gt;IPPROTO_IDP&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;22&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='cm'&gt;/* XNS IDP protocol */&lt;/span&gt;
+    &lt;span class='n'&gt;IPPROTO_DCCP&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;33&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='cm'&gt;/* Datagram Congestion Control Protocol */&lt;/span&gt;
+    &lt;span class='n'&gt;IPPROTO_RSVP&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;46&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='cm'&gt;/* RSVP protocol */&lt;/span&gt;
+    &lt;span class='n'&gt;IPPROTO_GRE&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;47&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='cm'&gt;/* Cisco GRE tunnels (rfc 1701,1702) */&lt;/span&gt;
+    &lt;span class='n'&gt;IPPROTO_IPV6&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;41&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='cm'&gt;/* IPv6-in-IPv4 tunnelling */&lt;/span&gt;
+    &lt;span class='n'&gt;IPPROTO_ESP&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;50&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='cm'&gt;/* Encapsulation Security Payload protocol */&lt;/span&gt;
+    &lt;span class='n'&gt;IPPROTO_AH&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;51&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='cm'&gt;/* Authentication Header protocol*/&lt;/span&gt;
+    &lt;span class='n'&gt;IPPROTO_BEETPH&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;94&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='cm'&gt;/* IP option pseudo header for BEET */&lt;/span&gt;
+    &lt;span class='n'&gt;IPPROTO_PIM&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;103&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='cm'&gt;/* Protocol Independent Multicast */&lt;/span&gt;
+    &lt;span class='n'&gt;IPPROTO_COMP&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;108&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='cm'&gt;/* Compression Header protocol */&lt;/span&gt;
+    &lt;span class='n'&gt;IPPROTO_SCTP&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;132&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='cm'&gt;/* Stream Control Transport Protocol */&lt;/span&gt;
+    &lt;span class='n'&gt;IPPROTO_UDPLITE&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;136&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='cm'&gt;/* UDP-Lite (RFC 3828) */&lt;/span&gt;
+    &lt;span class='n'&gt;IPPROTO_RAW&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;255&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='cm'&gt;/* Raw IP packets */&lt;/span&gt;
+    &lt;span class='n'&gt;IPPROTO_MAX&lt;/span&gt;
+    &lt;span class='p'&gt;};&lt;/span&gt;
+    
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;第12行，bzero函数不知道是不是标准c的一部分，这个函数就是给一段字符串赋0值，比如&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c++'&gt;&lt;span class='kt'&gt;char&lt;/span&gt; &lt;span class='n'&gt;s&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='mi'&gt;10&lt;/span&gt;&lt;span class='p'&gt;];&lt;/span&gt;
+&lt;span class='n'&gt;bzero&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;s&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;s&lt;/span&gt;&lt;span class='p'&gt;));&lt;/span&gt;&lt;span class='c1'&gt;//相当于memset(s,0,sizeof(s));&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;这一行代码的作用是将servaddr中的内容全部置零。&lt;br /&gt;第13行，指定通信地址的协议族。&lt;br /&gt;第14行，指定通信地址的端口。这里有个htons函数，和这个函数类似的函数还有htonl,ntohs,ntohl,这一系列函数中，h代表host，也就是主机，to是转换，n是network，网络，l代表long，s代表short，这里的host和network应该怎么理解，这其实牵扯到主机字节顺序(Host Byte Order)和网络字节顺序(Network Byte Order)这两个概念有关。现在的CPU有两大派系，PowerPC系列CPU和Intel的x86系列CPU。PowerPC系列采用big endian方式存储数据，而x86系列则采用little endian方式存储数据。Big-Endian表示高字节存放在最后(Big End first)，Little-Endian表示低字节放在最后(Litter End first)，举例来说：比如一个数字0x12345678,Big-Endian形式下这4个字节在内存中存放的顺序是&lt;br /&gt;|12|34|56|78|&lt;br /&gt;而Little-Endian形式的为&lt;br /&gt;|78|56|34|12|&lt;br /&gt;网络上的传输采用的是Big-Endian类型的，所以将本地的数字在进行网络传输之前要先进行转换，利用的就是上面提到的几个函数。&lt;br /&gt;第15行，赋值通信的ip地址。这里有个函数inet_pton(int family,const char * strptr,void * addrptr);就是将点分十进制串转换成网络字节序二进制值，同样要指定下协议族。&lt;br /&gt;第17行，connect(sockfd,(SA&lt;em&gt;)&amp;amp;servaddr,sizeof(servaddr))，建立一个指定地址的连接。连接的服务器地址为servaddr。这里先给出它的声明int connect(int sockfdFD,struct sockaddr&lt;/em&gt;,int addrlength);&lt;br /&gt;这里就有一个问题，我们是把一个sockaddr_in类型的数据强制转换成了sockaddr类型。其实sockaddr的存储结构和sockaddr_in的存储结构是一样的，sockaddr是通用套接口地址结构(Generic Socket Address Structure)，而sockaddr_in可以看作是sockaddr的一个子集，至于后面的in的含义，我猜是internet的意思。这也解释了为什么sockaddr_in中会有冗余的数据，就是为了将结构体的大小设置成和sockaddr相等。而sockaddr.sa_data中数据可以看作是一种协议地址，不同协议所会有差别，这本书主要讲Internet协议。&lt;br /&gt;第19行，read函数其实是系统函数，从指定的文件读取数据，这里的文件描述符是创建socket时返回的描述符，也就是从网络读取。这也反映了在Unix系统中一切都是文件的思想。&lt;br /&gt;剩下的内容都很容易理解了，都是写基本的C语言的语法。&lt;br /&gt;上面的文件只是一个获取服务器时间的客户端代码，那么服务器端肯定要首先有这个服务，服务器端的代码如下：&lt;/p&gt;
+
+&lt;p&gt;daytimetcpsrv.c&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c++'&gt;&lt;span class='cp'&gt;#include &amp;quot;unp.h&amp;quot; &lt;/span&gt;
+&lt;span class='cp'&gt;#include &amp;lt;time.h&amp;gt; &lt;/span&gt;
+&lt;span class='kt'&gt;int&lt;/span&gt; 
+&lt;span class='nf'&gt;main&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;int&lt;/span&gt; &lt;span class='n'&gt;argc&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='kt'&gt;char&lt;/span&gt; &lt;span class='o'&gt;**&lt;/span&gt;&lt;span class='n'&gt;argv&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; 
+&lt;span class='p'&gt;{&lt;/span&gt; 
+    &lt;span class='kt'&gt;int&lt;/span&gt; &lt;span class='n'&gt;listenfd&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;connfd&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt; 
+    &lt;span class='k'&gt;struct&lt;/span&gt; &lt;span class='n'&gt;sockaddr_in&lt;/span&gt; &lt;span class='n'&gt;servaddr&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt; 
+    &lt;span class='kt'&gt;char&lt;/span&gt; &lt;span class='n'&gt;buff&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;MAXLINE&lt;/span&gt;&lt;span class='p'&gt;];&lt;/span&gt; 
+    &lt;span class='kt'&gt;time_t&lt;/span&gt; &lt;span class='n'&gt;ticks&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt; 
+    &lt;span class='n'&gt;listenfd&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;Socket&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;AF_INET&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;SOCK_STREAM&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='mi'&gt;0&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt; 
+    &lt;span class='n'&gt;bzero&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;servaddr&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;servaddr&lt;/span&gt;&lt;span class='p'&gt;));&lt;/span&gt; 
+    &lt;span class='n'&gt;servaddr&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;sin_family&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;AF_INET&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt; 
+    &lt;span class='n'&gt;servaddr&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;sin_addr&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;s_addr&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;htonl&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;INADDR_ANY&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt; 
+    &lt;span class='n'&gt;servaddr&lt;/span&gt;&lt;span class='p'&gt;.&lt;/span&gt;&lt;span class='n'&gt;sin_port&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;htons&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='mi'&gt;13&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt; &lt;span class='cm'&gt;/* daytime server */&lt;/span&gt; 
+    &lt;span class='n'&gt;Bind&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;listenfd&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;SA&lt;/span&gt; &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;servaddr&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;servaddr&lt;/span&gt;&lt;span class='p'&gt;));&lt;/span&gt; 
+    &lt;span class='n'&gt;Listen&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;listenfd&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;LISTENQ&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt; 
+    &lt;span class='k'&gt;for&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt; &lt;span class='p'&gt;;&lt;/span&gt; &lt;span class='p'&gt;;&lt;/span&gt; &lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='p'&gt;{&lt;/span&gt;
+        &lt;span class='n'&gt;connfd&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;Accept&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;listenfd&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;SA&lt;/span&gt; &lt;span class='o'&gt;*&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='nb'&gt;NULL&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='nb'&gt;NULL&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt; 
+        &lt;span class='n'&gt;ticks&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;time&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='nb'&gt;NULL&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt; 
+        &lt;span class='n'&gt;snprintf&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;buff&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='k'&gt;sizeof&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;buff&lt;/span&gt;&lt;span class='p'&gt;),&lt;/span&gt; &lt;span class='s'&gt;&amp;quot;%.24srn&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;ctime&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;&amp;amp;&lt;/span&gt;&lt;span class='n'&gt;ticks&lt;/span&gt;&lt;span class='p'&gt;));&lt;/span&gt; 
+        &lt;span class='n'&gt;Write&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;connfd&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;buff&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;strlen&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;buff&lt;/span&gt;&lt;span class='p'&gt;));&lt;/span&gt; 
+        &lt;span class='n'&gt;Close&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;connfd&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt; 
+    &lt;span class='p'&gt;}&lt;/span&gt; 
+&lt;span class='p'&gt;}&lt;/span&gt; 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;这段代码里面又出现了几个新函数。&lt;br /&gt;第15行，&lt;code&gt;int bind(int sockfd, const struct sockaddr *my_addr, socklen_t addrlen);&lt;/code&gt;函数，这个函数将socket绑定到网络地址，对于Internet来说，就是ip地址和端口号，每个socket在正常工作前都要进行这种绑定，那么现在看daytimetcpcli.c中的代码中并没有发现这个函数，原因是这样的，如果你没有手动进行绑定，那么系统会在运行的时候绑定本机地址和一个临时的端口，但是这对于客户来说用那个端口是无所谓的，但是如果服务器绑定了一个临时的端口，客户并不知道是那个端口，就没法连接了，所以服务端要绑定一个特定的端口，并和服务器说，你来连接这个端口，这样才会正常的工作。现在看这个socket绑定的地址和端口都是什么，端口是13，这个号理解，但是地址是INADDR_ANY，这是什么意思？因为有可能我的这个服务器有很多网卡，有很多IP地址，我想不管是那个IP地址接受到的数据，只要是通过13端口连接的，我都处理，这时候就可以通过绑定INADDR_ANY来实现。&lt;br /&gt;第16行，int listen(int sockfd, int backlog)，这个函数是使用主动连接套接口变为被连接套接口，使得一个进程可以接受其它进程的请求，从而成为一个服务器进程。因为当一个socket建立时，默认是主动的，也就是说准备去连接服务器的，但是调用listen后，会将这个socket变成被动，准备接受来自其他socket的连接。一般这个函数只会在服务器端出现。第二个参数是指内核为此套接字排队的最大连接个数。比如很多客户端尝试着连接这个socket，服务器无法快速的完成所有的请求，那么就会维护一个队列。这里指定的值为LISTENQ，这里为1024.&lt;br /&gt;第18行，&lt;code&gt;int accept(int sockfd, struct sockaddr* addr, socklen_t* len)&lt;/code&gt;，接受来自sockaddr的连接，如果成功则返回一个全新的文件描述符，代表与客户的网络连接，后面的代码可以看到怎么处理的这个新的文件描述符，需要注意的是，accept函数默认会阻塞进程，也就是说连接成功后程序才会往下执行。&lt;br /&gt;分析了这两个代码可以基本了解整个连接是怎么建立起来的了：&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;服务器端建立一个标识为listenfd的套接字。&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;将listenfd这个套接字绑定到13端口。&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;将listenfd变成被动的socket接口。&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;利用accept函数让listenfd这个套接字来等待客户的连接，服务器端阻塞。&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;服务器建立标识为sockfd的socket，这个socket并没有手动绑定。系统会用本机地址和一个随机的端口对其绑定。&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;将sockfd这个套接字通过connect与服务器地址相连接。如果连接成功，则read函数准备读取这个sockfd的数据，客户端阻塞。&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;服务器端接收到请求，生成一个新的socket与客户端相连接connfd。&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;服务器通过新生成的socket发送给客户端数据。&lt;/p&gt;
+&lt;/li&gt;
+
+&lt;li&gt;
+&lt;p&gt;客户端通过与服务器相连接的socket读取到了数据并显示，结束。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/unp/005_thumb.png&quot; /&gt; 其实是两台电脑通过socket进行了进程间通信，代码中是通过文件描述符来代表socket的，至于socket的结构以及怎么就能通过这个socket进行数据传输，这些内容有待研究。&lt;/p&gt;</description>
+                <link>http://username.github.io/blog/2011/12/30/unix-network-programming-study-note-l</link>
+                <guid>http://username.github.io/blog/2011/12/30/unix-network-programming-study-note-l</guid>
+                <pubDate>2011-12-30T08:17:44Z</pubDate>
         </item>
 
         <item>
@@ -823,7 +1017,7 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;怎么在此基础上进行优化？假设现在从某个位置(设为s)开始和M串进行匹配，如果匹配不成功，暴力算法是从这个位置的下一个位置(s+1)进行匹配,直观上来说就是匹配的字符串向后“滑动”了一位。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/kmp/image_thumb.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/kmp/image_thumb.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;图1&lt;/p&gt;
 
@@ -831,7 +1025,7 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;而KMP就是在这里做文章，让M串向后“滑动”的距离最大化。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/kmp/image22_thumb.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/kmp/image22_thumb.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;图2&lt;/p&gt;
 
@@ -867,7 +1061,7 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;现在考虑&lt;code&gt;next[0],next[1]…next[i]&lt;/code&gt;都已经知道了，那么图示如下：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/kmp/image_thumb1.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/kmp/image_thumb1.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;设&lt;code&gt;j=next[i]&lt;/code&gt;，灰色部分表明这两段字符是相等的，如果i位置的字符和j位置的字符相等，那么&lt;code&gt;next[i+1]=j+1;&lt;/code&gt;因为前一段灰色部分和j位置的字符组成的字符串和后一段灰色的与i连接所形成的字符串是相等的。这正是前面对next数组的定义。如果不相等，则要找到从i开始包括i往前的一段字符串与从0开始的一段字符串相等，这样形成相等的前缀和后缀。所幸我们知道&lt;code&gt;next[next[i]]&lt;/code&gt;的值，因为&lt;code&gt;next[i]&lt;/code&gt;前面的字串也有最长的公共前缀和后缀，而这个公共的前缀与现在i以及往前形成的字串可能相等，这样一直向前找，如果找不到，则说明i位置的字符从来没有在之前出现过。&lt;/p&gt;
 
@@ -1058,7 +1252,7 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;培，为了我们的未来，加油。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/biyu.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/biyu.jpg&quot; /&gt;&lt;/p&gt;</description>
                 <link>http://username.github.io/blog/2010/11/08/moved</link>
                 <guid>http://username.github.io/blog/2010/11/08/moved</guid>
                 <pubDate>2010-11-08T00:00:00+08:00</pubDate>

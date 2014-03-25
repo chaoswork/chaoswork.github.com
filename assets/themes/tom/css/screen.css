@@ -158,6 +158,7 @@ ul.posts {
     border: 1px solid #ddd;
     background-color: #2C001E;
     padding: 0 .4em;
+    line-height: normal;
   }
 
   #post ul,
@@ -173,7 +174,6 @@ ul.posts {
 
     #post pre code {
       border: none;
-      line-height: normal;
     }
 
   /* terminal */

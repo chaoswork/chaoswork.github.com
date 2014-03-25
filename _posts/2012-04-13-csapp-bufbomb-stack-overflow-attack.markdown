@@ -108,7 +108,7 @@ status: publish
     8048558: e8 03 fe ff ff      call 8048360 <printf@plt>
     804855d: e8 d0 ff ff ff      call 8048532 <getbuf>
     8048562: 89 45 f4            mov %eax,-0xc(%ebp)
-    8048565: b8 d1 86 04 08      mov $<span style="color: #ff0000;">0x80486d1</span>,%eax   #printf args 0
+    8048565: b8 d1 86 04 08      mov $0x80486d1,%eax   #printf args 0
     804856a: 8b 55 f4            mov -0xc(%ebp),%edx
     804856d: 89 54 24 04         mov %edx,0x4(%esp)
     8048571: 89 04 24            mov %eax,(%esp)

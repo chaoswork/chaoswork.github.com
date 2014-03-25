@@ -4,7 +4,7 @@
  <title>HuangChao's Blog</title>
  <link href="http://username.github.io/" rel="self"/>
  <link href="http://username.github.io"/>
- <updated>2014-03-25T23:07:13+08:00</updated>
+ <updated>2014-03-25T23:32:46+08:00</updated>
  <id>http://username.github.io</id>
  <author>
    <name>Huang Chao</name>
@@ -23,11 +23,11 @@
 
 &lt;p&gt;比如我来一段这样的代码：&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/effectivecpp/truefalse.jpg&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/effectivecpp/truefalse.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;直觉上觉得应该是编译不通过吧，可是：&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/effectivecpp/run.jpg&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/effectivecpp/run.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;如果有个坏蛋把这一条加到某个头文件中，估计找bug也会找晕吧。&lt;/p&gt;
 
@@ -57,7 +57,7 @@
     &lt;span class='err'&gt;#&lt;/span&gt;&lt;span class='n'&gt;define&lt;/span&gt; &lt;span class='n'&gt;A&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;n&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='err'&gt;#&lt;/span&gt;&lt;span class='n'&gt;n&lt;/span&gt;&lt;span class='err'&gt;，则&lt;/span&gt;&lt;span class='n'&gt;A&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='o'&gt;+&lt;/span&gt;&lt;span class='mi'&gt;2&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;&lt;span class='err'&gt;则是&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;1+2&amp;quot;&lt;/span&gt;
     
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/effectivecpp/define.jpg&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/effectivecpp/define.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;有个想法，以前在指定函数指针的时候，总感觉不能按照规律来调用某个函数，现在能否借助define的##来实现不同函数指针的调用呢？&lt;/p&gt;
 
@@ -149,7 +149,7 @@
 
 &lt;p&gt;其中，在0-0xFFFFFFFF的虚拟地址空间中，高地址的1G(0xC0000000-0xFFFFFFFF)范围被linux用作内核空间，用户空间是低的3G范围。如下图所示(来自上面链接的文章)：&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/linuxFlexibleAddressSpaceLayout.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/csapp/linuxFlexibleAddressSpaceLayout.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;这里吗可以看出中间有许多random offset，这也加大了缓冲区溢出攻击的难度，其中栈区是有固定大小的，可以输入ulimit -s来确定，我的机子返回的是8192，也就是8M的空间，当你写了一个无限递归的函数时，这个空间就会很快被填满，然后导致stack overflow,堆区理论上可以一直向上申请到Memory Mapping Segment,不过一般没有程序会使用这么大的内存。&lt;/p&gt;
 
@@ -157,7 +157,7 @@
 
 &lt;p&gt;每个进程的虚拟内存布局可以通过查看/proc/pid/maps这个文件来查看，其中pid换成想要查看的进程编号，比如实验的./bufbomb布局如下：&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/part_017.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/csapp/part_017.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;这里可以看到0x08048000以下的地址被用来映射许多动态链接库，比如libc和ld，这和上图的布局有些出入，估计是因为linux的内核升级，将memory mapping segment存放到了0x08048000下面？以前最下面的空白区是不做任何用途的。&lt;/p&gt;
 
@@ -205,7 +205,7 @@
 
 &lt;p&gt;然后通过gdb调试可以得到下面的栈帧图,我保存在了google doc里面：&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/part_020.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/csapp/part_020.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;左边绿色的部分是test函数的栈帧，黄色的部分是getbuf函数的栈帧，蓝色部分是下面的栈帧执行完后要跳转到的指令地址，这个地址每次call的时候自动填充，所以理论上应该是属于上衣个栈帧的内容，这里由于返回后的esp并没有指向这个返回地址，所以没有将其包含进栈帧。目前我明确的参数都有所注释，还有许多地址中的数据我还不明白其中的含义，所以这里还值得研究一下。目前该图含有的信息:&lt;/p&gt;
 
@@ -213,7 +213,7 @@
 
 &lt;p&gt;printf的参数放在第27,28行，分别表示printf的第0个参数,第一个参数是1，因为最后printf只会打印一个1出来，第0个参数则是字符串的地址，用gdb可以获得其数据：&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/part_021.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/csapp/part_021.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;需要注意的是栈帧图中的28行为0x080486c0,而不是上面gdb调试中的0x080486d1,是因为0x080486c0是第一次printf的参数，也就是打印”Type Hex String:”字符串的地址，而0x080486d1才是第二个printf的字符串地址。这个地址怎么得到的？可以通过gdb单指令调试，其实汇编语言中就有，见上文汇编代码中注释的那一行。&lt;/p&gt;
 
@@ -233,11 +233,11 @@
 
 &lt;p&gt;这样，就完成了一次缓冲区溢出攻击:)&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/deafbeef2.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/csapp/deafbeef2.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;但是，不再gdb下运行的时候，虽然也返回了0xdeadbeef,但是总是伴随着段错误。&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/part_023.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/csapp/part_023.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;应该还是有改进的空间，下一步可以尝试在stack protector下的溢出攻击。&lt;/p&gt;</content>
  </entry>
@@ -255,7 +255,7 @@
 
 &lt;p&gt;-S表明打印TCP 数据包的顺序号时, 使用绝对的顺序号, 而不是相对的顺序号.比如我第一次用tcpdump查看tcp的三次握手时发现第三次握手的ack=1,这个ack就是相对的，因为tcpdump只在SYN包中显示绝对顺序号，而非SYN包则显示相对的，为了便于观察，在抓包时都采用来绝对的顺序号。&lt;/p&gt;
 
-&lt;p&gt;为了能看懂tcpdump输出的格式，首先要知道TCP/IP的数据封装，大体如下图所示：&lt;img alt=&quot;&quot; src=&quot;https://lh5.googleusercontent.com/AyzucSnu5AdElVtGL7WMJs7HT6QGTaiX8Qg6NYBX8dxfhvagZcinJDiW_srsYOmKT6mYFvkLeE533DYPLwXOM1R6rQ4Eo9zmgIcCqIRp08IIbfIFghM&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;为了能看懂tcpdump输出的格式，首先要知道TCP/IP的数据封装，大体如下图所示：&lt;img src=&quot;https://lh5.googleusercontent.com/AyzucSnu5AdElVtGL7WMJs7HT6QGTaiX8Qg6NYBX8dxfhvagZcinJDiW_srsYOmKT6mYFvkLeE533DYPLwXOM1R6rQ4Eo9zmgIcCqIRp08IIbfIFghM&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;图片来自&lt;a href=&quot;http://www2.meps.tp.edu.tw/documents/memo/TCP%EF%BC%8FIP%E6%A6%82%E8%AB%96/index.htm&quot;&gt;http://www2.meps.tp.edu.tw/documents/memo/TCP%EF%BC%8FIP%E6%A6%82%E8%AB%96/index.htm&lt;/a&gt;&lt;/p&gt;
 
@@ -263,7 +263,7 @@
 
 &lt;p&gt;首先看IP Header的结构:&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/tcpdump/image_thumb.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/tcpdump/image_thumb.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;关于IP Header的结构，我还没有深入的学习，简单的字段解释如下：&lt;/p&gt;
 
@@ -318,7 +318,7 @@
 &lt;span class='o'&gt;+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&lt;/span&gt;
     
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;下面是TCP Header的结构：&lt;a href=&quot;http://chaoswork.com/blog/wp-content/uploads/2012/04/image1.png&quot;&gt;&lt;img alt=&quot;image&quot; src=&quot;http://chaoswork.com/blog/wp-content/uploads/2012/04/image_thumb1.png&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;下面是TCP Header的结构：&lt;a href=&quot;http://chaoswork.com/blog/wp-content/uploads/2012/04/image1.png&quot;&gt;&lt;img src=&quot;http://chaoswork.com/blog/wp-content/uploads/2012/04/image_thumb1.png&quot; alt=&quot;image&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;
@@ -685,7 +685,7 @@
 &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/unp/005_thumb.png&quot; /&gt; 其实是两台电脑通过socket进行了进程间通信，代码中是通过文件描述符来代表socket的，至于socket的结构以及怎么就能通过这个socket进行数据传输，这些内容有待研究。&lt;/p&gt;</content>
+&lt;p&gt;&lt;img src=&quot;/images/unp/005_thumb.png&quot; alt=&quot;image&quot; /&gt; 其实是两台电脑通过socket进行了进程间通信，代码中是通过文件描述符来代表socket的，至于socket的结构以及怎么就能通过这个socket进行数据传输，这些内容有待研究。&lt;/p&gt;</content>
  </entry>
  
  <entry>
@@ -1022,7 +1022,7 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;怎么在此基础上进行优化？假设现在从某个位置(设为s)开始和M串进行匹配，如果匹配不成功，暴力算法是从这个位置的下一个位置(s+1)进行匹配,直观上来说就是匹配的字符串向后“滑动”了一位。&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/kmp/image_thumb.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/kmp/image_thumb.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;图1&lt;/p&gt;
 
@@ -1030,7 +1030,7 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;而KMP就是在这里做文章，让M串向后“滑动”的距离最大化。&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/kmp/image22_thumb.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/kmp/image22_thumb.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;图2&lt;/p&gt;
 
@@ -1066,7 +1066,7 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;现在考虑&lt;code&gt;next[0],next[1]…next[i]&lt;/code&gt;都已经知道了，那么图示如下：&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/kmp/image_thumb1.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/kmp/image_thumb1.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;设&lt;code&gt;j=next[i]&lt;/code&gt;，灰色部分表明这两段字符是相等的，如果i位置的字符和j位置的字符相等，那么&lt;code&gt;next[i+1]=j+1;&lt;/code&gt;因为前一段灰色部分和j位置的字符组成的字符串和后一段灰色的与i连接所形成的字符串是相等的。这正是前面对next数组的定义。如果不相等，则要找到从i开始包括i往前的一段字符串与从0开始的一段字符串相等，这样形成相等的前缀和后缀。所幸我们知道&lt;code&gt;next[next[i]]&lt;/code&gt;的值，因为&lt;code&gt;next[i]&lt;/code&gt;前面的字串也有最长的公共前缀和后缀，而这个公共的前缀与现在i以及往前形成的字串可能相等，这样一直向前找，如果找不到，则说明i位置的字符从来没有在之前出现过。&lt;/p&gt;
 
@@ -1125,6 +1125,60 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
  </entry>
  
  <entry>
+   <title>欧拉回路</title>
+   <link href="http://username.github.io/blog/2011/03/22/e6aca7e68b89e59b9ee8b7af"/>
+   <updated>2011-03-22T08:33:15Z</updated>
+   <id>http://username.github.io/blog/2011/03/22/e6aca7e68b89e59b9ee8b7af</id>
+   <content type="html">&lt;p&gt;今天做了下SGU，发现第二题是欧拉回路，于是大喜，结果WA，最后发现对欧拉回路的理解还不够深刻，总结一下：&lt;/p&gt;
+
+&lt;p&gt;欧拉回路的模型：&lt;/p&gt;
+
+&lt;p&gt;本来来自欧拉的七桥问题：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/topcoder/image_thumb5.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;用图论抽象就是：一副无向图，每条边只能通过一次，问是否存在一条路径经过所有的边，这样的路径叫欧拉路径，如果起点和终点相同，则成为欧拉回路。&lt;/p&gt;
+
+&lt;p&gt;欧拉路径存在的条件：&lt;/p&gt;
+
+&lt;p&gt;1.图是连通的；&lt;/p&gt;
+
+&lt;p&gt;2.奇数度的顶点只允许有0个(存在欧拉回路)或者2个(存在欧拉路径)。&lt;/p&gt;
+
+&lt;p&gt;算法思想：&lt;/p&gt;
+
+&lt;p&gt;对于每一个访问到的顶点，先解决这个顶点的欧拉回路问题，此时肯定还剩一条边，这条边上的另一个端点就是下个要访问的点，如此可以找到所有的欧拉回路。&lt;/p&gt;
+
+&lt;p&gt;因为奇数度顶点为2的问题可以转换为奇数度顶点为0的，所有下面只讨论欧拉回路的情况。(转换方法：设两个度为奇数的点为s和e，而且这两个点肯定是顶点和终点，则从s到e肯定存在某条路径，因为图是想通的，删去这条路径，则剩下的子图的顶点的度权威偶数，因为这条路径上除了s和e，其余点都又进又出，删去的度为2。这样，就把欧拉路径问题转换为了欧拉回路的问题。)&lt;/p&gt;
+
+&lt;p&gt;这里有几个问题可能比较难以想通，首先，在解决被访问到的欧拉回路问题时，能确保路径还能回到这一点？答案是肯定的，因为所有顶点度为偶数，如果从一个偶数度的点出去而回不来的话，说明这个顶点的两条路径出去的子图是不相通的，这样的话这两个子图的度的综合就要为奇数，这与先前设定是矛盾的。&lt;/p&gt;
+
+&lt;p&gt;所有，基本思想就是访问可访问的节点，对于每个节点，首先解决自己节点的欧拉回路问题，除了进来的边和要出去的边，这样等节点遍历完了，欧拉回路也就出来了。&lt;/p&gt;
+
+&lt;p&gt;代码如下：&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c++'&gt;&lt;span class='kt'&gt;void&lt;/span&gt; &lt;span class='nf'&gt;findEuler&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='kt'&gt;int&lt;/span&gt; &lt;span class='n'&gt;v&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+&lt;span class='p'&gt;{&lt;/span&gt;
+    &lt;span class='kt'&gt;int&lt;/span&gt; &lt;span class='n'&gt;i&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+    &lt;span class='k'&gt;for&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;i&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='mi'&gt;0&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;&lt;span class='n'&gt;i&lt;/span&gt;&lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='n'&gt;N&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;&lt;span class='o'&gt;++&lt;/span&gt;&lt;span class='n'&gt;i&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;
+    &lt;span class='p'&gt;{&lt;/span&gt;
+        &lt;span class='k'&gt;if&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;connected&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;v&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;i&lt;/span&gt;&lt;span class='p'&gt;))&lt;/span&gt; 
+        &lt;span class='p'&gt;{&lt;/span&gt;
+            &lt;span class='n'&gt;delEdge&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;v&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;i&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+            &lt;span class='n'&gt;findEuler&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;i&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+        &lt;span class='p'&gt;}&lt;/span&gt;
+    &lt;span class='p'&gt;}&lt;/span&gt;
+    &lt;span class='n'&gt;euler&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;eulerPos&lt;/span&gt;&lt;span class='o'&gt;++&lt;/span&gt;&lt;span class='p'&gt;]&lt;/span&gt;&lt;span class='o'&gt;=&lt;/span&gt;&lt;span class='n'&gt;v&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+ 
+&lt;span class='p'&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;至于有向图的欧拉回路问题，和上面类似。&lt;/p&gt;
+
+&lt;p&gt;如果一个有向图所有顶点的入度等于出度，则该图存在欧拉回路。如果有顶点x的出度比入度大1，y的入度比出度大1，其余顶点的入度等于出度，则存在从x到y的欧拉路径。&lt;/p&gt;
+
+&lt;p&gt;至于混合图，有待学习。。。&lt;/p&gt;</content>
+ </entry>
+ 
+ <entry>
    <title>计算几何初步</title>
    <link href="http://username.github.io/blog/2011/03/19/geometry-basic-1"/>
    <updated>2011-03-19T11:48:23Z</updated>
@@ -1137,11 +1191,11 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;2.点积(Dot Product),也叫数量积，是接受在实数R上的两个向量并返回一个实数值标量的二元运算。这里只考虑2维的向量，&lt;code&gt;A=[x1,y1],B=[x2,y2]&lt;/code&gt;,则&lt;code&gt;A*B=x1*x1+y1*y1;&lt;/code&gt;在欧式几何空间中，点积可形象的表示为&lt;code&gt;A*B=|A||B|cos(θ)&lt;/code&gt;,θ为两个向量之间的角度，图示如下。&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/topcoder/image_thumb2.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/topcoder/image_thumb2.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;根据这个公式，可以计算向量的夹角，所以，一般点积可以判断点之间的关系。如下图，如果&lt;code&gt;AB*AC&amp;lt;0&lt;/code&gt;,则说明&lt;code&gt;90&amp;lt;θ&amp;lt;27&lt;/code&gt;0,则说明C点在A的外面。&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/topcoder/image_thumb3.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/topcoder/image_thumb3.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;根据点积的概念可以写出计算点积的代码：&lt;/p&gt;
 &lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c++'&gt;&lt;span class='kt'&gt;double&lt;/span&gt; &lt;span class='nf'&gt;dot&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;point&lt;/span&gt; &lt;span class='n'&gt;a&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;point&lt;/span&gt; &lt;span class='n'&gt;b&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;point&lt;/span&gt; &lt;span class='n'&gt;c&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;&lt;span class='c1'&gt;//ab*ac&lt;/span&gt;
@@ -1157,7 +1211,7 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;code&gt;ABxAC=|AB||AC|sin(θ)&lt;/code&gt;,这个结果在平面上可形象的表示为：&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/topcoder/image_thumb4.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/topcoder/image_thumb4.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;这个平行四边形的面积，当然是不考虑其方向。&lt;/p&gt;
 
@@ -1328,7 +1382,7 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;培，为了我们的未来，加油。&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/biyu.jpg&quot; /&gt;&lt;/p&gt;</content>
+&lt;p&gt;&lt;img src=&quot;/images/biyu.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;</content>
  </entry>
  
  <entry>

@@ -8,8 +8,8 @@ http://username.github.io/categories.html
 http://username.github.io/index.html
 http://username.github.io/archive.html
 
-http://username.github.io/lessons/2011/12/29/jekyll-introduction
-http://username.github.io/2011/03/02/binary-search
-http://username.github.io/2010/11/08/moved
-http://username.github.io/2010/09/28/grow-up
-http://username.github.io/2010/09/06/four-years-in-xdu
+http://username.github.io/blog/2011/12/29/jekyll-introduction
+http://username.github.io/blog/2011/03/02/binary-search
+http://username.github.io/blog/2010/11/08/moved
+http://username.github.io/blog/2010/09/28/grow-up
+http://username.github.io/blog/2010/09/06/four-years-in-xdu

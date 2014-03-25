@@ -42,18 +42,110 @@
 <p>只有10%的程序员可以写出正确的二分查找程序，看来我还不属于这10%。</p>
 
 <p>当时错误的原因很简单，就是一个小小的bug陷入的死循环：</p>
-<div class='highlight'><pre><code class='c++'><span class='kt'>int</span> <span class='nf'>bSearch</span><span class='p'>(</span><span class='n'>vector</span><span class='o'>&lt;</span><span class='kt'>int</span><span class='o'>&gt;</span><span class='n'>a</span><span class='p'>,</span><span class='kt'>int</span> <span class='n'>x</span><span class='p'>)</span> <span class='p'>{</span>
-    <span class='kt'>int</span> <span class='n'>l</span> <span class='o'>=</span> <span class='mi'>0</span><span class='p'>,</span><span class='n'>r</span> <span class='o'>=</span> <span class='n'>a</span><span class='p'>.</span><span class='n'>size</span><span class='p'>()</span> <span class='o'>-</span> <span class='mi'>1</span><span class='p'>;</span>
-    <span class='kt'>int</span> <span class='n'>mid</span> <span class='o'>=</span> <span class='p'>(</span><span class='n'>l</span> <span class='o'>+</span> <span class='n'>r</span><span class='p'>)</span><span class='o'>/</span><span class='mi'>2</span><span class='p'>;</span>
-    <span class='k'>while</span><span class='p'>(</span><span class='n'>l</span> <span class='o'>&lt;</span> <span class='n'>r</span><span class='p'>)</span> <span class='p'>{</span>
-        <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>mid</span><span class='p'>]</span> <span class='o'>&lt;</span> <span class='n'>x</span><span class='p'>)</span> <span class='n'>l</span> <span class='o'>=</span> <span class='n'>mid</span><span class='p'>;</span>
-        <span class='k'>else</span> <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>mid</span><span class='p'>]</span> <span class='o'>&gt;</span> <span class='n'>x</span><span class='p'>)</span> <span class='n'>r</span> <span class='o'>=</span> <span class='n'>mid</span><span class='p'>;</span>
-        <span class='k'>else</span> <span class='k'>break</span><span class='p'>;</span>
-        <span class='n'>mid</span><span class='o'>=</span><span class='p'>(</span><span class='n'>l</span> <span class='o'>+</span> <span class='n'>r</span><span class='p'>)</span><span class='o'>/</span><span class='mi'>2</span><span class='p'>;</span>
+<div class='highlight'><pre><code class='c++'>    <span class='kt'>int</span> <span class='nf'>bSearch</span><span class='p'>(</span><span class='n'>vector</span><span class='o'>&lt;</span><span class='kt'>int</span><span class='o'>&gt;</span><span class='n'>a</span><span class='p'>,</span><span class='kt'>int</span> <span class='n'>x</span><span class='p'>)</span>
+    <span class='p'>{</span>
+        <span class='kt'>int</span> <span class='n'>l</span><span class='o'>=</span><span class='mi'>0</span><span class='p'>,</span><span class='n'>r</span><span class='o'>=</span><span class='n'>a</span><span class='p'>.</span><span class='n'>size</span><span class='p'>()</span><span class='o'>-</span><span class='mi'>1</span><span class='p'>;</span>
+        <span class='kt'>int</span> <span class='n'>mid</span><span class='o'>=</span><span class='p'>(</span><span class='n'>l</span><span class='o'>+</span><span class='n'>r</span><span class='p'>)</span><span class='o'>/</span><span class='mi'>2</span><span class='p'>;</span>
+        <span class='k'>while</span><span class='p'>(</span><span class='n'>l</span><span class='o'>&lt;</span><span class='n'>r</span><span class='p'>)</span>
+        <span class='p'>{</span>
+            <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>mid</span><span class='p'>]</span><span class='o'>&lt;</span><span class='n'>x</span><span class='p'>)</span> <span class='n'>l</span><span class='o'>=</span><span class='n'>mid</span><span class='p'>;</span>
+            <span class='k'>else</span> <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>mid</span><span class='p'>]</span><span class='o'>&gt;</span><span class='n'>x</span><span class='p'>)</span> <span class='n'>r</span><span class='o'>=</span><span class='n'>mid</span><span class='p'>;</span>
+            <span class='k'>else</span> <span class='k'>break</span><span class='p'>;</span>
+            <span class='n'>mid</span><span class='o'>=</span><span class='p'>(</span><span class='n'>l</span><span class='o'>+</span><span class='n'>r</span><span class='p'>)</span><span class='o'>/</span><span class='mi'>2</span><span class='p'>;</span>
+        <span class='p'>}</span>
+        <span class='k'>return</span> <span class='n'>mid</span><span class='p'>;</span>
     <span class='p'>}</span>
-    <span class='k'>return</span> <span class='n'>mid</span><span class='p'>;</span>
-<span class='p'>}</span>
+    
 </code></pre></div>
+<p>乍一看是正确的，但是会陷入死循环，比如一个<code>vector&lt;int&gt;a</code>,从大到小存了9个数，设为1到9，现在要找到9的位置，那么执行上述代码时，mid依次为4,6,7,7,7…，陷入死循环。</p>
+
+<p>正确的方法是将第7,8句修改，变成l=mid+1,r=mid-1,当然，这是保证x在a里的时候，如果x有可能不在a中，那么正确而且完整的代码如下(参考《编程珠玑(第二版)》第87页)：</p>
+<div class='highlight'><pre><code class='c++'>    <span class='kt'>int</span> <span class='nf'>bSearch</span><span class='p'>(</span><span class='n'>vector</span><span class='o'>&lt;</span><span class='kt'>int</span><span class='o'>&gt;</span><span class='n'>a</span><span class='p'>,</span><span class='kt'>int</span> <span class='n'>x</span><span class='p'>)</span>
+    <span class='p'>{</span>
+        <span class='kt'>int</span> <span class='n'>l</span><span class='o'>=</span><span class='mi'>0</span><span class='p'>,</span><span class='n'>r</span><span class='o'>=</span><span class='n'>a</span><span class='p'>.</span><span class='n'>size</span><span class='p'>()</span><span class='o'>-</span><span class='mi'>1</span><span class='p'>;</span>
+        <span class='kt'>int</span> <span class='n'>mid</span><span class='p'>;</span>
+        <span class='k'>for</span><span class='p'>(;;)</span>
+        <span class='p'>{</span>
+            <span class='k'>if</span><span class='p'>(</span><span class='n'>l</span><span class='o'>&gt;</span><span class='n'>r</span><span class='p'>)</span> <span class='k'>return</span> <span class='o'>-</span><span class='mi'>1</span><span class='p'>;</span>
+            <span class='n'>mid</span><span class='o'>=</span><span class='p'>(</span><span class='n'>l</span><span class='o'>+</span><span class='n'>r</span><span class='p'>)</span><span class='o'>/</span><span class='mi'>2</span><span class='p'>;</span>
+            <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>mid</span><span class='p'>]</span><span class='o'>&lt;</span><span class='n'>x</span><span class='p'>)</span> <span class='n'>l</span><span class='o'>=</span><span class='n'>mid</span><span class='o'>+</span><span class='mi'>1</span><span class='p'>;</span>
+            <span class='k'>else</span> <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>mid</span><span class='p'>]</span><span class='o'>==</span><span class='n'>x</span><span class='p'>)</span> <span class='k'>return</span> <span class='n'>mid</span><span class='p'>;</span>
+            <span class='k'>else</span> <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>mid</span><span class='p'>]</span><span class='o'>&gt;</span><span class='n'>x</span><span class='p'>)</span> <span class='n'>r</span><span class='o'>=</span><span class='n'>mid</span><span class='o'>-</span><span class='mi'>1</span><span class='p'>;</span>
+        <span class='p'>}</span>
+        <span class='k'>return</span> <span class='n'>mid</span><span class='p'>;</span>
+    <span class='p'>}</span>
+    
+</code></pre></div>
+<p>然后我看到了一道课后题：用二分法返回数组a中出现的第一个x的位置，我是这样想的：</p>
+
+<p>在上面的基础上进行改进，如果已经搜到x的一个位置，那么如果x的前一个位置比x小，则意味着第一个x已经找到，如果前一个位置也是x，那么将r修改为mid-1;需要注意的是，如果mid==0，则直接判断mid是否是x即可，代码如下：</p>
+<div class='highlight'><pre><code class='c++'>    <span class='kt'>int</span> <span class='nf'>bSearch2</span><span class='p'>(</span><span class='n'>vector</span><span class='o'>&lt;</span><span class='kt'>int</span><span class='o'>&gt;</span><span class='n'>a</span><span class='p'>,</span><span class='kt'>int</span> <span class='n'>x</span><span class='p'>)</span>
+    <span class='p'>{</span>
+        <span class='kt'>int</span> <span class='n'>l</span><span class='o'>=</span><span class='mi'>0</span><span class='p'>,</span><span class='n'>r</span><span class='o'>=</span><span class='n'>a</span><span class='p'>.</span><span class='n'>size</span><span class='p'>()</span><span class='o'>-</span><span class='mi'>1</span><span class='p'>;</span>
+        <span class='kt'>int</span> <span class='n'>mid</span><span class='p'>;</span>
+        <span class='k'>for</span><span class='p'>(;;)</span>
+        <span class='p'>{</span>
+            <span class='k'>if</span><span class='p'>(</span><span class='n'>l</span><span class='o'>&gt;</span><span class='n'>r</span><span class='p'>)</span> <span class='k'>return</span> <span class='o'>-</span><span class='mi'>1</span><span class='p'>;</span>
+            <span class='n'>mid</span><span class='o'>=</span><span class='p'>(</span><span class='n'>l</span><span class='o'>+</span><span class='n'>r</span><span class='p'>)</span><span class='o'>/</span><span class='mi'>2</span><span class='p'>;</span>
+            <span class='k'>if</span><span class='p'>(</span><span class='n'>mid</span><span class='o'>==</span><span class='mi'>0</span><span class='p'>)</span>
+            <span class='p'>{</span>
+                <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>mid</span><span class='p'>]</span><span class='o'>==</span><span class='n'>x</span><span class='p'>)</span> <span class='k'>return</span> <span class='n'>mid</span><span class='p'>;</span>
+                <span class='k'>else</span> <span class='k'>return</span> <span class='o'>-</span><span class='mi'>1</span><span class='p'>;</span>
+            <span class='p'>}</span>    
+            <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>mid</span><span class='p'>]</span><span class='o'>&lt;</span><span class='n'>x</span><span class='p'>)</span> <span class='n'>l</span><span class='o'>=</span><span class='n'>mid</span><span class='o'>+</span><span class='mi'>1</span><span class='p'>;</span>
+            <span class='k'>else</span> <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>mid</span><span class='p'>]</span><span class='o'>==</span><span class='n'>x</span><span class='p'>)</span>
+            <span class='p'>{</span>
+                <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>mid</span><span class='o'>-</span><span class='mi'>1</span><span class='p'>]</span><span class='o'>&lt;</span><span class='n'>x</span><span class='p'>)</span> <span class='k'>return</span> <span class='n'>mid</span><span class='p'>;</span>
+                <span class='k'>else</span> <span class='n'>r</span><span class='o'>=</span><span class='n'>mid</span><span class='o'>-</span><span class='mi'>1</span><span class='p'>;</span>
+            <span class='p'>}</span>
+            <span class='k'>else</span> <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>mid</span><span class='p'>]</span><span class='o'>&gt;</span><span class='n'>x</span><span class='p'>)</span> <span class='n'>r</span><span class='o'>=</span><span class='n'>mid</span><span class='o'>-</span><span class='mi'>1</span><span class='p'>;</span>
+        <span class='p'>}</span>
+        <span class='k'>return</span> <span class='n'>mid</span><span class='p'>;</span>
+    <span class='p'>}</span>
+    
+</code></pre></div>
+<p>但是看了《编程珠玑(第二版)》的答案后，发现答案的方法比我的思路还有效率都清晰多了：</p>
+
+<p>初始的循环不变式是：<code>a[l]&lt;x &amp;&amp; a[r]&gt;=x &amp;&amp; l&lt;r</code>,代码如下：</p>
+<div class='highlight'><pre><code class='c++'>    <span class='kt'>int</span> <span class='nf'>bSearch3</span><span class='p'>(</span><span class='n'>vector</span><span class='o'>&lt;</span><span class='kt'>int</span><span class='o'>&gt;</span><span class='n'>a</span><span class='p'>,</span><span class='kt'>int</span> <span class='n'>x</span><span class='p'>)</span>
+    <span class='p'>{</span>
+        <span class='kt'>int</span> <span class='n'>l</span><span class='o'>=-</span><span class='mi'>1</span><span class='p'>,</span><span class='n'>r</span><span class='o'>=</span><span class='n'>a</span><span class='p'>.</span><span class='n'>size</span><span class='p'>();</span>
+        <span class='kt'>int</span> <span class='n'>mid</span><span class='p'>;</span>
+        <span class='k'>while</span><span class='p'>(</span><span class='n'>l</span><span class='o'>+</span><span class='mi'>1</span><span class='o'>!=</span><span class='n'>r</span><span class='p'>)</span>
+        <span class='p'>{</span>
+            <span class='n'>mid</span><span class='o'>=</span><span class='p'>(</span><span class='n'>l</span><span class='o'>+</span><span class='n'>r</span><span class='p'>)</span><span class='o'>/</span><span class='mi'>2</span><span class='p'>;</span>
+            <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>mid</span><span class='p'>]</span><span class='o'>&lt;</span><span class='n'>x</span><span class='p'>)</span> <span class='n'>l</span><span class='o'>=</span><span class='n'>mid</span><span class='p'>;</span>
+            <span class='k'>else</span> <span class='n'>r</span><span class='o'>=</span><span class='n'>mid</span><span class='p'>;</span>
+        <span class='p'>}</span>
+        <span class='k'>if</span><span class='p'>(</span><span class='n'>r</span><span class='o'>&gt;=</span><span class='n'>a</span><span class='p'>.</span><span class='n'>size</span><span class='p'>()</span> <span class='o'>||</span> <span class='n'>a</span><span class='p'>[</span><span class='n'>r</span><span class='p'>]</span><span class='o'>!=</span><span class='n'>x</span><span class='p'>)</span> <span class='k'>return</span> <span class='o'>-</span><span class='mi'>1</span><span class='p'>;</span>
+        <span class='k'>return</span> <span class='n'>r</span><span class='p'>;</span>
+    <span class='p'>}</span>
+    
+</code></pre></div>
+<p>一般的程序用这个就已经很好了，因为相比于bSearch2，bSearch3每次迭代只比较一次。</p>
+
+<p>当然，书中还提到了进一步的优化，最终将结合搜索数组的大小，将循环展开，这样可以借助于现在计算机的流水线处理技术来增加指令集的并行，从而进一步的优化，不过一般情况下bSearch3的表现就已经相当出色，而且更容易编写和实现。</p>
+<div class='highlight'><pre><code class='c++'>    <span class='kt'>int</span> <span class='nf'>bSearch4</span><span class='p'>(</span><span class='n'>vector</span><span class='o'>&lt;</span><span class='kt'>int</span><span class='o'>&gt;</span><span class='n'>a</span><span class='p'>,</span><span class='kt'>int</span> <span class='n'>x</span><span class='p'>)</span>
+    <span class='p'>{</span>
+        <span class='kt'>int</span> <span class='n'>l</span><span class='o'>=-</span><span class='mi'>1</span><span class='p'>;</span>
+        <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='mi'>512</span><span class='p'>]</span><span class='o'>&lt;</span><span class='n'>x</span><span class='p'>)</span> <span class='n'>l</span><span class='o'>=</span><span class='mi'>1000</span><span class='o'>-</span><span class='mi'>512</span><span class='p'>;</span>
+        <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>l</span><span class='o'>+</span><span class='mi'>256</span><span class='p'>]</span><span class='o'>&lt;</span><span class='n'>x</span><span class='p'>)</span> <span class='n'>l</span><span class='o'>+=</span><span class='mi'>256</span><span class='p'>;</span>
+        <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>l</span><span class='o'>+</span><span class='mi'>128</span><span class='p'>]</span><span class='o'>&lt;</span><span class='n'>x</span><span class='p'>)</span> <span class='n'>l</span><span class='o'>+=</span><span class='mi'>128</span><span class='p'>;</span>
+        <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>l</span><span class='o'>+</span><span class='mi'>64</span><span class='p'>]</span><span class='o'>&lt;</span><span class='n'>x</span><span class='p'>)</span> <span class='n'>l</span><span class='o'>+=</span><span class='mi'>64</span><span class='p'>;</span>
+        <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>l</span><span class='o'>+</span><span class='mi'>32</span><span class='p'>]</span><span class='o'>&lt;</span><span class='n'>x</span><span class='p'>)</span> <span class='n'>l</span><span class='o'>+=</span><span class='mi'>32</span><span class='p'>;</span>
+        <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>l</span><span class='o'>+</span><span class='mi'>16</span><span class='p'>]</span><span class='o'>&lt;</span><span class='n'>x</span><span class='p'>)</span> <span class='n'>l</span><span class='o'>+=</span><span class='mi'>16</span><span class='p'>;</span>
+        <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>l</span><span class='o'>+</span><span class='mi'>8</span><span class='p'>]</span><span class='o'>&lt;</span><span class='n'>x</span><span class='p'>)</span> <span class='n'>l</span><span class='o'>+=</span><span class='mi'>8</span><span class='p'>;</span>
+        <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>l</span><span class='o'>+</span><span class='mi'>4</span><span class='p'>]</span><span class='o'>&lt;</span><span class='n'>x</span><span class='p'>)</span> <span class='n'>l</span><span class='o'>+=</span><span class='mi'>4</span><span class='p'>;</span>
+        <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>l</span><span class='o'>+</span><span class='mi'>2</span><span class='p'>]</span><span class='o'>&lt;</span><span class='n'>x</span><span class='p'>)</span> <span class='n'>l</span><span class='o'>+=</span><span class='mi'>2</span><span class='p'>;</span>
+        <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>l</span><span class='o'>+</span><span class='mi'>1</span><span class='p'>]</span><span class='o'>&lt;</span><span class='n'>x</span><span class='p'>)</span> <span class='n'>l</span><span class='o'>+=</span><span class='mi'>1</span><span class='p'>;</span>
+     
+        <span class='kt'>int</span> <span class='n'>p</span><span class='o'>=</span><span class='n'>l</span><span class='o'>+</span><span class='mi'>1</span><span class='p'>;</span>
+        <span class='k'>if</span><span class='p'>(</span><span class='n'>p</span><span class='o'>&gt;</span><span class='mi'>1000</span> <span class='o'>||</span> <span class='n'>a</span><span class='p'>[</span><span class='n'>p</span><span class='p'>]</span><span class='o'>!=</span><span class='n'>x</span><span class='p'>)</span> <span class='n'>p</span><span class='o'>=-</span><span class='mi'>1</span><span class='p'>;</span>
+        <span class='k'>return</span> <span class='n'>p</span><span class='p'>;</span>
+    <span class='p'>}</span>
+    
+</code></pre></div>
+<p>这是一个1000个数据的二分查找的优化。</p>
 </div>
 
 <div id="related">

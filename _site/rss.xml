@@ -5,10 +5,147 @@
         <description>HuangChao's Blog - Huang Chao</description>
         <link>http://username.github.io</link>
         <link>http://username.github.io</link>
-        <lastBuildDate>2014-03-25T17:58:52+08:00</lastBuildDate>
-        <pubDate>2014-03-25T17:58:52+08:00</pubDate>
+        <lastBuildDate>2014-03-25T18:27:24+08:00</lastBuildDate>
+        <pubDate>2014-03-25T18:27:24+08:00</pubDate>
         <ttl>1800</ttl>
 
+
+        <item>
+                <title>CS:APP bufbomb 缓冲区溢出攻击</title>
+                <description>&lt;p&gt;要攻击的程序源代码:&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://csapp.cs.cmu.edu/public/1e/ics/code/asm/bufbomb.c&quot;&gt;http://csapp.cs.cmu.edu/public/1e/ics/code/asm/bufbomb.c&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;目标是输入特定的字符，让程序最终输出0xdeadbeef.&lt;/p&gt;
+
+&lt;p&gt;需要注意的是该程序接受数据是字符的16进制编码，比如你如果想让getbuf函数中的buf中的内容变成“0123”，那么你要输入30 31 32 33.&lt;/p&gt;
+
+&lt;p&gt;以前听到这个缓冲区溢出攻击这个词总觉得高深莫测，那是黑客的本领，最近在看CS:APP发现上面就有缓冲区溢出的实验,从这本书的名字可以看出，就是让你知道计算机底层都在干什么，推荐每个写程序的人都看一下。&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c++'&gt;    
+    &lt;span class='cm'&gt;/* $begin getbuf-c */&lt;/span&gt;
+    &lt;span class='kt'&gt;int&lt;/span&gt; &lt;span class='nf'&gt;getbuf&lt;/span&gt;&lt;span class='p'&gt;()&lt;/span&gt;
+    &lt;span class='p'&gt;{&lt;/span&gt;
+        &lt;span class='kt'&gt;char&lt;/span&gt; &lt;span class='n'&gt;buf&lt;/span&gt;&lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='mi'&gt;12&lt;/span&gt;&lt;span class='p'&gt;];&lt;/span&gt;
+        &lt;span class='n'&gt;getxs&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;buf&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+        &lt;span class='k'&gt;return&lt;/span&gt; &lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+    &lt;span class='p'&gt;}&lt;/span&gt;
+    
+    &lt;span class='kt'&gt;void&lt;/span&gt; &lt;span class='nf'&gt;test&lt;/span&gt;&lt;span class='p'&gt;()&lt;/span&gt;
+    &lt;span class='p'&gt;{&lt;/span&gt;
+      &lt;span class='kt'&gt;int&lt;/span&gt; &lt;span class='n'&gt;val&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+      &lt;span class='n'&gt;printf&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;Type Hex string:&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+      &lt;span class='n'&gt;val&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='n'&gt;getbuf&lt;/span&gt;&lt;span class='p'&gt;();&lt;/span&gt;
+      &lt;span class='n'&gt;printf&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;getbuf returned 0x%x&lt;/span&gt;&lt;span class='se'&gt;\n&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;val&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+    &lt;span class='p'&gt;}&lt;/span&gt;
+    
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;上面的代码可以看出，val的值应该是总是为1的，所以输出总是1，现在就是让你写入特定的字符，让其输出为0xdeadbeef.这个实验只是简单介绍了缓冲区溢出攻击的原理，但是随着编译器的发展，这个实验也越来越难做了。目前我只能做到禁用gcc的堆栈保护，而且只在gdb中成功，真实运行的时候虽然成功的输出了0xdeadbeef，但是程序结束后总是伴随着段错误。这里记录一下学习的过程，我觉得这个实验还有改进的余地，只是目前对编译器以及汇编的掌握还不够熟练。&lt;/p&gt;
+
+&lt;p&gt;这个程序的缓冲区溢出攻击是十分依赖于机器的，编译器的版本，系统内核的版本等等因素都会导致生成的可执行文件不同，所以这个实验需要了解程序的机器级表示的相关知识，也就是CS:APP的第3章的内容，windows版本的攻击应该是更为简单的，目前我还没有听到windows有类似linux的Exec Shield Overflow Protection.&lt;/p&gt;
+
+&lt;p&gt;可以说，通过这次实验的学习，发现了很多对程序运行过程的误解，操作系统学的真烂=.=&lt;/p&gt;
+
+&lt;p&gt;首先，一个进程是怎么在内存里布局的？强烈建议读一下这篇blog:&lt;a href=&quot;http://duartes.org/gustavo/blog/post/anatomy-of-a-program-in-memory&quot;&gt;http://duartes.org/gustavo/blog/post/anatomy-of-a-program-in-memory&lt;/a&gt;,在现代的操作系统中，每个进程都运行在自己的虚拟地址空间中，类似一个沙盒，让每一个进程都感觉自己运行在一个4G的内存空间中，当然这只是给进程以及用户的一种幻觉，实际上每个进程的虚拟地址空间都会被分页机制映射到物理地址的页或者虚拟内存的页，虚拟内存就是当内存不够时用硬盘充当一部份内存使用，比如linux的swap分区。&lt;/p&gt;
+
+&lt;p&gt;下面仅以linux说明可执行文件的运行过程。&lt;/p&gt;
+
+&lt;p&gt;其中，在0-0xFFFFFFFF的虚拟地址空间中，高地址的1G(0xC0000000-0xFFFFFFFF)范围被linux用作内核空间，用户空间是低的3G范围。如下图所示(来自上面链接的文章)：&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/linuxFlexibleAddressSpaceLayout.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这里吗可以看出中间有许多random offset，这也加大了缓冲区溢出攻击的难度，其中栈区是有固定大小的，可以输入ulimit -s来确定，我的机子返回的是8192，也就是8M的空间，当你写了一个无限递归的函数时，这个空间就会很快被填满，然后导致stack overflow,堆区理论上可以一直向上申请到Memory Mapping Segment,不过一般没有程序会使用这么大的内存。&lt;/p&gt;
+
+&lt;p&gt;这里我很好奇的是0x08048000这个数是怎么来的，Google了一下，好像都没有说明，不知道有没有什么历史。不过这个数是作为linux应用程序的起始地址。但是如果用objdump反汇编一个程序，会发现程序的文本段，比如main函数的位置并不是从0x08048000开始的，这是因为0x08048000首先存放的是ELF header，包含了这个程序的信息。&lt;/p&gt;
+
+&lt;p&gt;每个进程的虚拟内存布局可以通过查看/proc/pid/maps这个文件来查看，其中pid换成想要查看的进程编号，比如实验的./bufbomb布局如下：&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/part_017.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;这里可以看到0x08048000以下的地址被用来映射许多动态链接库，比如libc和ld，这和上图的布局有些出入，估计是因为linux的内核升级，将memory mapping segment存放到了0x08048000下面？以前最下面的空白区是不做任何用途的。&lt;/p&gt;
+
+&lt;p&gt;缓冲区溢出攻击只是针对程序的栈这一部分，在栈里面会存放程序运行的栈帧，因为当一个函数调用另一个函数时，要将当前运行的信息保存起来(相当于入栈)，然后再跳转到另一个函数的地址执行，执行完后要回到调用这个函数的下一条指令接着执行，然后就将保存的信息取出(相当于出栈)，入栈出栈的操作是通过ebp寄存器和esp寄存器来完成的。这两个寄存器都指向栈区，可以这么理解，ebp指向某个过程的基地址，esp指向某个过程的栈顶，这里的某个过程通常来说就是指函数。ebp和esp之间，就是某个过程(函数)运行需要的所有数据。&lt;/p&gt;
+
+&lt;p&gt;拿上述的bufbomb.c来说，用gcc 将其编译为可执行文件:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$gcc bufbomb.c -o bufbomb -fno-stack-protector&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;之所以加上后面的-fno-stack-protector是为了禁用gcc的堆栈保护。&lt;/p&gt;
+
+&lt;p&gt;然后用objdump将bufbomb反汇编&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$objdump -d bufbomb&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后可以得到bufbomb的代码如下，只取test函数和getbuf函数的：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;08048532 &amp;lt;getbuf&amp;gt;:
+8048532: 55                  push %ebp
+8048533: 89 e5               mov %esp,%ebp
+8048535: 83 ec 28            sub $0x28,%esp
+8048538: 8d 45 ec            lea -0x14(%ebp),%eax
+804853b: 89 04 24            mov %eax,(%esp)
+804853e: e8 21 ff ff ff      call 8048464 &amp;lt;getxs&amp;gt;
+8048543: b8 01 00 00 00      mov $0x1,%eax
+8048548: c9 leave
+8048549: c3 ret
+
+0804854a &amp;lt;test&amp;gt;:
+804854a: 55                  push %ebp
+804854b: 89 e5               mov %esp,%ebp
+804854d: 83 ec 28            sub $0x28,%esp
+8048550: b8 c0 86 04 08      mov $0x80486c0,%eax
+8048555: 89 04 24            mov %eax,(%esp)
+8048558: e8 03 fe ff ff      call 8048360 &amp;lt;printf@plt&amp;gt;
+804855d: e8 d0 ff ff ff      call 8048532 &amp;lt;getbuf&amp;gt;
+8048562: 89 45 f4            mov %eax,-0xc(%ebp)
+8048565: b8 d1 86 04 08      mov $&amp;lt;span style=&amp;quot;color: #ff0000;&amp;quot;&amp;gt;0x80486d1&amp;lt;/span&amp;gt;,%eax   #printf args 0
+804856a: 8b 55 f4            mov -0xc(%ebp),%edx
+804856d: 89 54 24 04         mov %edx,0x4(%esp)
+8048571: 89 04 24            mov %eax,(%esp)
+8048574: e8 e7 fd ff ff      call 8048360 &amp;lt;printf@plt&amp;gt;
+8048579: c9                  leave
+804857a: c3                  ret&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;然后通过gdb调试可以得到下面的栈帧图,我保存在了google doc里面：&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/part_020.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;左边绿色的部分是test函数的栈帧，黄色的部分是getbuf函数的栈帧，蓝色部分是下面的栈帧执行完后要跳转到的指令地址，这个地址每次call的时候自动填充，所以理论上应该是属于上衣个栈帧的内容，这里由于返回后的esp并没有指向这个返回地址，所以没有将其包含进栈帧。目前我明确的参数都有所注释，还有许多地址中的数据我还不明白其中的含义，所以这里还值得研究一下。目前该图含有的信息:&lt;/p&gt;
+
+&lt;p&gt;一个函数执行完成后要跳转到的地址(由ret指令来完成)，比如getbuf函数的栈帧(黄色区域),其执行完后eip的地址即为0x08048562。&lt;/p&gt;
+
+&lt;p&gt;printf的参数放在第27,28行，分别表示printf的第0个参数,第一个参数是1，因为最后printf只会打印一个1出来，第0个参数则是字符串的地址，用gdb可以获得其数据：&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/part_021.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;需要注意的是栈帧图中的28行为0x080486c0,而不是上面gdb调试中的0x080486d1,是因为0x080486c0是第一次printf的参数，也就是打印”Type Hex String:”字符串的地址，而0x080486d1才是第二个printf的字符串地址。这个地址怎么得到的？可以通过gdb单指令调试，其实汇编语言中就有，见上文汇编代码中注释的那一行。&lt;/p&gt;
+
+&lt;p&gt;现在我们的目标是让test中的第二个printf输出0xdeadbeef，而不是程序中默认的1。&lt;/p&gt;
+
+&lt;p&gt;首先，buf数组开的大小有12，但是系统并不检查边界(现在的gcc版本可能会有相关的处理机制),所以我们可以一直写，写多了，就把高地址的数据覆盖了。我们的目标至少要覆盖到printf的第二个参数，也就是上面栈帧图中红色的区域，当然上面多了一行，只是为了演示如果我们想，完全可以把整个栈都覆盖掉。&lt;/p&gt;
+
+&lt;p&gt;现在的关键就是要写入什么数据，随便写肯定程序的eip都不知道运行到那去了。&lt;/p&gt;
+
+&lt;p&gt;首先要保证第30行的数据不变，因为这里保存了函数返回后test的ebp。&lt;/p&gt;
+
+&lt;p&gt;然后我们要绕过给val赋值为1，并用printf输出这一块，可以让getbuf返回后直接执行printf,所以要让eip直接返回到printf函数的指令，即将第29行的数据写为0x08048574，看上面的汇编代码可以知道，这里存放的就是printf的指令。&lt;/p&gt;
+
+&lt;p&gt;现在可以直接执行printf了，剩下的就是设置参数了，第0个参数设置为0x080486d1,原因上文已经说过了，第1个参数就是输出的内容,应该是0xdeadbeef.&lt;/p&gt;
+
+&lt;p&gt;ok,这就是我们需要注意的所有地方，至于从31到35行要填入什么数据就随意了，需要注意的是，由于一次填写2个字符，所以要将上述必须填的顺序逆序的输入，比如你想存0x12345678,输入的时候应该是78 56 34 12 。&lt;/p&gt;
+
+&lt;p&gt;这样，就完成了一次缓冲区溢出攻击:)&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/deafbeef2.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;但是，不再gdb下运行的时候，虽然也返回了0xdeadbeef,但是总是伴随着段错误。&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;images/csapp/part_023.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;应该还是有改进的空间，下一步可以尝试在stack protector下的溢出攻击。&lt;/p&gt;</description>
+                <link>http://username.github.io/blog/2012/04/13/csapp-bufbomb-stack-overflow-attack</link>
+                <guid>http://username.github.io/blog/2012/04/13/csapp-bufbomb-stack-overflow-attack</guid>
+                <pubDate>2012-04-13T14:17:13Z</pubDate>
+        </item>
 
         <item>
                 <title>tcpdump查看三次握手</title>
@@ -20,7 +157,7 @@
 
 &lt;p&gt;-S表明打印TCP 数据包的顺序号时, 使用绝对的顺序号, 而不是相对的顺序号.比如我第一次用tcpdump查看tcp的三次握手时发现第三次握手的ack=1,这个ack就是相对的，因为tcpdump只在SYN包中显示绝对顺序号，而非SYN包则显示相对的，为了便于观察，在抓包时都采用来绝对的顺序号。&lt;/p&gt;
 
-&lt;p&gt;为了能看懂tcpdump输出的格式，首先要知道TCP/IP的数据封装，大体如下图所示：&lt;img src=&quot;https://lh5.googleusercontent.com/AyzucSnu5AdElVtGL7WMJs7HT6QGTaiX8Qg6NYBX8dxfhvagZcinJDiW_srsYOmKT6mYFvkLeE533DYPLwXOM1R6rQ4Eo9zmgIcCqIRp08IIbfIFghM&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;为了能看懂tcpdump输出的格式，首先要知道TCP/IP的数据封装，大体如下图所示：&lt;img alt=&quot;&quot; src=&quot;https://lh5.googleusercontent.com/AyzucSnu5AdElVtGL7WMJs7HT6QGTaiX8Qg6NYBX8dxfhvagZcinJDiW_srsYOmKT6mYFvkLeE533DYPLwXOM1R6rQ4Eo9zmgIcCqIRp08IIbfIFghM&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;图片来自&lt;a href=&quot;http://www2.meps.tp.edu.tw/documents/memo/TCP%EF%BC%8FIP%E6%A6%82%E8%AB%96/index.htm&quot;&gt;http://www2.meps.tp.edu.tw/documents/memo/TCP%EF%BC%8FIP%E6%A6%82%E8%AB%96/index.htm&lt;/a&gt;&lt;/p&gt;
 
@@ -28,7 +165,7 @@
 
 &lt;p&gt;首先看IP Header的结构:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/tcpdump/image_thumb.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/tcpdump/image_thumb.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;关于IP Header的结构，我还没有深入的学习，简单的字段解释如下：&lt;/p&gt;
 
@@ -83,7 +220,7 @@
 &lt;span class='o'&gt;+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&lt;/span&gt;
     
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;下面是TCP Header的结构：&lt;a href=&quot;http://chaoswork.com/blog/wp-content/uploads/2012/04/image1.png&quot;&gt;&lt;img src=&quot;http://chaoswork.com/blog/wp-content/uploads/2012/04/image_thumb1.png&quot; alt=&quot;image&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;下面是TCP Header的结构：&lt;a href=&quot;http://chaoswork.com/blog/wp-content/uploads/2012/04/image1.png&quot;&gt;&lt;img alt=&quot;image&quot; src=&quot;http://chaoswork.com/blog/wp-content/uploads/2012/04/image_thumb1.png&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;
@@ -162,7 +299,9 @@
 &lt;span class='mh'&gt;0x0010&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;&lt;span class='err'&gt; &lt;/span&gt; &lt;span class='mi'&gt;7&lt;/span&gt;&lt;span class='n'&gt;f00&lt;/span&gt; &lt;span class='mo'&gt;0001&lt;/span&gt; &lt;span class='n'&gt;d4e8&lt;/span&gt; &lt;span class='mi'&gt;26&lt;/span&gt;&lt;span class='n'&gt;a1&lt;/span&gt; &lt;span class='n'&gt;ffb2&lt;/span&gt; &lt;span class='n'&gt;cf43&lt;/span&gt; &lt;span class='mi'&gt;8&lt;/span&gt;&lt;span class='n'&gt;c61&lt;/span&gt; &lt;span class='n'&gt;fa60&lt;/span&gt;&lt;span class='err'&gt; &lt;/span&gt; &lt;span class='o'&gt;......&amp;amp;....&lt;/span&gt;&lt;span class='n'&gt;C&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;a&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='err'&gt;`&lt;/span&gt;
 &lt;span class='mh'&gt;0x0020&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;&lt;span class='err'&gt; &lt;/span&gt; &lt;span class='mi'&gt;8010&lt;/span&gt; &lt;span class='mi'&gt;0802&lt;/span&gt; &lt;span class='n'&gt;fe28&lt;/span&gt; &lt;span class='mo'&gt;0000&lt;/span&gt; &lt;span class='mo'&gt;0101&lt;/span&gt; &lt;span class='mi'&gt;080&lt;/span&gt;&lt;span class='n'&gt;a&lt;/span&gt; &lt;span class='mo'&gt;01&lt;/span&gt;&lt;span class='n'&gt;b2&lt;/span&gt; &lt;span class='n'&gt;d023&lt;/span&gt;&lt;span class='err'&gt; &lt;/span&gt; &lt;span class='o'&gt;.....&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;.........&lt;/span&gt;&lt;span class='c'&gt;#&lt;/span&gt;
 &lt;span class='mh'&gt;0x0030&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;&lt;span class='err'&gt; &lt;/span&gt; &lt;span class='mo'&gt;01&lt;/span&gt;&lt;span class='n'&gt;b2&lt;/span&gt; &lt;span class='n'&gt;d023&lt;/span&gt;&lt;span class='err'&gt;                               &lt;/span&gt; &lt;span class='o'&gt;...&lt;/span&gt;&lt;span class='c'&gt;#&lt;/span&gt;
-&lt;span class='c'&gt;#tcp 3 way handshake,可以看出，这3个包都没有包含数据，由于第一次和第二次握手含有最大报文长度而第三次只含有时间戳所以TCP Header的长度不同。&lt;/span&gt;
+&lt;span class='c'&gt;#tcp 3 way handshake,可以看出，这3个包都没有包含数据，&lt;/span&gt;
+&lt;span class='c'&gt;#由于第一次和第二次握手含有最大报文长度而第三次只含有时间戳&lt;/span&gt;
+&lt;span class='c'&gt;#所以TCP Header的长度不同。&lt;/span&gt;
 
 &lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='mi'&gt;4&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;&lt;span class='mo'&gt;00&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;&lt;span class='mo'&gt;05&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;&lt;span class='mf'&gt;36.631501&lt;/span&gt; &lt;span class='n'&gt;IP&lt;/span&gt; &lt;span class='n'&gt;localhost&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='mi'&gt;54504&lt;/span&gt; &lt;span class='o'&gt;&amp;gt;&lt;/span&gt; &lt;span class='n'&gt;localhost&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='mi'&gt;9889&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt; &lt;span class='n'&gt;Flags&lt;/span&gt; &lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;P&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='p'&gt;],&lt;/span&gt; 
 &lt;span class='n'&gt;seq&lt;/span&gt; &lt;span class='mi'&gt;4289908547&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;&lt;span class='mi'&gt;4289908560&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;ack&lt;/span&gt; &lt;span class='mi'&gt;2355231328&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; 
@@ -194,7 +333,8 @@
 &lt;span class='mh'&gt;0x0010&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;&lt;span class='err'&gt; &lt;/span&gt; &lt;span class='mi'&gt;7&lt;/span&gt;&lt;span class='n'&gt;f00&lt;/span&gt; &lt;span class='mo'&gt;0001&lt;/span&gt; &lt;span class='n'&gt;d4e8&lt;/span&gt; &lt;span class='mi'&gt;26&lt;/span&gt;&lt;span class='n'&gt;a1&lt;/span&gt; &lt;span class='n'&gt;ffb2&lt;/span&gt; &lt;span class='n'&gt;cf50&lt;/span&gt; &lt;span class='mi'&gt;8&lt;/span&gt;&lt;span class='n'&gt;c61&lt;/span&gt; &lt;span class='n'&gt;fa6d&lt;/span&gt;&lt;span class='err'&gt; &lt;/span&gt; &lt;span class='o'&gt;......&amp;amp;....&lt;/span&gt;&lt;span class='n'&gt;P&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;a&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;m&lt;/span&gt;
 &lt;span class='mh'&gt;0x0020&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;&lt;span class='err'&gt; &lt;/span&gt; &lt;span class='mi'&gt;8010&lt;/span&gt; &lt;span class='mi'&gt;0802&lt;/span&gt; &lt;span class='n'&gt;fe28&lt;/span&gt; &lt;span class='mo'&gt;0000&lt;/span&gt; &lt;span class='mo'&gt;0101&lt;/span&gt; &lt;span class='mi'&gt;080&lt;/span&gt;&lt;span class='n'&gt;a&lt;/span&gt; &lt;span class='mo'&gt;01&lt;/span&gt;&lt;span class='n'&gt;b2&lt;/span&gt; &lt;span class='n'&gt;e00b&lt;/span&gt;&lt;span class='err'&gt; &lt;/span&gt; &lt;span class='o'&gt;.....&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;..........&lt;/span&gt;
 &lt;span class='mh'&gt;0x0030&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;&lt;span class='err'&gt; &lt;/span&gt; &lt;span class='mo'&gt;01&lt;/span&gt;&lt;span class='n'&gt;b2&lt;/span&gt; &lt;span class='n'&gt;e00b&lt;/span&gt;&lt;span class='err'&gt;                               &lt;/span&gt; &lt;span class='o'&gt;....&lt;/span&gt;
-&lt;span class='c'&gt;#4,5,6,7这4个包表示client向server发送了&amp;quot;hello world~\n&amp;quot;,然后server回射给client&lt;/span&gt;
+&lt;span class='c'&gt;#4,5,6,7这4个包表示client向server发送了&amp;quot;hello world~\n&amp;quot;,&lt;/span&gt;
+&lt;span class='c'&gt;#然后server回射给client&lt;/span&gt;
 
 &lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='mi'&gt;8&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;&lt;span class='mo'&gt;00&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;&lt;span class='mo'&gt;06&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;&lt;span class='mf'&gt;11.448332&lt;/span&gt; &lt;span class='n'&gt;IP&lt;/span&gt; &lt;span class='n'&gt;localhost&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='mi'&gt;54504&lt;/span&gt; &lt;span class='o'&gt;&amp;gt;&lt;/span&gt; &lt;span class='n'&gt;localhost&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='mi'&gt;9889&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt; &lt;span class='n'&gt;Flags&lt;/span&gt; &lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;P&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='p'&gt;],&lt;/span&gt; 
 &lt;span class='n'&gt;seq&lt;/span&gt; &lt;span class='mi'&gt;4289908560&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;&lt;span class='mi'&gt;4289908587&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;ack&lt;/span&gt; &lt;span class='mi'&gt;2355231341&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;win&lt;/span&gt; &lt;span class='mi'&gt;2050&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; 
@@ -219,7 +359,9 @@
 &lt;span class='mh'&gt;0x0010&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;&lt;span class='err'&gt; &lt;/span&gt; &lt;span class='mi'&gt;7&lt;/span&gt;&lt;span class='n'&gt;f00&lt;/span&gt; &lt;span class='mo'&gt;0001&lt;/span&gt; &lt;span class='n'&gt;d4e8&lt;/span&gt; &lt;span class='mi'&gt;26&lt;/span&gt;&lt;span class='n'&gt;a1&lt;/span&gt; &lt;span class='n'&gt;ffb2&lt;/span&gt; &lt;span class='n'&gt;cf6b&lt;/span&gt; &lt;span class='mi'&gt;8&lt;/span&gt;&lt;span class='n'&gt;c61&lt;/span&gt; &lt;span class='n'&gt;fa88&lt;/span&gt;&lt;span class='err'&gt; &lt;/span&gt; &lt;span class='o'&gt;......&amp;amp;....&lt;/span&gt;&lt;span class='n'&gt;k&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='n'&gt;a&lt;/span&gt;&lt;span class='o'&gt;..&lt;/span&gt;
 &lt;span class='mh'&gt;0x0020&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;&lt;span class='err'&gt; &lt;/span&gt; &lt;span class='mi'&gt;8010&lt;/span&gt; &lt;span class='mi'&gt;0802&lt;/span&gt; &lt;span class='n'&gt;fe28&lt;/span&gt; &lt;span class='mo'&gt;0000&lt;/span&gt; &lt;span class='mo'&gt;0101&lt;/span&gt; &lt;span class='mi'&gt;080&lt;/span&gt;&lt;span class='n'&gt;a&lt;/span&gt; &lt;span class='mo'&gt;01&lt;/span&gt;&lt;span class='n'&gt;b3&lt;/span&gt; &lt;span class='mo'&gt;020&lt;/span&gt;&lt;span class='n'&gt;b&lt;/span&gt;&lt;span class='err'&gt; &lt;/span&gt; &lt;span class='o'&gt;.....&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;..........&lt;/span&gt;
 &lt;span class='mh'&gt;0x0030&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;&lt;span class='err'&gt; &lt;/span&gt; &lt;span class='mo'&gt;01&lt;/span&gt;&lt;span class='n'&gt;b3&lt;/span&gt; &lt;span class='mo'&gt;020&lt;/span&gt;&lt;span class='n'&gt;b&lt;/span&gt;&lt;span class='err'&gt;                               &lt;/span&gt; &lt;span class='o'&gt;....&lt;/span&gt;
-&lt;span class='c'&gt;#8,9,10包的功能和4,5,6,7类似，表示client向server发送了&amp;quot;abcdefghijklmnopqrstuvwxyz\n&amp;quot;,然后server回射给client,但是这里第9个包的功能相当于5,6包的合并，为什么会出现这种情况？有待考证。&lt;/span&gt;
+&lt;span class='c'&gt;#8,9,10包的功能和4,5,6,7类似，表示client向server发送了&lt;/span&gt;
+&lt;span class='c'&gt;#&amp;quot;abcdefghijklmnopqrstuvwxyz\n&amp;quot;,然后server回射给client,&lt;/span&gt;
+&lt;span class='c'&gt;#但是这里第9个包的功能相当于5,6包的合并，为什么会出现这种情况？有待考证。&lt;/span&gt;
 &lt;span class='o'&gt;&amp;lt;&lt;/span&gt;&lt;span class='mi'&gt;11&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;&lt;span class='mo'&gt;00&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;&lt;span class='mo'&gt;06&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;&lt;span class='mf'&gt;14.752733&lt;/span&gt; &lt;span class='n'&gt;IP&lt;/span&gt; &lt;span class='n'&gt;localhost&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='mi'&gt;54504&lt;/span&gt; &lt;span class='o'&gt;&amp;gt;&lt;/span&gt; &lt;span class='n'&gt;localhost&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='mi'&gt;9889&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt; &lt;span class='n'&gt;Flags&lt;/span&gt; &lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;F&lt;/span&gt;&lt;span class='o'&gt;.&lt;/span&gt;&lt;span class='p'&gt;],&lt;/span&gt; 
 &lt;span class='n'&gt;seq&lt;/span&gt; &lt;span class='mi'&gt;4289908587&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;ack&lt;/span&gt; &lt;span class='mi'&gt;2355231368&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;win&lt;/span&gt; &lt;span class='mi'&gt;2050&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; 
 &lt;span class='n'&gt;options&lt;/span&gt; &lt;span class='p'&gt;[&lt;/span&gt;&lt;span class='n'&gt;nop&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;nop&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;TS&lt;/span&gt; &lt;span class='n'&gt;val&lt;/span&gt; &lt;span class='mi'&gt;28509509&lt;/span&gt; &lt;span class='n'&gt;ecr&lt;/span&gt; &lt;span class='mi'&gt;28508683&lt;/span&gt;&lt;span class='p'&gt;],&lt;/span&gt; &lt;span class='n'&gt;length&lt;/span&gt; &lt;span class='mi'&gt;0&lt;/span&gt;
@@ -242,7 +384,13 @@
 &lt;span class='mh'&gt;0x0020&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;&lt;span class='err'&gt; &lt;/span&gt; &lt;span class='mi'&gt;8010&lt;/span&gt; &lt;span class='mi'&gt;0802&lt;/span&gt; &lt;span class='n'&gt;fe28&lt;/span&gt; &lt;span class='mo'&gt;0000&lt;/span&gt; &lt;span class='mo'&gt;0101&lt;/span&gt; &lt;span class='mi'&gt;080&lt;/span&gt;&lt;span class='n'&gt;a&lt;/span&gt; &lt;span class='mo'&gt;01&lt;/span&gt;&lt;span class='n'&gt;b3&lt;/span&gt; &lt;span class='mo'&gt;0545&lt;/span&gt;&lt;span class='err'&gt; &lt;/span&gt; &lt;span class='o'&gt;.....&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;.........&lt;/span&gt;&lt;span class='n'&gt;E&lt;/span&gt;
 &lt;span class='mh'&gt;0x0030&lt;/span&gt;&lt;span class='p'&gt;:&lt;/span&gt;&lt;span class='err'&gt; &lt;/span&gt; &lt;span class='mo'&gt;01&lt;/span&gt;&lt;span class='n'&gt;b3&lt;/span&gt; &lt;span class='mo'&gt;0545&lt;/span&gt;&lt;span class='err'&gt;                               &lt;/span&gt; &lt;span class='o'&gt;...&lt;/span&gt;&lt;span class='n'&gt;E&lt;/span&gt;
 
-&lt;span class='c'&gt;#11,12,13包是关闭TCP的连接，理论上来说这里应该有4个包，因为需要4次握手才能关闭双方的TCP连接。这里我是这样理解的：之所以4次握手，是因为当client发送FIN给server后，表示client将不会再有数据发送过来，但是server还可能发送数据给client，比如telnet一个bbs，退出的时候可能跟你说句Goodbye然后才server才断开连接，这时候抓的包应该是4次，但是这里client断开后server也立刻断开了，所以server的ack和FIN一起发送了。这只是我的猜想，还有待进一步验证。&lt;/span&gt;
+&lt;span class='c'&gt;#11,12,13包是关闭TCP的连接，理论上来说这里应该有4个包，&lt;/span&gt;
+&lt;span class='c'&gt;#因为需要4次握手才能关闭双方的TCP连接。这里我是这样理解的：&lt;/span&gt;
+&lt;span class='c'&gt;#之所以4次握手，是因为当client发送FIN给server后，&lt;/span&gt;
+&lt;span class='c'&gt;#表示client将不会再有数据发送过来，但是server还可能发送数据给client，&lt;/span&gt;
+&lt;span class='c'&gt;#比如telnet一个bbs，退出的时候可能跟你说句Goodbye然后才server才断开连接，&lt;/span&gt;
+&lt;span class='c'&gt;#这时候抓的包应该是4次，但是这里client断开后server也立刻断开了，&lt;/span&gt;
+&lt;span class='c'&gt;#所以server的ack和FIN一起发送了。这只是我的猜想，还有待进一步验证。&lt;/span&gt;
     
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;从这里可以看出tcpdump功能的强大。&lt;/p&gt;</description>
@@ -582,7 +730,7 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;怎么在此基础上进行优化？假设现在从某个位置(设为s)开始和M串进行匹配，如果匹配不成功，暴力算法是从这个位置的下一个位置(s+1)进行匹配,直观上来说就是匹配的字符串向后“滑动”了一位。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/kmp/image_thumb.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/kmp/image_thumb.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;图1&lt;/p&gt;
 
@@ -590,7 +738,7 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;而KMP就是在这里做文章，让M串向后“滑动”的距离最大化。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/kmp/image22_thumb.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/kmp/image22_thumb.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;图2&lt;/p&gt;
 
@@ -626,7 +774,7 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;现在考虑&lt;code&gt;next[0],next[1]…next[i]&lt;/code&gt;都已经知道了，那么图示如下：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/kmp/image_thumb1.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/kmp/image_thumb1.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;设&lt;code&gt;j=next[i]&lt;/code&gt;，灰色部分表明这两段字符是相等的，如果i位置的字符和j位置的字符相等，那么&lt;code&gt;next[i+1]=j+1;&lt;/code&gt;因为前一段灰色部分和j位置的字符组成的字符串和后一段灰色的与i连接所形成的字符串是相等的。这正是前面对next数组的定义。如果不相等，则要找到从i开始包括i往前的一段字符串与从0开始的一段字符串相等，这样形成相等的前缀和后缀。所幸我们知道&lt;code&gt;next[next[i]]&lt;/code&gt;的值，因为&lt;code&gt;next[i]&lt;/code&gt;前面的字串也有最长的公共前缀和后缀，而这个公共的前缀与现在i以及往前形成的字串可能相等，这样一直向前找，如果找不到，则说明i位置的字符从来没有在之前出现过。&lt;/p&gt;
 
@@ -817,7 +965,7 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;培，为了我们的未来，加油。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/biyu.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;</description>
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/biyu.jpg&quot; /&gt;&lt;/p&gt;</description>
                 <link>http://username.github.io/blog/2010/11/08/moved</link>
                 <guid>http://username.github.io/blog/2010/11/08/moved</guid>
                 <pubDate>2010-11-08T00:00:00+08:00</pubDate>

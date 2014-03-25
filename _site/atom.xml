@@ -4,7 +4,7 @@
  <title>HuangChao's Blog</title>
  <link href="http://username.github.io/" rel="self"/>
  <link href="http://username.github.io"/>
- <updated>2014-03-25T00:26:12+08:00</updated>
+ <updated>2014-03-25T12:50:26+08:00</updated>
  <id>http://username.github.io</id>
  <author>
    <name>Huang Chao</name>
@@ -376,7 +376,7 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;培，为了我们的未来，加油。&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/biyu.jpg&quot; /&gt;&lt;/p&gt;</content>
+&lt;p&gt;&lt;img src=&quot;/images/biyu.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;</content>
  </entry>
  
  <entry>

@@ -148,7 +148,6 @@ ul.posts {
 /*
 /*****************************************************************************/
 
-.highlight { background: black; }
 #post {
 
 }
@@ -157,7 +156,7 @@ ul.posts {
 
   #post pre {
     border: 1px solid #ddd;
-    background-color: #eef;
+    background-color: #2C001E;
     padding: 0 .4em;
   }
 
@@ -167,8 +166,6 @@ ul.posts {
   }
 
   #post code {
-    border: 1px solid #ddd;
-    background-color: #eef;
     font-size: 85%;
     padding: 0 .2em;
   }

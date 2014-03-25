@@ -4,7 +4,7 @@
  <title>HuangChao's Blog</title>
  <link href="http://username.github.io/" rel="self"/>
  <link href="http://username.github.io"/>
- <updated>2014-03-25T18:49:26+08:00</updated>
+ <updated>2014-03-25T19:29:27+08:00</updated>
  <id>http://username.github.io</id>
  <author>
    <name>Huang Chao</name>
@@ -17,17 +17,17 @@
    <link href="http://username.github.io/blog/2012/08/13/effective-cpp-study-note-2"/>
    <updated>2012-08-13T15:52:47Z</updated>
    <id>http://username.github.io/blog/2012/08/13/effective-cpp-study-note-2</id>
-   <content type="html">&lt;p&gt;条款2：尽量以const, enum, inline替换#define&lt;/p&gt;
+   <content type="html">&lt;h1 id=&quot;2const_enum_inlinedefine&quot;&gt;条款2：尽量以const, enum, inline替换#define&lt;/h1&gt;
 
-&lt;h1 id=&quot;define&quot;&gt;define只是简单的替换，就是因为太简单，程序员考虑的可就要多了。&lt;/h1&gt;
+&lt;p&gt;define只是简单的替换，就是因为太简单，程序员考虑的可就要多了。&lt;/p&gt;
 
 &lt;p&gt;比如我来一段这样的代码：&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/effectivecpp/truefalse.jpg&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/effectivecpp/truefalse.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;直觉上觉得应该是编译不通过吧，可是：&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/effectivecpp/run.jpg&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/effectivecpp/run.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;如果有个坏蛋把这一条加到某个头文件中，估计找bug也会找晕吧。&lt;/p&gt;
 
@@ -57,7 +57,7 @@
     &lt;span class='err'&gt;#&lt;/span&gt;&lt;span class='n'&gt;define&lt;/span&gt; &lt;span class='n'&gt;A&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;n&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='err'&gt;#&lt;/span&gt;&lt;span class='n'&gt;n&lt;/span&gt;&lt;span class='err'&gt;，则&lt;/span&gt;&lt;span class='n'&gt;A&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='o'&gt;+&lt;/span&gt;&lt;span class='mi'&gt;2&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;&lt;span class='err'&gt;则是&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;1+2&amp;quot;&lt;/span&gt;
     
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/effectivecpp/define.jpg&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/effectivecpp/define.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;有个想法，以前在指定函数指针的时候，总感觉不能按照规律来调用某个函数，现在能否借助define的##来实现不同函数指针的调用呢？&lt;/p&gt;
 
@@ -77,6 +77,32 @@
 &lt;p&gt;static 变量只能在类外部初始化，只有一种例外，static const int类型可以在类中初始化。&lt;/p&gt;
 
 &lt;p&gt;除上述的变量外，其余变量都应该在类的构造函数中初始化，除非你不想初始化，而是在某个函数中第一次用的时候赋值，当然，这不是一种好的编程习惯。&lt;/p&gt;</content>
+ </entry>
+ 
+ <entry>
+   <title>Effective C++ 笔记1</title>
+   <link href="http://username.github.io/blog/2012/08/09/effective-cpp-study-note-1"/>
+   <updated>2012-08-09T11:10:15Z</updated>
+   <id>http://username.github.io/blog/2012/08/09/effective-cpp-study-note-1</id>
+   <content type="html">&lt;p&gt;印象中，大一学的C语言，大二学的C++，至今学习编程也有5年多，很可惜，没有一门精通的。&lt;/p&gt;
+
+&lt;p&gt;首先说一下我会的语言。&lt;/p&gt;
+
+&lt;p&gt;Java，停留在J2SE的水平，也就是看懂，会用，但是并不深入。像反射的特性一直没搞懂，记得当时看了侯捷的一篇关于反射机制的文章，但没有深入，关键是Java代码写的少，语言这种东西，光说不练是不行的。写Java感觉一些一大堆，但是底层怎么实现的，不知道。虚拟机让我和操作系统之间隔了一层。可以说是放弃了底层与面向过程的编程方式，对C++的一种改进。极大的提高了生产力，虽然效率上可能会有些损失，这其实比较符合现今社会的价值观，快速的产出。&lt;/p&gt;
+
+&lt;p&gt;Python，停留在会用的阶段，而且很多时候还得先去查这个函数怎么用。但是Python给我的感觉很好，简洁而高效。现在国外的某些大学的编程入门语言已经变成python，而且各种各样的库可以将你的想法迅速的实现。&lt;/p&gt;
+
+&lt;p&gt;Pascal，看的懂，不会编写。这门语言基本都是当时搞ACM时候学了点皮毛，从来没有用它写过一个完整的程序并运行。&lt;/p&gt;
+
+&lt;p&gt;Shell，Shell给我的感觉不像是一门语言，而是一种工具。一个shell程序一般都会依赖于其他的程序，比如awk，grep等，可能这也是我没有将shell学到家的肤浅看法。&lt;/p&gt;
+
+&lt;p&gt;C++，其实学了这么多年的语言，学的最好的还是C语言。而且由于很多情况下都是在linux下编程，调用系统函数比较多，给我的感觉仍然是在写带类的C。&lt;/p&gt;
+
+&lt;p&gt;面向对象和泛型编程在我目前写过的程序中占很小的部分。顶多用到了继承，虚函数，模板等。但是我知道面向对象并不只是封装，继承，多态这么简单，模板也不只是函数和类上面戴了个帽子。所以我决定好好学一下C++，毕竟能上天入地的语言还是非C++莫属。&lt;/p&gt;
+
+&lt;p&gt;条款1：视C++为一个语言联邦。&lt;/p&gt;
+
+&lt;p&gt;C++是一门包含各种特性的语言。可以说是一把瑞士军刀，就看你会不会用，不会用反而可能伤到自己。听起来又有点像《倚天屠龙记》里面的七伤拳，内力不足则伤己。&lt;/p&gt;</content>
  </entry>
  
  <entry>
@@ -123,7 +149,7 @@
 
 &lt;p&gt;其中，在0-0xFFFFFFFF的虚拟地址空间中，高地址的1G(0xC0000000-0xFFFFFFFF)范围被linux用作内核空间，用户空间是低的3G范围。如下图所示(来自上面链接的文章)：&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/linuxFlexibleAddressSpaceLayout.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/csapp/linuxFlexibleAddressSpaceLayout.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;这里吗可以看出中间有许多random offset，这也加大了缓冲区溢出攻击的难度，其中栈区是有固定大小的，可以输入ulimit -s来确定，我的机子返回的是8192，也就是8M的空间，当你写了一个无限递归的函数时，这个空间就会很快被填满，然后导致stack overflow,堆区理论上可以一直向上申请到Memory Mapping Segment,不过一般没有程序会使用这么大的内存。&lt;/p&gt;
 
@@ -131,7 +157,7 @@
 
 &lt;p&gt;每个进程的虚拟内存布局可以通过查看/proc/pid/maps这个文件来查看，其中pid换成想要查看的进程编号，比如实验的./bufbomb布局如下：&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/part_017.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/csapp/part_017.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;这里可以看到0x08048000以下的地址被用来映射许多动态链接库，比如libc和ld，这和上图的布局有些出入，估计是因为linux的内核升级，将memory mapping segment存放到了0x08048000下面？以前最下面的空白区是不做任何用途的。&lt;/p&gt;
 
@@ -179,7 +205,7 @@
 
 &lt;p&gt;然后通过gdb调试可以得到下面的栈帧图,我保存在了google doc里面：&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/part_020.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/csapp/part_020.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;左边绿色的部分是test函数的栈帧，黄色的部分是getbuf函数的栈帧，蓝色部分是下面的栈帧执行完后要跳转到的指令地址，这个地址每次call的时候自动填充，所以理论上应该是属于上衣个栈帧的内容，这里由于返回后的esp并没有指向这个返回地址，所以没有将其包含进栈帧。目前我明确的参数都有所注释，还有许多地址中的数据我还不明白其中的含义，所以这里还值得研究一下。目前该图含有的信息:&lt;/p&gt;
 
@@ -187,7 +213,7 @@
 
 &lt;p&gt;printf的参数放在第27,28行，分别表示printf的第0个参数,第一个参数是1，因为最后printf只会打印一个1出来，第0个参数则是字符串的地址，用gdb可以获得其数据：&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/part_021.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/csapp/part_021.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;需要注意的是栈帧图中的28行为0x080486c0,而不是上面gdb调试中的0x080486d1,是因为0x080486c0是第一次printf的参数，也就是打印”Type Hex String:”字符串的地址，而0x080486d1才是第二个printf的字符串地址。这个地址怎么得到的？可以通过gdb单指令调试，其实汇编语言中就有，见上文汇编代码中注释的那一行。&lt;/p&gt;
 
@@ -207,11 +233,11 @@
 
 &lt;p&gt;这样，就完成了一次缓冲区溢出攻击:)&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/deafbeef2.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/csapp/deafbeef2.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;但是，不再gdb下运行的时候，虽然也返回了0xdeadbeef,但是总是伴随着段错误。&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/part_023.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/csapp/part_023.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;应该还是有改进的空间，下一步可以尝试在stack protector下的溢出攻击。&lt;/p&gt;</content>
  </entry>
@@ -229,7 +255,7 @@
 
 &lt;p&gt;-S表明打印TCP 数据包的顺序号时, 使用绝对的顺序号, 而不是相对的顺序号.比如我第一次用tcpdump查看tcp的三次握手时发现第三次握手的ack=1,这个ack就是相对的，因为tcpdump只在SYN包中显示绝对顺序号，而非SYN包则显示相对的，为了便于观察，在抓包时都采用来绝对的顺序号。&lt;/p&gt;
 
-&lt;p&gt;为了能看懂tcpdump输出的格式，首先要知道TCP/IP的数据封装，大体如下图所示：&lt;img alt=&quot;&quot; src=&quot;https://lh5.googleusercontent.com/AyzucSnu5AdElVtGL7WMJs7HT6QGTaiX8Qg6NYBX8dxfhvagZcinJDiW_srsYOmKT6mYFvkLeE533DYPLwXOM1R6rQ4Eo9zmgIcCqIRp08IIbfIFghM&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;为了能看懂tcpdump输出的格式，首先要知道TCP/IP的数据封装，大体如下图所示：&lt;img src=&quot;https://lh5.googleusercontent.com/AyzucSnu5AdElVtGL7WMJs7HT6QGTaiX8Qg6NYBX8dxfhvagZcinJDiW_srsYOmKT6mYFvkLeE533DYPLwXOM1R6rQ4Eo9zmgIcCqIRp08IIbfIFghM&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;图片来自&lt;a href=&quot;http://www2.meps.tp.edu.tw/documents/memo/TCP%EF%BC%8FIP%E6%A6%82%E8%AB%96/index.htm&quot;&gt;http://www2.meps.tp.edu.tw/documents/memo/TCP%EF%BC%8FIP%E6%A6%82%E8%AB%96/index.htm&lt;/a&gt;&lt;/p&gt;
 
@@ -237,7 +263,7 @@
 
 &lt;p&gt;首先看IP Header的结构:&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/tcpdump/image_thumb.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/tcpdump/image_thumb.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;关于IP Header的结构，我还没有深入的学习，简单的字段解释如下：&lt;/p&gt;
 
@@ -292,7 +318,7 @@
 &lt;span class='o'&gt;+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&lt;/span&gt;
     
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;下面是TCP Header的结构：&lt;a href=&quot;http://chaoswork.com/blog/wp-content/uploads/2012/04/image1.png&quot;&gt;&lt;img alt=&quot;image&quot; src=&quot;http://chaoswork.com/blog/wp-content/uploads/2012/04/image_thumb1.png&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;下面是TCP Header的结构：&lt;a href=&quot;http://chaoswork.com/blog/wp-content/uploads/2012/04/image1.png&quot;&gt;&lt;img src=&quot;http://chaoswork.com/blog/wp-content/uploads/2012/04/image_thumb1.png&quot; alt=&quot;image&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;
@@ -802,7 +828,7 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;怎么在此基础上进行优化？假设现在从某个位置(设为s)开始和M串进行匹配，如果匹配不成功，暴力算法是从这个位置的下一个位置(s+1)进行匹配,直观上来说就是匹配的字符串向后“滑动”了一位。&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/kmp/image_thumb.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/kmp/image_thumb.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;图1&lt;/p&gt;
 
@@ -810,7 +836,7 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;而KMP就是在这里做文章，让M串向后“滑动”的距离最大化。&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/kmp/image22_thumb.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/kmp/image22_thumb.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;图2&lt;/p&gt;
 
@@ -846,7 +872,7 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;现在考虑&lt;code&gt;next[0],next[1]…next[i]&lt;/code&gt;都已经知道了，那么图示如下：&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/kmp/image_thumb1.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/kmp/image_thumb1.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;设&lt;code&gt;j=next[i]&lt;/code&gt;，灰色部分表明这两段字符是相等的，如果i位置的字符和j位置的字符相等，那么&lt;code&gt;next[i+1]=j+1;&lt;/code&gt;因为前一段灰色部分和j位置的字符组成的字符串和后一段灰色的与i连接所形成的字符串是相等的。这正是前面对next数组的定义。如果不相等，则要找到从i开始包括i往前的一段字符串与从0开始的一段字符串相等，这样形成相等的前缀和后缀。所幸我们知道&lt;code&gt;next[next[i]]&lt;/code&gt;的值，因为&lt;code&gt;next[i]&lt;/code&gt;前面的字串也有最长的公共前缀和后缀，而这个公共的前缀与现在i以及往前形成的字串可能相等，这样一直向前找，如果找不到，则说明i位置的字符从来没有在之前出现过。&lt;/p&gt;
 
@@ -1037,7 +1063,7 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;培，为了我们的未来，加油。&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/biyu.jpg&quot; /&gt;&lt;/p&gt;</content>
+&lt;p&gt;&lt;img src=&quot;/images/biyu.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;</content>
  </entry>
  
  <entry>

@@ -4,13 +4,80 @@
  <title>HuangChao's Blog</title>
  <link href="http://username.github.io/" rel="self"/>
  <link href="http://username.github.io"/>
- <updated>2014-03-25T18:27:24+08:00</updated>
+ <updated>2014-03-25T18:49:26+08:00</updated>
  <id>http://username.github.io</id>
  <author>
    <name>Huang Chao</name>
    <email>huangchao.cpp@gmail.com</email>
  </author>
 
+ 
+ <entry>
+   <title>Effective C++ 笔记2</title>
+   <link href="http://username.github.io/blog/2012/08/13/effective-cpp-study-note-2"/>
+   <updated>2012-08-13T15:52:47Z</updated>
+   <id>http://username.github.io/blog/2012/08/13/effective-cpp-study-note-2</id>
+   <content type="html">&lt;p&gt;条款2：尽量以const, enum, inline替换#define&lt;/p&gt;
+
+&lt;h1 id=&quot;define&quot;&gt;define只是简单的替换，就是因为太简单，程序员考虑的可就要多了。&lt;/h1&gt;
+
+&lt;p&gt;比如我来一段这样的代码：&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/effectivecpp/truefalse.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;直觉上觉得应该是编译不通过吧，可是：&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/effectivecpp/run.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;如果有个坏蛋把这一条加到某个头文件中，估计找bug也会找晕吧。&lt;/p&gt;
+
+&lt;p&gt;还有，如果2个文件中都有宏定义，而且名字重复了，这样的情况也是可能存在的。&lt;/p&gt;
+
+&lt;p&gt;用const还有一个好处，就是const的变量在程序里只有一份拷贝，而define则会产生多份拷贝，算是程序的一个小优化。&lt;/p&gt;
+
+&lt;p&gt;不过define还有const做不到的事，其一就是宏函数，但是宏函数也有一些缺陷，&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c++'&gt;    &lt;span class='err'&gt;#&lt;/span&gt;&lt;span class='n'&gt;define&lt;/span&gt; &lt;span class='n'&gt;CALL_WITH_MAX&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;a&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;b&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='err'&gt; &lt;/span&gt;&lt;span class='n'&gt;f&lt;/span&gt;&lt;span class='p'&gt;((&lt;/span&gt;&lt;span class='n'&gt;a&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;&lt;span class='o'&gt;&amp;gt;&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;b&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;&lt;span class='o'&gt;?&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;a&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;&lt;span class='o'&gt;:&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;b&lt;/span&gt;&lt;span class='p'&gt;))&lt;/span&gt;
+    &lt;span class='kt'&gt;int&lt;/span&gt; &lt;span class='n'&gt;a&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;5&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;b&lt;/span&gt; &lt;span class='o'&gt;=&lt;/span&gt; &lt;span class='mi'&gt;0&lt;/span&gt;&lt;span class='p'&gt;;&lt;/span&gt;
+    &lt;span class='n'&gt;CALL_WITH_MAX&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;++&lt;/span&gt;&lt;span class='n'&gt;a&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt; &lt;span class='n'&gt;b&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+    &lt;span class='n'&gt;CALL_WITH_MAX&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='o'&gt;++&lt;/span&gt;&lt;span class='n'&gt;a&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;b&lt;/span&gt;&lt;span class='o'&gt;+&lt;/span&gt;&lt;span class='mi'&gt;10&lt;/span&gt;&lt;span class='p'&gt;);&lt;/span&gt;
+    
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;这些都是不良代码，足以体现出define的缺陷。所以书中建议用const来代替#define.并借助inline在保证效率的同时解决上述宏函数的问题。&lt;/p&gt;
+
+&lt;p&gt;至此，似乎define一无是处，那为什么不废除define，说是为了兼容c代码似乎有些说不过去，因为C99里面const也是关键字之一了。&lt;/p&gt;
+
+&lt;p&gt;我觉得define还有const做不到的事，这源自于define的处理是在编译期间的预处理阶段，所以可以作为编译开关，最常用的：&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c++'&gt;    &lt;span class='err'&gt;#&lt;/span&gt;&lt;span class='n'&gt;ifndef&lt;/span&gt; &lt;span class='n'&gt;XXX_H&lt;/span&gt;
+    &lt;span class='err'&gt;#&lt;/span&gt;&lt;span class='n'&gt;define&lt;/span&gt; &lt;span class='n'&gt;XXX_H&lt;/span&gt;
+    &lt;span class='err'&gt;#&lt;/span&gt;&lt;span class='n'&gt;endif&lt;/span&gt;
+    
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;还有就是define的用法里面一直有##和#,这2个符号我几乎没有用过，只是在某些地方看到过，简单来说，##用来拼接，而#则是将其变为字符串。比如：&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c++'&gt;    &lt;span class='err'&gt;#&lt;/span&gt;&lt;span class='n'&gt;define&lt;/span&gt; &lt;span class='n'&gt;A&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;n&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='n'&gt;A&lt;/span&gt;&lt;span class='err'&gt;##&lt;/span&gt;&lt;span class='n'&gt;n&lt;/span&gt;&lt;span class='err'&gt;，那么&lt;/span&gt;&lt;span class='n'&gt;A&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;&lt;span class='err'&gt;就是&lt;/span&gt;&lt;span class='n'&gt;A1&lt;/span&gt;&lt;span class='err'&gt;，&lt;/span&gt;&lt;span class='n'&gt;A&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='mi'&gt;2&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;&lt;span class='err'&gt;就是&lt;/span&gt;&lt;span class='n'&gt;A2&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;ABC&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;def&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;&lt;span class='err'&gt;就是&lt;/span&gt;&lt;span class='n'&gt;ABCdef&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='err'&gt;依然是简单的替换。&lt;/span&gt;
+    &lt;span class='err'&gt;#&lt;/span&gt;&lt;span class='n'&gt;define&lt;/span&gt; &lt;span class='n'&gt;A&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;n&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='err'&gt;#&lt;/span&gt;&lt;span class='n'&gt;n&lt;/span&gt;&lt;span class='err'&gt;，则&lt;/span&gt;&lt;span class='n'&gt;A&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='o'&gt;+&lt;/span&gt;&lt;span class='mi'&gt;2&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;&lt;span class='err'&gt;则是&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;1+2&amp;quot;&lt;/span&gt;
+    
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/effectivecpp/define.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;有个想法，以前在指定函数指针的时候，总感觉不能按照规律来调用某个函数，现在能否借助define的##来实现不同函数指针的调用呢？&lt;/p&gt;
+
+&lt;p&gt;比如我:&lt;/p&gt;
+&lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c++'&gt;    &lt;span class='err'&gt;#&lt;/span&gt;&lt;span class='n'&gt;define&lt;/span&gt; &lt;span class='n'&gt;FUN&lt;/span&gt; &lt;span class='n'&gt;fun&lt;/span&gt;&lt;span class='err'&gt;##&lt;/span&gt;&lt;span class='n'&gt;x&lt;/span&gt;
+    &lt;span class='k'&gt;case&lt;/span&gt; &lt;span class='n'&gt;x&lt;/span&gt;:&lt;span class='n'&gt;call&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;FUN&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;x&lt;/span&gt;&lt;span class='p'&gt;));&lt;/span&gt;&lt;span class='c1'&gt;//实现情况2则调用fun_x这个函数。&lt;/span&gt;
+    
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;有待于进一步验证，今天太晚了，明天再去公司试试。&lt;/p&gt;
+
+&lt;p&gt;严格来说，define和const根本就是2个不同的东西，只不过实现的功能有部分的类似，不过对于变量的定义来说，最好用const，因为const更健壮。&lt;/p&gt;
+
+&lt;p&gt;最后，总结一下类中成员变量的初始化问题：&lt;/p&gt;
+
+&lt;p&gt;const 变量只能在构造函数的初始化列表中初始化。&lt;/p&gt;
+
+&lt;p&gt;static 变量只能在类外部初始化，只有一种例外，static const int类型可以在类中初始化。&lt;/p&gt;
+
+&lt;p&gt;除上述的变量外，其余变量都应该在类的构造函数中初始化，除非你不想初始化，而是在某个函数中第一次用的时候赋值，当然，这不是一种好的编程习惯。&lt;/p&gt;</content>
+ </entry>
  
  <entry>
    <title>CS:APP bufbomb 缓冲区溢出攻击</title>
@@ -102,7 +169,7 @@
 8048558: e8 03 fe ff ff      call 8048360 &amp;lt;printf@plt&amp;gt;
 804855d: e8 d0 ff ff ff      call 8048532 &amp;lt;getbuf&amp;gt;
 8048562: 89 45 f4            mov %eax,-0xc(%ebp)
-8048565: b8 d1 86 04 08      mov $&amp;lt;span style=&amp;quot;color: #ff0000;&amp;quot;&amp;gt;0x80486d1&amp;lt;/span&amp;gt;,%eax   #printf args 0
+8048565: b8 d1 86 04 08      mov $0x80486d1,%eax   #printf args 0
 804856a: 8b 55 f4            mov -0xc(%ebp),%edx
 804856d: 89 54 24 04         mov %edx,0x4(%esp)
 8048571: 89 04 24            mov %eax,(%esp)
@@ -144,7 +211,7 @@
 
 &lt;p&gt;但是，不再gdb下运行的时候，虽然也返回了0xdeadbeef,但是总是伴随着段错误。&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;images/csapp/part_023.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/part_023.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;应该还是有改进的空间，下一步可以尝试在stack protector下的溢出攻击。&lt;/p&gt;</content>
  </entry>

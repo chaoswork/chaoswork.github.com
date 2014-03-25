@@ -42,16 +42,14 @@
 <p>只有10%的程序员可以写出正确的二分查找程序，看来我还不属于这10%。</p>
 
 <p>当时错误的原因很简单，就是一个小小的bug陷入的死循环：</p>
-<div class='highlight'><pre><code class='c++'><span class='kt'>int</span> <span class='nf'>bSearch</span><span class='p'>(</span><span class='n'>vector</span><span class='o'>&lt;</span><span class='kt'>int</span><span class='o'>&gt;</span><span class='n'>a</span><span class='p'>,</span><span class='kt'>int</span> <span class='n'>x</span><span class='p'>)</span>
-<span class='p'>{</span>
-    <span class='kt'>int</span> <span class='n'>l</span><span class='o'>=</span><span class='mi'>0</span><span class='p'>,</span><span class='n'>r</span><span class='o'>=</span><span class='n'>a</span><span class='p'>.</span><span class='n'>size</span><span class='p'>()</span><span class='o'>-</span><span class='mi'>1</span><span class='p'>;</span>
-    <span class='kt'>int</span> <span class='n'>mid</span><span class='o'>=</span><span class='p'>(</span><span class='n'>l</span><span class='o'>+</span><span class='n'>r</span><span class='p'>)</span><span class='o'>/</span><span class='mi'>2</span><span class='p'>;</span>
-    <span class='k'>while</span><span class='p'>(</span><span class='n'>l</span><span class='o'>&lt;</span><span class='n'>r</span><span class='p'>)</span>
-    <span class='p'>{</span>
-        <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>mid</span><span class='p'>]</span><span class='o'>&lt;</span><span class='n'>x</span><span class='p'>)</span> <span class='n'>l</span><span class='o'>=</span><span class='n'>mid</span><span class='p'>;</span>
-        <span class='k'>else</span> <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>mid</span><span class='p'>]</span><span class='o'>&gt;</span><span class='n'>x</span><span class='p'>)</span> <span class='n'>r</span><span class='o'>=</span><span class='n'>mid</span><span class='p'>;</span>
+<div class='highlight'><pre><code class='c++'><span class='kt'>int</span> <span class='nf'>bSearch</span><span class='p'>(</span><span class='n'>vector</span><span class='o'>&lt;</span><span class='kt'>int</span><span class='o'>&gt;</span><span class='n'>a</span><span class='p'>,</span><span class='kt'>int</span> <span class='n'>x</span><span class='p'>)</span> <span class='p'>{</span>
+    <span class='kt'>int</span> <span class='n'>l</span> <span class='o'>=</span> <span class='mi'>0</span><span class='p'>,</span><span class='n'>r</span> <span class='o'>=</span> <span class='n'>a</span><span class='p'>.</span><span class='n'>size</span><span class='p'>()</span> <span class='o'>-</span> <span class='mi'>1</span><span class='p'>;</span>
+    <span class='kt'>int</span> <span class='n'>mid</span> <span class='o'>=</span> <span class='p'>(</span><span class='n'>l</span> <span class='o'>+</span> <span class='n'>r</span><span class='p'>)</span><span class='o'>/</span><span class='mi'>2</span><span class='p'>;</span>
+    <span class='k'>while</span><span class='p'>(</span><span class='n'>l</span> <span class='o'>&lt;</span> <span class='n'>r</span><span class='p'>)</span> <span class='p'>{</span>
+        <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>mid</span><span class='p'>]</span> <span class='o'>&lt;</span> <span class='n'>x</span><span class='p'>)</span> <span class='n'>l</span> <span class='o'>=</span> <span class='n'>mid</span><span class='p'>;</span>
+        <span class='k'>else</span> <span class='k'>if</span><span class='p'>(</span><span class='n'>a</span><span class='p'>[</span><span class='n'>mid</span><span class='p'>]</span> <span class='o'>&gt;</span> <span class='n'>x</span><span class='p'>)</span> <span class='n'>r</span> <span class='o'>=</span> <span class='n'>mid</span><span class='p'>;</span>
         <span class='k'>else</span> <span class='k'>break</span><span class='p'>;</span>
-        <span class='n'>mid</span><span class='o'>=</span><span class='p'>(</span><span class='n'>l</span><span class='o'>+</span><span class='n'>r</span><span class='p'>)</span><span class='o'>/</span><span class='mi'>2</span><span class='p'>;</span>
+        <span class='n'>mid</span><span class='o'>=</span><span class='p'>(</span><span class='n'>l</span> <span class='o'>+</span> <span class='n'>r</span><span class='p'>)</span><span class='o'>/</span><span class='mi'>2</span><span class='p'>;</span>
     <span class='p'>}</span>
     <span class='k'>return</span> <span class='n'>mid</span><span class='p'>;</span>
 <span class='p'>}</span>

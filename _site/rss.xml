@@ -3,10 +3,10 @@
 <channel>
         <title>HuangChao's Blog</title>
         <description>HuangChao's Blog - Huang Chao</description>
-        <link>http://username.github.io</link>
-        <link>http://username.github.io</link>
-        <lastBuildDate>2014-03-25T23:42:04+08:00</lastBuildDate>
-        <pubDate>2014-03-25T23:42:04+08:00</pubDate>
+        <link>http://chaoswork.com</link>
+        <link>http://chaoswork.com</link>
+        <lastBuildDate>2014-03-26T10:32:46+08:00</lastBuildDate>
+        <pubDate>2014-03-26T10:32:46+08:00</pubDate>
         <ttl>1800</ttl>
 
 
@@ -18,11 +18,11 @@
 
 &lt;p&gt;比如我来一段这样的代码：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/effectivecpp/truefalse.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/effectivecpp/truefalse.jpg&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;直觉上觉得应该是编译不通过吧，可是：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/effectivecpp/run.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/effectivecpp/run.jpg&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;如果有个坏蛋把这一条加到某个头文件中，估计找bug也会找晕吧。&lt;/p&gt;
 
@@ -52,7 +52,7 @@
     &lt;span class='err'&gt;#&lt;/span&gt;&lt;span class='n'&gt;define&lt;/span&gt; &lt;span class='n'&gt;A&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;n&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt; &lt;span class='err'&gt;#&lt;/span&gt;&lt;span class='n'&gt;n&lt;/span&gt;&lt;span class='err'&gt;，则&lt;/span&gt;&lt;span class='n'&gt;A&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='mi'&gt;1&lt;/span&gt;&lt;span class='o'&gt;+&lt;/span&gt;&lt;span class='mi'&gt;2&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;&lt;span class='err'&gt;则是&lt;/span&gt;&lt;span class='s'&gt;&amp;quot;1+2&amp;quot;&lt;/span&gt;
     
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;img src=&quot;/images/effectivecpp/define.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/effectivecpp/define.jpg&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;有个想法，以前在指定函数指针的时候，总感觉不能按照规律来调用某个函数，现在能否借助define的##来实现不同函数指针的调用呢？&lt;/p&gt;
 
@@ -72,8 +72,8 @@
 &lt;p&gt;static 变量只能在类外部初始化，只有一种例外，static const int类型可以在类中初始化。&lt;/p&gt;
 
 &lt;p&gt;除上述的变量外，其余变量都应该在类的构造函数中初始化，除非你不想初始化，而是在某个函数中第一次用的时候赋值，当然，这不是一种好的编程习惯。&lt;/p&gt;</description>
-                <link>http://username.github.io/blog/2012/08/13/effective-cpp-study-note-2</link>
-                <guid>http://username.github.io/blog/2012/08/13/effective-cpp-study-note-2</guid>
+                <link>http://chaoswork.com/blog/2012/08/13/effective-cpp-study-note-2</link>
+                <guid>http://chaoswork.com/blog/2012/08/13/effective-cpp-study-note-2</guid>
                 <pubDate>2012-08-13T15:52:47Z</pubDate>
         </item>
 
@@ -98,8 +98,8 @@
 &lt;p&gt;条款1：视C++为一个语言联邦。&lt;/p&gt;
 
 &lt;p&gt;C++是一门包含各种特性的语言。可以说是一把瑞士军刀，就看你会不会用，不会用反而可能伤到自己。听起来又有点像《倚天屠龙记》里面的七伤拳，内力不足则伤己。&lt;/p&gt;</description>
-                <link>http://username.github.io/blog/2012/08/09/effective-cpp-study-note-1</link>
-                <guid>http://username.github.io/blog/2012/08/09/effective-cpp-study-note-1</guid>
+                <link>http://chaoswork.com/blog/2012/08/09/effective-cpp-study-note-1</link>
+                <guid>http://chaoswork.com/blog/2012/08/09/effective-cpp-study-note-1</guid>
                 <pubDate>2012-08-09T11:10:15Z</pubDate>
         </item>
 
@@ -144,7 +144,7 @@
 
 &lt;p&gt;其中，在0-0xFFFFFFFF的虚拟地址空间中，高地址的1G(0xC0000000-0xFFFFFFFF)范围被linux用作内核空间，用户空间是低的3G范围。如下图所示(来自上面链接的文章)：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/csapp/linuxFlexibleAddressSpaceLayout.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/linuxFlexibleAddressSpaceLayout.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;这里吗可以看出中间有许多random offset，这也加大了缓冲区溢出攻击的难度，其中栈区是有固定大小的，可以输入ulimit -s来确定，我的机子返回的是8192，也就是8M的空间，当你写了一个无限递归的函数时，这个空间就会很快被填满，然后导致stack overflow,堆区理论上可以一直向上申请到Memory Mapping Segment,不过一般没有程序会使用这么大的内存。&lt;/p&gt;
 
@@ -152,7 +152,7 @@
 
 &lt;p&gt;每个进程的虚拟内存布局可以通过查看/proc/pid/maps这个文件来查看，其中pid换成想要查看的进程编号，比如实验的./bufbomb布局如下：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/csapp/part_017.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/part_017.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;这里可以看到0x08048000以下的地址被用来映射许多动态链接库，比如libc和ld，这和上图的布局有些出入，估计是因为linux的内核升级，将memory mapping segment存放到了0x08048000下面？以前最下面的空白区是不做任何用途的。&lt;/p&gt;
 
@@ -200,7 +200,7 @@
 
 &lt;p&gt;然后通过gdb调试可以得到下面的栈帧图,我保存在了google doc里面：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/csapp/part_020.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/part_020.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;左边绿色的部分是test函数的栈帧，黄色的部分是getbuf函数的栈帧，蓝色部分是下面的栈帧执行完后要跳转到的指令地址，这个地址每次call的时候自动填充，所以理论上应该是属于上衣个栈帧的内容，这里由于返回后的esp并没有指向这个返回地址，所以没有将其包含进栈帧。目前我明确的参数都有所注释，还有许多地址中的数据我还不明白其中的含义，所以这里还值得研究一下。目前该图含有的信息:&lt;/p&gt;
 
@@ -208,7 +208,7 @@
 
 &lt;p&gt;printf的参数放在第27,28行，分别表示printf的第0个参数,第一个参数是1，因为最后printf只会打印一个1出来，第0个参数则是字符串的地址，用gdb可以获得其数据：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/csapp/part_021.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/part_021.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;需要注意的是栈帧图中的28行为0x080486c0,而不是上面gdb调试中的0x080486d1,是因为0x080486c0是第一次printf的参数，也就是打印”Type Hex String:”字符串的地址，而0x080486d1才是第二个printf的字符串地址。这个地址怎么得到的？可以通过gdb单指令调试，其实汇编语言中就有，见上文汇编代码中注释的那一行。&lt;/p&gt;
 
@@ -228,15 +228,15 @@
 
 &lt;p&gt;这样，就完成了一次缓冲区溢出攻击:)&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/csapp/deafbeef2.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/deafbeef2.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;但是，不再gdb下运行的时候，虽然也返回了0xdeadbeef,但是总是伴随着段错误。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/csapp/part_023.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/csapp/part_023.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;应该还是有改进的空间，下一步可以尝试在stack protector下的溢出攻击。&lt;/p&gt;</description>
-                <link>http://username.github.io/blog/2012/04/13/csapp-bufbomb-stack-overflow-attack</link>
-                <guid>http://username.github.io/blog/2012/04/13/csapp-bufbomb-stack-overflow-attack</guid>
+                <link>http://chaoswork.com/blog/2012/04/13/csapp-bufbomb-stack-overflow-attack</link>
+                <guid>http://chaoswork.com/blog/2012/04/13/csapp-bufbomb-stack-overflow-attack</guid>
                 <pubDate>2012-04-13T14:17:13Z</pubDate>
         </item>
 
@@ -250,7 +250,7 @@
 
 &lt;p&gt;-S表明打印TCP 数据包的顺序号时, 使用绝对的顺序号, 而不是相对的顺序号.比如我第一次用tcpdump查看tcp的三次握手时发现第三次握手的ack=1,这个ack就是相对的，因为tcpdump只在SYN包中显示绝对顺序号，而非SYN包则显示相对的，为了便于观察，在抓包时都采用来绝对的顺序号。&lt;/p&gt;
 
-&lt;p&gt;为了能看懂tcpdump输出的格式，首先要知道TCP/IP的数据封装，大体如下图所示：&lt;img src=&quot;https://lh5.googleusercontent.com/AyzucSnu5AdElVtGL7WMJs7HT6QGTaiX8Qg6NYBX8dxfhvagZcinJDiW_srsYOmKT6mYFvkLeE533DYPLwXOM1R6rQ4Eo9zmgIcCqIRp08IIbfIFghM&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;为了能看懂tcpdump输出的格式，首先要知道TCP/IP的数据封装，大体如下图所示：&lt;img alt=&quot;&quot; src=&quot;https://lh5.googleusercontent.com/AyzucSnu5AdElVtGL7WMJs7HT6QGTaiX8Qg6NYBX8dxfhvagZcinJDiW_srsYOmKT6mYFvkLeE533DYPLwXOM1R6rQ4Eo9zmgIcCqIRp08IIbfIFghM&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;图片来自&lt;a href=&quot;http://www2.meps.tp.edu.tw/documents/memo/TCP%EF%BC%8FIP%E6%A6%82%E8%AB%96/index.htm&quot;&gt;http://www2.meps.tp.edu.tw/documents/memo/TCP%EF%BC%8FIP%E6%A6%82%E8%AB%96/index.htm&lt;/a&gt;&lt;/p&gt;
 
@@ -258,7 +258,7 @@
 
 &lt;p&gt;首先看IP Header的结构:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/tcpdump/image_thumb.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/tcpdump/image_thumb.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;关于IP Header的结构，我还没有深入的学习，简单的字段解释如下：&lt;/p&gt;
 
@@ -313,7 +313,7 @@
 &lt;span class='o'&gt;+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+&lt;/span&gt;
     
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;下面是TCP Header的结构：&lt;a href=&quot;http://chaoswork.com/blog/wp-content/uploads/2012/04/image1.png&quot;&gt;&lt;img src=&quot;http://chaoswork.com/blog/wp-content/uploads/2012/04/image_thumb1.png&quot; alt=&quot;image&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;下面是TCP Header的结构：&lt;a href=&quot;http://chaoswork.com/blog/wp-content/uploads/2012/04/image1.png&quot;&gt;&lt;img alt=&quot;image&quot; src=&quot;http://chaoswork.com/blog/wp-content/uploads/2012/04/image_thumb1.png&quot; /&gt;&lt;/a&gt;&lt;/p&gt;
 
 &lt;ul&gt;
 &lt;li&gt;
@@ -487,8 +487,8 @@
     
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;从这里可以看出tcpdump功能的强大。&lt;/p&gt;</description>
-                <link>http://username.github.io/blog/2012/04/06/tcpdump%E6%9F%A5%E7%9C%8B%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B</link>
-                <guid>http://username.github.io/blog/2012/04/06/tcpdump查看三次握手</guid>
+                <link>http://chaoswork.com/blog/2012/04/06/tcpdump%E6%9F%A5%E7%9C%8B%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B</link>
+                <guid>http://chaoswork.com/blog/2012/04/06/tcpdump查看三次握手</guid>
                 <pubDate>2012-04-06T13:51:57Z</pubDate>
         </item>
 
@@ -680,9 +680,9 @@
 &lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/unp/005_thumb.png&quot; alt=&quot;image&quot; /&gt; 其实是两台电脑通过socket进行了进程间通信，代码中是通过文件描述符来代表socket的，至于socket的结构以及怎么就能通过这个socket进行数据传输，这些内容有待研究。&lt;/p&gt;</description>
-                <link>http://username.github.io/blog/2011/12/30/unix-network-programming-study-note-l</link>
-                <guid>http://username.github.io/blog/2011/12/30/unix-network-programming-study-note-l</guid>
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/unp/005_thumb.png&quot; /&gt; 其实是两台电脑通过socket进行了进程间通信，代码中是通过文件描述符来代表socket的，至于socket的结构以及怎么就能通过这个socket进行数据传输，这些内容有待研究。&lt;/p&gt;</description>
+                <link>http://chaoswork.com/blog/2011/12/30/unix-network-programming-study-note-l</link>
+                <guid>http://chaoswork.com/blog/2011/12/30/unix-network-programming-study-note-l</guid>
                 <pubDate>2011-12-30T08:17:44Z</pubDate>
         </item>
 
@@ -1002,8 +1002,8 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 &lt;h2 id=&quot;next_steps&quot;&gt;Next Steps&lt;/h2&gt;
 
 &lt;p&gt;Please take a look at &lt;a href=&quot;&quot;&gt;&lt;/a&gt; or jump right into &lt;a href=&quot;&quot;&gt;Usage&lt;/a&gt; if you’d like.&lt;/p&gt;</description>
-                <link>http://username.github.io/blog/2011/12/29/jekyll-introduction</link>
-                <guid>http://username.github.io/blog/2011/12/29/jekyll-introduction</guid>
+                <link>http://chaoswork.com/blog/2011/12/29/jekyll-introduction</link>
+                <guid>http://chaoswork.com/blog/2011/12/29/jekyll-introduction</guid>
                 <pubDate>2011-12-29T00:00:00+08:00</pubDate>
         </item>
 
@@ -1017,7 +1017,7 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;怎么在此基础上进行优化？假设现在从某个位置(设为s)开始和M串进行匹配，如果匹配不成功，暴力算法是从这个位置的下一个位置(s+1)进行匹配,直观上来说就是匹配的字符串向后“滑动”了一位。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/kmp/image_thumb.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/kmp/image_thumb.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;图1&lt;/p&gt;
 
@@ -1025,7 +1025,7 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;而KMP就是在这里做文章，让M串向后“滑动”的距离最大化。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/kmp/image22_thumb.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/kmp/image22_thumb.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;图2&lt;/p&gt;
 
@@ -1061,7 +1061,7 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;现在考虑&lt;code&gt;next[0],next[1]…next[i]&lt;/code&gt;都已经知道了，那么图示如下：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/kmp/image_thumb1.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/kmp/image_thumb1.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;设&lt;code&gt;j=next[i]&lt;/code&gt;，灰色部分表明这两段字符是相等的，如果i位置的字符和j位置的字符相等，那么&lt;code&gt;next[i+1]=j+1;&lt;/code&gt;因为前一段灰色部分和j位置的字符组成的字符串和后一段灰色的与i连接所形成的字符串是相等的。这正是前面对next数组的定义。如果不相等，则要找到从i开始包括i往前的一段字符串与从0开始的一段字符串相等，这样形成相等的前缀和后缀。所幸我们知道&lt;code&gt;next[next[i]]&lt;/code&gt;的值，因为&lt;code&gt;next[i]&lt;/code&gt;前面的字串也有最长的公共前缀和后缀，而这个公共的前缀与现在i以及往前形成的字串可能相等，这样一直向前找，如果找不到，则说明i位置的字符从来没有在之前出现过。&lt;/p&gt;
 
@@ -1117,8 +1117,8 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 &lt;blockquote&gt;
 &lt;p&gt;回复：我每年新交1个MM，我100年内会失恋200次吗？&lt;/p&gt;
 &lt;/blockquote&gt;</description>
-                <link>http://username.github.io/blog/2011/06/14/kmp%E7%AE%97%E6%B3%95%E5%B0%8F%E7%BB%93</link>
-                <guid>http://username.github.io/blog/2011/06/14/kmp算法小结</guid>
+                <link>http://chaoswork.com/blog/2011/06/14/kmp%E7%AE%97%E6%B3%95%E5%B0%8F%E7%BB%93</link>
+                <guid>http://chaoswork.com/blog/2011/06/14/kmp算法小结</guid>
                 <pubDate>2011-06-14T00:00:00+08:00</pubDate>
         </item>
 
@@ -1159,8 +1159,8 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;3)在链上找出一个yk，满足y1和yk邻接，y(k-1)和ym邻接，则将链转换为y1-…-y(k-1)-ym-…yk,则y1和yk邻接，转b)&lt;/p&gt;</description>
-                <link>http://username.github.io/blog/2011/05/01/e5afbbe689bee59388e5af86e9a1bfe59b9ee8b7af</link>
-                <guid>http://username.github.io/blog/2011/05/01/e5afbbe689bee59388e5af86e9a1bfe59b9ee8b7af</guid>
+                <link>http://chaoswork.com/blog/2011/05/01/hamiltonian-basic</link>
+                <guid>http://chaoswork.com/blog/2011/05/01/hamiltonian-basic</guid>
                 <pubDate>2011-05-01T14:49:20Z</pubDate>
         </item>
 
@@ -1172,7 +1172,7 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;本来来自欧拉的七桥问题：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/topcoder/image_thumb5.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/topcoder/image_thumb5.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;用图论抽象就是：一副无向图，每条边只能通过一次，问是否存在一条路径经过所有的边，这样的路径叫欧拉路径，如果起点和终点相同，则成为欧拉回路。&lt;/p&gt;
 
@@ -1213,8 +1213,8 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;如果一个有向图所有顶点的入度等于出度，则该图存在欧拉回路。如果有顶点x的出度比入度大1，y的入度比出度大1，其余顶点的入度等于出度，则存在从x到y的欧拉路径。&lt;/p&gt;
 
 &lt;p&gt;至于混合图，有待学习。。。&lt;/p&gt;</description>
-                <link>http://username.github.io/blog/2011/03/22/eulerian-tours</link>
-                <guid>http://username.github.io/blog/2011/03/22/eulerian-tours</guid>
+                <link>http://chaoswork.com/blog/2011/03/22/eulerian-tours</link>
+                <guid>http://chaoswork.com/blog/2011/03/22/eulerian-tours</guid>
                 <pubDate>2011-03-22T08:33:15Z</pubDate>
         </item>
 
@@ -1228,11 +1228,11 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;2.点积(Dot Product),也叫数量积，是接受在实数R上的两个向量并返回一个实数值标量的二元运算。这里只考虑2维的向量，&lt;code&gt;A=[x1,y1],B=[x2,y2]&lt;/code&gt;,则&lt;code&gt;A*B=x1*x1+y1*y1;&lt;/code&gt;在欧式几何空间中，点积可形象的表示为&lt;code&gt;A*B=|A||B|cos(θ)&lt;/code&gt;,θ为两个向量之间的角度，图示如下。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/topcoder/image_thumb2.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/topcoder/image_thumb2.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;根据这个公式，可以计算向量的夹角，所以，一般点积可以判断点之间的关系。如下图，如果&lt;code&gt;AB*AC&amp;lt;0&lt;/code&gt;,则说明&lt;code&gt;90&amp;lt;θ&amp;lt;27&lt;/code&gt;0,则说明C点在A的外面。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/topcoder/image_thumb3.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/topcoder/image_thumb3.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;根据点积的概念可以写出计算点积的代码：&lt;/p&gt;
 &lt;div class='highlight'&gt;&lt;pre&gt;&lt;code class='c++'&gt;&lt;span class='kt'&gt;double&lt;/span&gt; &lt;span class='nf'&gt;dot&lt;/span&gt;&lt;span class='p'&gt;(&lt;/span&gt;&lt;span class='n'&gt;point&lt;/span&gt; &lt;span class='n'&gt;a&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;point&lt;/span&gt; &lt;span class='n'&gt;b&lt;/span&gt;&lt;span class='p'&gt;,&lt;/span&gt;&lt;span class='n'&gt;point&lt;/span&gt; &lt;span class='n'&gt;c&lt;/span&gt;&lt;span class='p'&gt;)&lt;/span&gt;&lt;span class='c1'&gt;//ab*ac&lt;/span&gt;
@@ -1248,7 +1248,7 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;&lt;code&gt;ABxAC=|AB||AC|sin(θ)&lt;/code&gt;,这个结果在平面上可形象的表示为：&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/topcoder/image_thumb4.png&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/topcoder/image_thumb4.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;这个平行四边形的面积，当然是不考虑其方向。&lt;/p&gt;
 
@@ -1284,8 +1284,8 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;1.Wikipedia关于&lt;a href=&quot;http://zh.wikipedia.org/zh/%E6%95%B0%E9%87%8F%E7%A7%AF&quot;&gt;点积&lt;/a&gt;和&lt;a href=&quot;http://zh.wikipedia.org/wiki/%E5%90%91%E9%87%8F%E7%A7%AF&quot;&gt;叉积&lt;/a&gt;。&lt;/p&gt;
 
 &lt;p&gt;2.TC Algorithm Tutorial 的&lt;a href=&quot;http://www.topcoder.com/tc?module=Static&amp;d1=tutorials&amp;d2=geometry1&quot;&gt;计算几何&lt;/a&gt;部分。&lt;/p&gt;</description>
-                <link>http://username.github.io/blog/2011/03/19/geometry-basic-1</link>
-                <guid>http://username.github.io/blog/2011/03/19/geometry-basic-1</guid>
+                <link>http://chaoswork.com/blog/2011/03/19/geometry-basic-1</link>
+                <guid>http://chaoswork.com/blog/2011/03/19/geometry-basic-1</guid>
                 <pubDate>2011-03-19T11:48:23Z</pubDate>
         </item>
 
@@ -1404,8 +1404,8 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
     
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;这是一个1000个数据的二分查找的优化。&lt;/p&gt;</description>
-                <link>http://username.github.io/blog/2011/03/02/binary-search</link>
-                <guid>http://username.github.io/blog/2011/03/02/binary-search</guid>
+                <link>http://chaoswork.com/blog/2011/03/02/binary-search</link>
+                <guid>http://chaoswork.com/blog/2011/03/02/binary-search</guid>
                 <pubDate>2011-03-02T00:00:00+08:00</pubDate>
         </item>
 
@@ -1419,9 +1419,9 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;培，为了我们的未来，加油。&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/images/biyu.jpg&quot; alt=&quot;image&quot; /&gt;&lt;/p&gt;</description>
-                <link>http://username.github.io/blog/2010/11/08/moved</link>
-                <guid>http://username.github.io/blog/2010/11/08/moved</guid>
+&lt;p&gt;&lt;img alt=&quot;image&quot; src=&quot;/images/biyu.jpg&quot; /&gt;&lt;/p&gt;</description>
+                <link>http://chaoswork.com/blog/2010/11/08/moved</link>
+                <guid>http://chaoswork.com/blog/2010/11/08/moved</guid>
                 <pubDate>2010-11-08T00:00:00+08:00</pubDate>
         </item>
 
@@ -1468,8 +1468,8 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;虽然不想承认，但是我真的是个大人了。。。&lt;/p&gt;
 
 &lt;p&gt;这么多年来，最想感谢的是Google和Wikipedia，这两个伟大的网站让我知道了我想知道的，学到了我想学的。虽说没有做到“秀才不出门，便知天 下事”的那种境界，但是却能让我站在客观的角度来看待整个世界。我想，这也算是成长的一部分吧，终于从那个井底爬了出来。&lt;/p&gt;</description>
-                <link>http://username.github.io/blog/2010/09/28/grow-up</link>
-                <guid>http://username.github.io/blog/2010/09/28/grow-up</guid>
+                <link>http://chaoswork.com/blog/2010/09/28/grow-up</link>
+                <guid>http://chaoswork.com/blog/2010/09/28/grow-up</guid>
                 <pubDate>2010-09-28T00:00:00+08:00</pubDate>
         </item>
 
@@ -1492,8 +1492,8 @@ tags : [how-to, jekyll]&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;这基本就是我的大学四年了，可以说是比较失败的，大部分时间都在混，只有少数时间做了点有意义的事。而且悲剧的是4年了，也没谈个恋爱，看着人家都牵着女朋友的手，而我牵的估计也就只有鼠标了。感觉最大的收获就是学会了编程，最失败的就是迷上了网游。&lt;/p&gt;
 
 &lt;p&gt;现在研究生马上就要开始了，不出意外应该是我在校园里待得最后一段时光了。而且毕业面临的就是社会了，好好努力吧，即使达不到牛人的那种高度，但是自己努力了就好。希望以后总结研究生生活的时候，不要再后悔了。&lt;/p&gt;</description>
-                <link>http://username.github.io/blog/2010/09/06/four-years-in-xdu</link>
-                <guid>http://username.github.io/blog/2010/09/06/four-years-in-xdu</guid>
+                <link>http://chaoswork.com/blog/2010/09/06/four-years-in-xdu</link>
+                <guid>http://chaoswork.com/blog/2010/09/06/four-years-in-xdu</guid>
                 <pubDate>2010-09-06T00:00:00+08:00</pubDate>
         </item>
 

@@ -22,3 +22,5 @@ date,weight,run_duration,wordcnt_read,wordcnt_remember,read_duration,listen_dura
 2016-01-30,92.8,0,0,0,0,0
 2016-01-31,92.3,55,0,0,0,0
 2016-02-01,91.8,44,0,0,0,0
+2016-02-02,92.3,38,0,0,0,0
+2016-02-03,92.3,45,60,0,0,0

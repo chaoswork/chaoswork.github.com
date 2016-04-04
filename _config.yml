@@ -8,7 +8,7 @@ permalink: /blog/:year/:month/:day/:title
 
 # Site settings
 title: Chaos.Work
-email: huangchao.cpp@.com
+email: huangchao.cpp@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
   make life
 baseurl: "" # the subpath of your site, e.g. /blog

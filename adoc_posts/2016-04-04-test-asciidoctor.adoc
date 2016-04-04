@@ -1,0 +1,39 @@
+:icons: font
+:stem: latexmath
+:last-update-label!:
+:nofooter:
+
+
+This is a sample page composed in AsciiDoc.
+Jekyll converts it to HTML using http://asciidoctor.org[Asciidoctor].
+
+You can contact {author} at {email}.
+{firstname} loves to hear from other chroniclers.
+
+== title
+
+P.S. And yes, my middle name really is {middlename}.
+What else would you expect from a member of the Rocky Mountain {lastname} Clan?
+
+{authorinitials}
+
+[source,ruby]
+----
+puts "Hello, World!"
+----
+
+TIP: build local then push to github
+
+== TTLJLJ
+
+- [ ] not check
+- [x] checked
+
+latexmath:[C = \alpha + \beta Y^{\gamma} + \epsilon]
+
+NOTE: <-- can you see a coin?
+
+testinclude
+
+test make file
+

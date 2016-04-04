@@ -7,3 +7,5 @@ define make_subdir
 all:
 	 $(call make_subdir , all)
 	 jekyll build
+clean:
+	 $(call make_subdir , clean)

@@ -9,8 +9,7 @@ tags:
 
 title: Effective C++ 笔记2
 
-published: true
-status: publish
+published: false
 ---
 
 #条款2：尽量以const, enum, inline替换#define

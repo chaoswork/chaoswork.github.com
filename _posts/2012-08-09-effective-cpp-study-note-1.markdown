@@ -4,8 +4,7 @@ date: 2012-08-09 11:10:15+00:00
 layout: post
 title: Effective C++ 笔记1
 
-published: true
-status: publish
+published: false
 ---
 
 印象中，大一学的C语言，大二学的C++，至今学习编程也有5年多，很可惜，没有一门精通的。

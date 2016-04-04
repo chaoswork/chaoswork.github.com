@@ -13,8 +13,7 @@ tags:
 
 title: 我的大学四年
 
-published: true
-status: publish
+published: false
 ---
 可以说我的大学四年虽然没有什么成就感，但是也学到了很多。关键字就是学习和游戏。
 

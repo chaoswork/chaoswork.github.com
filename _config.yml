@@ -1,5 +1,5 @@
 # Welcome to Jekyll!
-permalink: /blog/:year/:month/:day/:title 
+# permalink: /blog/:year/:month/:day/:title 
 #
 # This config file is meant for settings that affect your whole blog, values
 # which you are expected to set up once and rarely need to edit after that.
@@ -19,3 +19,8 @@ github_username:  chaoswork
 # Build settings
 markdown: kramdown
 exclude: ["*.org"]
+
+
+plugins: [jekyll-paginate]
+paginate: 5
+paginate_path: "page:num"

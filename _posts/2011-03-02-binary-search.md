@@ -44,92 +44,92 @@ int bSearch(vector<int>a,int x)
 
 正确的方法是将第7,8句修改，变成l=mid+1,r=mid-1,当然，这是保证x在a里的时候，如果x有可能不在a中，那么正确而且完整的代码如下(参考《编程珠玑(第二版)》第87页)：
 
-    {% highlight c++ %}
-    int bSearch(vector<int>a,int x)
+```c++
+int bSearch(vector<int>a,int x)
+{
+    int l=0,r=a.size()-1;
+    int mid;
+    for(;;)
     {
-        int l=0,r=a.size()-1;
-        int mid;
-        for(;;)
-        {
-            if(l>r) return -1;
-            mid=(l+r)/2;
-            if(a[mid]<x) l=mid+1;
-            else if(a[mid]==x) return mid;
-            else if(a[mid]>x) r=mid-1;
-        }
-        return mid;
+        if(l>r) return -1;
+        mid=(l+r)/2;
+        if(a[mid]<x) l=mid+1;
+        else if(a[mid]==x) return mid;
+        else if(a[mid]>x) r=mid-1;
     }
-    {% endhighlight %}
+    return mid;
+}
+```
 然后我看到了一道课后题：用二分法返回数组a中出现的第一个x的位置，我是这样想的：
 
 在上面的基础上进行改进，如果已经搜到x的一个位置，那么如果x的前一个位置比x小，则意味着第一个x已经找到，如果前一个位置也是x，那么将r修改为mid-1;需要注意的是，如果mid==0，则直接判断mid是否是x即可，代码如下：
 
-    {% highlight c++ %}
-    int bSearch2(vector<int>a,int x)
+```c++
+int bSearch2(vector<int>a,int x)
+{
+    int l=0,r=a.size()-1;
+    int mid;
+    for(;;)
     {
-        int l=0,r=a.size()-1;
-        int mid;
-        for(;;)
+        if(l>r) return -1;
+        mid=(l+r)/2;
+        if(mid==0)
         {
-            if(l>r) return -1;
-            mid=(l+r)/2;
-            if(mid==0)
-            {
-                if(a[mid]==x) return mid;
-                else return -1;
-            }    
-            if(a[mid]<x) l=mid+1;
-            else if(a[mid]==x)
-            {
-                if(a[mid-1]<x) return mid;
-                else r=mid-1;
-            }
-            else if(a[mid]>x) r=mid-1;
+            if(a[mid]==x) return mid;
+            else return -1;
+        }    
+        if(a[mid]<x) l=mid+1;
+        else if(a[mid]==x)
+        {
+            if(a[mid-1]<x) return mid;
+            else r=mid-1;
         }
-        return mid;
+        else if(a[mid]>x) r=mid-1;
     }
-    {% endhighlight %}
+    return mid;
+}
+```
 但是看了《编程珠玑(第二版)》的答案后，发现答案的方法比我的思路还有效率都清晰多了：
 
 初始的循环不变式是：`a[l]<x && a[r]>=x && l<r`,代码如下：
 
-    {% highlight c++ %}
-    int bSearch3(vector<int>a,int x)
+```c++
+int bSearch3(vector<int>a,int x)
+{
+    int l=-1,r=a.size();
+    int mid;
+    while(l+1!=r)
     {
-        int l=-1,r=a.size();
-        int mid;
-        while(l+1!=r)
-        {
-            mid=(l+r)/2;
-            if(a[mid]<x) l=mid;
-            else r=mid;
-        }
-        if(r>=a.size() || a[r]!=x) return -1;
-        return r;
+        mid=(l+r)/2;
+        if(a[mid]<x) l=mid;
+        else r=mid;
     }
-    {% endhighlight %}
+    if(r>=a.size() || a[r]!=x) return -1;
+    return r;
+}
+```
 一般的程序用这个就已经很好了，因为相比于bSearch2，bSearch3每次迭代只比较一次。
 
 当然，书中还提到了进一步的优化，最终将结合搜索数组的大小，将循环展开，这样可以借助于现在计算机的流水线处理技术来增加指令集的并行，从而进一步的优化，不过一般情况下bSearch3的表现就已经相当出色，而且更容易编写和实现。
 
-    {% highlight c++ %}
-    int bSearch4(vector<int>a,int x)
-    {
-        int l=-1;
-        if(a[512]<x) l=1000-512;
-        if(a[l+256]<x) l+=256;
-        if(a[l+128]<x) l+=128;
-        if(a[l+64]<x) l+=64;
-        if(a[l+32]<x) l+=32;
-        if(a[l+16]<x) l+=16;
-        if(a[l+8]<x) l+=8;
-        if(a[l+4]<x) l+=4;
-        if(a[l+2]<x) l+=2;
-        if(a[l+1]<x) l+=1;
-     
-        int p=l+1;
-        if(p>1000 || a[p]!=x) p=-1;
-        return p;
-    }
-    {% endhighlight %}
+```c++
+int bSearch4(vector<int>a,int x)
+{
+    int l=-1;
+    if(a[512]<x) l=1000-512;
+    if(a[l+256]<x) l+=256;
+    if(a[l+128]<x) l+=128;
+    if(a[l+64]<x) l+=64;
+    if(a[l+32]<x) l+=32;
+    if(a[l+16]<x) l+=16;
+    if(a[l+8]<x) l+=8;
+    if(a[l+4]<x) l+=4;
+    if(a[l+2]<x) l+=2;
+    if(a[l+1]<x) l+=1;
+ 
+    int p=l+1;
+    if(p>1000 || a[p]!=x) p=-1;
+    return p;
+}
+```
 这是一个1000个数据的二分查找的优化。

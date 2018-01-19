@@ -1,15 +1,15 @@
 <footer>
   <hr class="slender">
-  <ul class="footer-links">
-    <li><a href="mailto:hate@spam.net"><span class="icon-mail"></span></a></li>    
-    {% for entry in site.data.social %}
-      <li>
-        <a href="{{ entry.link }}"><span class="{{ entry.icon }}"></span></a>
-      </li>
-    {% endfor %}  
-  </ul>
+  <!-- <ul class="footer&#45;links"> -->
+  <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--   {% for entry in site.data.social %} -->
+  <!--     <li> -->
+  <!--       <a href="{{ entry.link }}"><span class="{{ entry.icon }}"></span></a> -->
+  <!--     </li> -->
+  <!--   {% endfor %}   -->
+  <!-- </ul> -->
 <div class="credits">
-<span>&copy; {{ site.time | date: '%Y' }} &nbsp;&nbsp;{{site.author | upcase }}</span></br> <br>
-<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme for {{site.subtitle}} </a> in <a href="//jekyllrb.com">Jekyll</a>.</span> 
+<!-- <span>&#38;copy; {{ site.time | date: '%Y' }} <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp;{{site.author | upcase }} &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>, based on <a href="//github.com/ermongroup/cs228-notes">Ermongroup</a>. &copy; {{ site.time | date: '%Y' }}</span> 
 </div>  
 </footer>

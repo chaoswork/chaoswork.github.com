@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>计算几何初步</title>
+  <meta name="description" content="以前看到计算几何的题目就心虚，USACO的计算几何题目基本都跳过了，今天认真看了一下，发现其实计算几何没有想象中的那么难。本来做到USACO的fence3的题目，其中关键的一步就是求点到线段的最短距离，我本来想用解析几何做，也就是求出点到直线的距离，不过这样做我推导了半天，十分繁琐，后来想用海伦-秦九昭公式先算出...">
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+
+  <link rel="stylesheet" type="text/css" href="/css/tufte.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/print.css" media="print"> -->
+
+  <link rel="canonical" href="http://localhost:4000/blog/2011/03/19/geometry-basic-1">
+
+  <link rel="alternate" type="application/rss+xml" title="Chaos.Work" href="http://localhost:4000/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+	<a href="/"><img class="badge" src="/assets/img/badge_1.png" alt="CH"></a>
+	
+		
+		    
+		      <a href="/">blog</a>
+		    
+	    
+  	
+		
+		    
+		      <a href="/about/">About</a>
+		    
+	    
+  	
+		
+		    
+		      <a href="/css/print.css"></a>
+		    
+	    
+  	
+		
+  	
+	</nav>
+</header>
+    <article class="group">
+      <h1>计算几何初步</h1>
+<p class="subtitle">March 19, 2011</p>
+
+<p>以前看到计算几何的题目就心虚，USACO的计算几何题目基本都跳过了，今天认真看了一下，发现其实计算几何没有想象中的那么难。本来做到USACO的fence3的题目，其中关键的一步就是求点到线段的最短距离，我本来想用解析几何做，也就是求出点到直线的距离，不过这样做我推导了半天，十分繁琐，后来想用海伦-秦九昭公式先算出三角形的面积，然后就出来了。但是看了TC的<a href="http://www.topcoder.com/tc?module=Static&amp;d1=tutorials&amp;d2=alg_index">Algorithm Tutorial</a>，发现原来求解的过程这么的简单。。。</p>
+
+<p>首先介绍计算几何中的基本概念：</p>
+
+<p>1.向量，这个不用多说了，最基本的概念。</p>
+
+<p>2.点积(Dot Product),也叫数量积，是接受在实数R上的两个向量并返回一个实数值标量的二元运算。这里只考虑2维的向量，<code class="highlighter-rouge">A=[x1,y1],B=[x2,y2]</code>,则<code class="highlighter-rouge">A*B=x1*x1+y1*y1;</code>在欧式几何空间中，点积可形象的表示为<code class="highlighter-rouge">A*B=|A||B|cos(θ)</code>,θ为两个向量之间的角度，图示如下。</p>
+
+<p><img src="/images/topcoder/image_thumb2.png" alt="image" /></p>
+
+<p>根据这个公式，可以计算向量的夹角，所以，一般点积可以判断点之间的关系。如下图，如果<code class="highlighter-rouge">AB*AC&lt;0</code>,则说明<code class="highlighter-rouge">90&lt;θ&lt;27</code>0,则说明C点在A的外面。</p>
+
+<p><img src="/images/topcoder/image_thumb3.png" alt="image" /></p>
+
+<p>根据点积的概念可以写出计算点积的代码：</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="kt">double</span> <span class="nf">dot</span><span class="p">(</span><span class="n">point</span> <span class="n">a</span><span class="p">,</span><span class="n">point</span> <span class="n">b</span><span class="p">,</span><span class="n">point</span> <span class="n">c</span><span class="p">)</span><span class="c1">//ab*ac
+</span><span class="p">{</span>
+    <span class="n">point</span> <span class="n">ab</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="o">-</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="o">-</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+    <span class="n">point</span> <span class="n">ac</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">x</span><span class="o">-</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="n">c</span><span class="p">.</span><span class="n">y</span><span class="o">-</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">ab</span><span class="p">.</span><span class="n">x</span><span class="o">*</span><span class="n">ac</span><span class="p">.</span><span class="n">x</span><span class="o">+</span><span class="n">ab</span><span class="p">.</span><span class="n">y</span><span class="o">*</span><span class="n">ac</span><span class="p">.</span><span class="n">y</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>3.叉积(Cross Product),也叫向量积，需要注意的是ABxAC的结果也是一个向量，而且方向和这两个向量都垂直，由于只考虑平面，所以这个方向并不做考虑，有兴趣再看。</p>
+
+<p>设<code class="highlighter-rouge">AB=[x1,y1],AC=[x2,y2]</code>,则<code class="highlighter-rouge">ABxAC=x1*y2-x2*y1</code>;</p>
+
+<p><code class="highlighter-rouge">ABxAC=|AB||AC|sin(θ)</code>,这个结果在平面上可形象的表示为：</p>
+
+<p><img src="/images/topcoder/image_thumb4.png" alt="image" /></p>
+
+<p>这个平行四边形的面积，当然是不考虑其方向。</p>
+
+<p>同理，叉积的代码如下：</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="kt">double</span> <span class="nf">cross</span><span class="p">(</span><span class="n">point</span> <span class="n">a</span><span class="p">,</span><span class="n">point</span> <span class="n">b</span><span class="p">,</span><span class="n">point</span> <span class="n">c</span><span class="p">)</span><span class="c1">//abXac
+</span><span class="p">{</span>
+    <span class="n">point</span> <span class="n">ab</span><span class="p">(</span><span class="n">b</span><span class="p">.</span><span class="n">x</span><span class="o">-</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="n">b</span><span class="p">.</span><span class="n">y</span><span class="o">-</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+    <span class="n">point</span> <span class="n">ac</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">x</span><span class="o">-</span><span class="n">a</span><span class="p">.</span><span class="n">x</span><span class="p">,</span><span class="n">c</span><span class="p">.</span><span class="n">y</span><span class="o">-</span><span class="n">a</span><span class="p">.</span><span class="n">y</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">ab</span><span class="p">.</span><span class="n">x</span><span class="o">*</span><span class="n">ac</span><span class="p">.</span><span class="n">y</span><span class="o">-</span><span class="n">ab</span><span class="p">.</span><span class="n">y</span><span class="o">*</span><span class="n">ac</span><span class="p">.</span><span class="n">x</span><span class="p">;</span>
+<span class="p">}</span></code></pre></figure>
+
+<p>4.点到线段的距离，点到直线的最短距离无非就在点和线段上的3个点确定，两个端点和点到这条线段直线的垂线相交的点，当然，如果相交的点不在线段上，则最短距离就是两个点中的一个，否则就是点到这条直线的最短距离。</p>
+
+<p>可以通过点积来判断点和线段的相对位置，并且利用叉积计算出点到直线的最短距离,比如上图2，ABxAC为一个平行四边形的面积，而这个面积又等于<code class="highlighter-rouge">|AB|*h</code>,h就是C点到AB所在直线的最短距离。代码如下：</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="kt">double</span> <span class="nf">Dist2Seg</span><span class="p">(</span><span class="n">point</span> <span class="n">c</span><span class="p">,</span><span class="n">segment</span> <span class="n">AB</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">AB</span><span class="p">.</span><span class="n">pa</span><span class="p">.</span><span class="n">x</span><span class="o">==</span><span class="n">AB</span><span class="p">.</span><span class="n">pb</span><span class="p">.</span><span class="n">x</span> <span class="o">&amp;&amp;</span> <span class="n">AB</span><span class="p">.</span><span class="n">pa</span><span class="p">.</span><span class="n">y</span><span class="o">==</span><span class="n">AB</span><span class="p">.</span><span class="n">pb</span><span class="p">.</span><span class="n">y</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dist</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">AB</span><span class="p">.</span><span class="n">pa</span><span class="p">);</span>
+ 
+    <span class="kt">double</span> <span class="n">d</span><span class="o">=</span><span class="n">abs</span><span class="p">(</span><span class="n">cross</span><span class="p">(</span><span class="n">AB</span><span class="p">.</span><span class="n">pa</span><span class="p">,</span><span class="n">AB</span><span class="p">.</span><span class="n">pb</span><span class="p">,</span><span class="n">c</span><span class="p">)</span><span class="o">/</span><span class="n">dist</span><span class="p">(</span><span class="n">AB</span><span class="p">.</span><span class="n">pa</span><span class="p">,</span><span class="n">AB</span><span class="p">.</span><span class="n">pb</span><span class="p">));</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">AB</span><span class="p">.</span><span class="n">pa</span><span class="p">,</span><span class="n">AB</span><span class="p">.</span><span class="n">pb</span><span class="p">,</span><span class="n">c</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dist</span><span class="p">(</span><span class="n">AB</span><span class="p">.</span><span class="n">pa</span><span class="p">,</span><span class="n">c</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">dot</span><span class="p">(</span><span class="n">AB</span><span class="p">.</span><span class="n">pb</span><span class="p">,</span><span class="n">AB</span><span class="p">.</span><span class="n">pa</span><span class="p">,</span><span class="n">c</span><span class="p">)</span><span class="o">&lt;</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">dist</span><span class="p">(</span><span class="n">AB</span><span class="p">.</span><span class="n">pb</span><span class="p">,</span><span class="n">c</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">d</span><span class="p">;</span>
+ 
+<span class="p">}</span></code></pre></figure>
+
+<p>未完待续。。。</p>
+
+<p>注：图片和相关资料来自wikipedia和TC Algorithm Tutorial</p>
+
+<p>1.Wikipedia关于<a href="http://zh.wikipedia.org/zh/%E6%95%B0%E9%87%8F%E7%A7%AF">点积</a>和<a href="http://zh.wikipedia.org/wiki/%E5%90%91%E9%87%8F%E7%A7%AF">叉积</a>。</p>
+
+<p>2.TC Algorithm Tutorial 的<a href="http://www.topcoder.com/tc?module=Static&amp;d1=tutorials&amp;d2=geometry1">计算几何</a>部分。</p>
+
+
+
+    </article>
+    <span class="print-footer">计算几何初步 - March 19, 2011 - </span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <li><a href="mailto:hate@spam.net"><span class="icon-mail"></span></a></li>    
+      
+  </ul>
+<div class="credits">
+<span>&copy; 2018 &nbsp;&nbsp;</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme for  </a> in <a href="//jekyllrb.com">Jekyll</a>.</span> 
+</div>  
+</footer>
+  </body>
+</html>

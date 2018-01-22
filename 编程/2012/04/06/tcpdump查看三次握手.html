@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>tcpdump查看三次握手</title>
+  <meta name="description" content="以前学TCP三次握手也就停留在知道有三个箭头的程度，现在借助tcpdump这个工具可以很清晰的看出TCP协议是怎么建立连接以及传输数据的。我首先运行了UNP书上的TCP回射服务器的程序，让其在9889端口监听，然后用tcpdump程序来截取本机的9889端口的通信数据包。命令行如下：">
+
+
+  <link rel="stylesheet" href="/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75587219-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+
+  <link rel="canonical" href="http://localhost:4000/%E7%BC%96%E7%A8%8B/2012/04/06/tcpdump%E6%9F%A5%E7%9C%8B%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B.html">
+  <link rel="alternate" type="application/rss+xml" title="Chaos.Work" href="http://localhost:4000/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+        <a href="/">Blog</a>
+	<a href="http://github.com/chaoswork">Github</a>
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>Tcpdump查看三次握手</h1>
+<p class="subtitle">April 6, 2012</p>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      Macros: {
+        e: "\\epsilon",
+        xti: "x^{(i)}",
+        yti: "y^{(i)}",
+        bfy: "{\\bf y}",
+        bfx: "{\\bf x}",
+        bfg: "{\\bf g}",
+        bfbeta: "{\\bf \\beta}",
+        tp: "\\tilde p",
+        pt: "p_\\theta",
+        Exp: "{\\mathbb{E}}",
+        Ind: "{\\mathbb{I}}",
+        KL: "{\\mathbb{KL}}",
+        Dc: "{\\mathcal{D}}",
+        Tc: "{\\mathcal{T}}",
+        Xc: "{\\mathcal{X}}",
+        note: ["\\textcolor{blue}{[NOTE: #1]}",1]
+      }
+    }
+  });
+</script>
+
+
+<p>以前学TCP三次握手也就停留在知道有三个箭头的程度，现在借助tcpdump这个工具可以很清晰的看出TCP协议是怎么建立连接以及传输数据的。
+我首先运行了UNP书上的TCP回射服务器的程序，让其在9889端口监听，然后用tcpdump程序来截取本机的9889端口的通信数据包。命令行如下：</p>
+
+<p><code class="highlighter-rouge">$ sudo tcpdump -i lo 'port 9889 and tcp' -X -s 0 -S</code></p>
+
+<p>具体tcpdump的命令参数可以通过man tcpdump得知，不过这里用的比较重要的就是-X和-S，-X表明当分析和打印时, tcpdump 会打印每个包的头部数据, 同时会以16进制和ASCII码形式打印出每个包的数据(但不包括连接层的头部).</p>
+
+<p>-S表明打印TCP 数据包的顺序号时, 使用绝对的顺序号, 而不是相对的顺序号.比如我第一次用tcpdump查看tcp的三次握手时发现第三次握手的ack=1,这个ack就是相对的，因为tcpdump只在SYN包中显示绝对顺序号，而非SYN包则显示相对的，为了便于观察，在抓包时都采用来绝对的顺序号。</p>
+
+<p>为了能看懂tcpdump输出的格式，首先要知道TCP/IP的数据封装，大体如下图所示：<img src="https://lh5.googleusercontent.com/AyzucSnu5AdElVtGL7WMJs7HT6QGTaiX8Qg6NYBX8dxfhvagZcinJDiW_srsYOmKT6mYFvkLeE533DYPLwXOM1R6rQ4Eo9zmgIcCqIRp08IIbfIFghM" alt="" /></p>
+
+<p>图片来自<a href="http://www2.meps.tp.edu.tw/documents/memo/TCP%EF%BC%8FIP%E6%A6%82%E8%AB%96/index.htm">http://www2.meps.tp.edu.tw/documents/memo/TCP%EF%BC%8FIP%E6%A6%82%E8%AB%96/index.htm</a></p>
+
+<p>上面命令-X参数限定了只截取上图中倒数第二个数据包，也就是只包含IP Header,TCP Header,Application Data.</p>
+
+<p>首先看IP Header的结构:</p>
+
+<p>![image][/images/tcpdump/image22_thumb.png]</p>
+
+<p>关于IP Header的结构，我还没有深入的学习，简单的字段解释如下：</p>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">Version:&lt;4bits&gt;</code>,表明IP的版本，一般应该都是4或者6.</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">IHL:&lt;4bit&gt;</code>,Internet Header Length,表明IP头的长度，一个单位长度是32bit，上图中Options字段是非必须的，所以IP Header的长度最小是5x32bits.所以该字段最小值应该为5.</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">Total Length:&lt;16bits&gt;</code>,该字段表明了整个IP包的长度，包括IP Header,TCP Header和Application Data.</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">IP Source Address:&lt;32bits&gt;</code>,源IP地址，图中的Adresse是德文的Address,这个IP Header的图和下面TCP Header的图都是从德文网站<a href="http://www.trojaner-und-sicherheit.de/tcp-ip-schulung/sld106.htm">http://www.trojaner-und-sicherheit.de/tcp-ip-schulung/sld106.htm</a>上面找到的。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">IP Destionation Address:&lt;32bits&gt;</code>,目的IP地址。</p>
+  </li>
+  <li>
+    <p>Options:可选字段，后面的Padding表示不够32bits要用0来补齐。</p>
+  </li>
+</ul>
+
+<p>举例来说，我用tcpdump抓到了这样一个包：</p>
+
+<pre><code class="language-wiki">00:05:36.631501 IP localhost.54504 &gt; localhost.9889: 
+Flags [P.], seq 4289908547:4289908560, ack 2355231328, 
+win 2050, options [nop,nop,TS val 28499978 ecr 28495907], length 13
+0x0000:  4500 0041 1f63 4000 4006 1d52 7f00 0001  E..A.c@.@..R....
+0x0010:  7f00 0001 d4e8 26a1 ffb2 cf43 8c61 fa60  ......&amp;....C.a.`
+0x0020:  8018 0802 fe35 0000 0101 080a 01b2 e00a  .....5..........
+0x0030:  01b2 d023 6865 6c6c 6f20 776f 726c 647e  ...#hello.world~
+0x0040:  0a
+</code></pre>
+
+<p>可以看到第一个32bits的数据为4500，根据上面IP Header的定义，这个IP Header的长度为5，也就是5x32bits，将其整理出来如下：</p>
+
+<pre><code class="language-wiki">+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+|Ver: 4     |IHL: 5     | ToS: 00      |   Total Length: 0041 |
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ 
+|Identification: 1f63     |F: 4     |    Fragment Offset: 000 | 
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ 
+| TTL: 40     |  Protocol: 06         | Header Checksum: 1d52 | 
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ 
+| Source Address: 7f00 0001                                   | 
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+ 
+| Destination Address: 7f00 0001                              | 
++-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+</code></pre>
+
+<p>下面是TCP Header的结构：</p>
+
+<p><img src="/images/tcpdump/image_thumb1.png" alt="image_thumb1" /></p>
+
+<ul>
+  <li>
+    <p><code class="highlighter-rouge">Source Port:&lt;16bits&gt;</code>,源端口</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">Destination Port:&lt;16bits&gt;</code>,目的端口。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">Sequence Number:&lt;32bits&gt;</code>,这个地方还有待研究，目前我是这样认为的，如果本TCP Header中的SYN(Synchronize sequence numbers)标志为0，则代表本TCP Header携带的数据第一个字节的序号；如果本TCP Header中的SYN标志为1，那么这个序号代表了ISN(initial sequence number)，也就是双方建立TCP连接时的初始序列号，那么本次TCP连接后在此方向上传输的第一个字节的编号应该为ISN+1.</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">Acknowledge Number:&lt;32bits&gt;</code>,这个字段仅当TCP Header中ACK标志为1时有效，代表了这个TCP Header的发送端所期望的下一个数据的序列号，与上文提到的Sequence Number配合使用。一旦两端通过TCP连接起来，那么这个字段应该总是有效的。</p>
+  </li>
+  <li>
+    <p><code class="highlighter-rouge">Data Offset:&lt;4bits&gt;</code>,与IP Header中的IHL类似，单位长度也是32bits，代表了TCP Header的长度，TCP Options也是可选的，但是一般都会存在，所以这个字段的最小值为5，但是一般都会大于5.</p>
+  </li>
+  <li>
+    <p>Options：不定长，每个选项的开始是1字节的kind字段，说明选项的类型。Kind=0:选项表结束（1字节）,Kind=1:无操作（1字节）,Kind=2：最大报文段长度（4字节）,Kind=3:窗口扩大因子（4字节）,Kind=8:时间戳（10字节）</p>
+  </li>
+  <li>
+    <p>Data:终于，这个字段就是Application Data，我们要发送的数据就在这里。</p>
+  </li>
+</ul>
+
+<p>同样是上面的包，TCP 段和其后紧跟的Data段的信息整理出来如下：</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span>
+<span class="o">|</span> <span class="n">Source</span> <span class="n">Port</span><span class="p">:</span> <span class="n">d4e8</span> <span class="o">|</span> <span class="n">Destination</span> <span class="n">Port</span><span class="p">:</span> <span class="mi">26</span><span class="n">a1</span> <span class="o">|</span>
+<span class="o">+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span>
+<span class="o">|</span> <span class="n">Sequence</span> <span class="n">Number</span><span class="p">:</span> <span class="n">ffb2</span> <span class="n">cf43</span> <span class="o">|</span>
+<span class="o">+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span>
+<span class="o">|</span> <span class="n">Acknowledgment</span> <span class="n">Number</span><span class="p">:</span> <span class="mi">8</span><span class="n">c61</span> <span class="n">fa60</span> <span class="o">|</span>
+<span class="o">+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span>
+<span class="o">|</span><span class="n">DO</span><span class="p">:</span> <span class="mi">8</span> <span class="o">|</span><span class="n">Reserved</span><span class="p">:</span> <span class="mi">0</span><span class="o">|</span> <span class="n">Flags</span><span class="p">:</span> <span class="mi">18</span><span class="o">|</span> <span class="n">Window</span><span class="p">:</span> <span class="mi">0802</span> <span class="o">|</span>
+<span class="o">+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span>
+<span class="o">|</span> <span class="n">Checksum</span><span class="p">:</span> <span class="n">fe35</span> <span class="o">|</span> <span class="n">Urgent</span> <span class="n">Pointer</span><span class="p">:</span> <span class="mo">0000</span> <span class="o">|</span>
+<span class="o">+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span>
+<span class="o">|</span> <span class="n">TCP</span> <span class="n">Options</span><span class="p">:</span> <span class="mo">0101</span> <span class="mi">080</span><span class="n">a</span> <span class="o">|</span>
+<span class="o">+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span>
+<span class="o">|</span> <span class="n">TCP</span> <span class="n">Options</span><span class="p">:</span> <span class="mo">01</span><span class="n">b2</span> <span class="n">e00a</span> <span class="o">|</span>
+<span class="o">+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span>
+<span class="o">|</span> <span class="n">TCP</span> <span class="n">Options</span><span class="p">:</span> <span class="mo">01</span><span class="n">b2</span> <span class="n">d023</span> <span class="o">|</span>
+<span class="o">+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span>
+<span class="o">|</span> <span class="n">Data</span><span class="p">:</span> <span class="mi">6865</span> <span class="mi">6</span><span class="n">c6c</span> <span class="mi">6</span><span class="n">f20</span> <span class="mi">776</span><span class="n">f</span> <span class="mi">726</span><span class="n">c</span> <span class="mi">647</span><span class="n">e</span> <span class="mi">0</span><span class="n">a</span> <span class="o">|</span>
+<span class="o">+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+</span>
+    </code></pre></figure>
+
+<p>上面Data段的ascii码值为:”hello world~\n”</p>
+
+<p>我在本机上截获的数据包如下，这里我用黄色背景表示IP段，用绿色背景表示TCP段，没有背景则是数据段。蓝色的字体是我的注释。</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="o">&lt;</span><span class="mi">1</span><span class="o">&gt;</span><span class="mo">00</span><span class="p">:</span><span class="mo">05</span><span class="p">:</span><span class="mf">20.346307</span> <span class="n">IP</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">54504</span> <span class="o">&gt;</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">9889</span><span class="p">:</span> 
+<span class="n">Flags</span> <span class="p">[</span><span class="n">S</span><span class="p">],</span> <span class="n">seq</span> <span class="mi">4289908546</span> <span class="p">(</span><span class="n">client</span> <span class="n">ISN</span><span class="p">)</span> <span class="p">,</span> <span class="n">win</span> <span class="mi">32792</span><span class="p">,</span> 
+<span class="n">options</span> <span class="p">[</span><span class="n">mss</span> <span class="mi">16396</span><span class="p">,</span><span class="n">sackOK</span><span class="p">,</span><span class="n">TS</span> <span class="n">val</span> <span class="mi">28495907</span> <span class="n">ecr</span> <span class="mi">0</span><span class="p">,</span><span class="n">nop</span><span class="p">,</span><span class="n">wscale</span> <span class="mi">4</span><span class="p">],</span> <span class="n">length</span> <span class="mi">0</span>
+<span class="mh">0x0000</span><span class="p">:</span><span class="err"> </span> <span class="mi">4500</span> <span class="mo">003</span><span class="n">c</span> <span class="mi">1</span><span class="n">f61</span> <span class="mi">4000</span> <span class="mi">4006</span> <span class="mi">1</span><span class="n">d59</span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span><span class="err"> </span> <span class="n">E</span><span class="o">..&lt;.</span><span class="n">a</span><span class="nd">@.@..Y....</span>
+<span class="mh">0x0010</span><span class="p">:</span><span class="err"> </span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span> <span class="n">d4e8</span> <span class="mi">26</span><span class="n">a1</span> <span class="n">ffb2</span> <span class="n">cf42</span> <span class="mo">0000</span> <span class="mo">0000</span><span class="err"> </span> <span class="o">......&amp;....</span><span class="n">B</span><span class="o">....</span>
+<span class="mh">0x0020</span><span class="p">:</span><span class="err"> </span> <span class="n">a002</span> <span class="mi">8018</span> <span class="n">fe30</span> <span class="mo">0000</span> <span class="mo">0204</span> <span class="mi">400</span><span class="n">c</span> <span class="mo">0402</span> <span class="mi">080</span><span class="n">a</span><span class="err"> </span> <span class="o">.....</span><span class="mf">0.</span><span class="o">...</span><span class="nd">@.....</span>
+<span class="mh">0x0030</span><span class="p">:</span><span class="err"> </span> <span class="mo">01</span><span class="n">b2</span> <span class="n">d023</span> <span class="mo">0000</span> <span class="mo">0000</span> <span class="mo">0103</span> <span class="mo">0304</span><span class="err">           </span> <span class="o">...</span><span class="c">#........</span>
+<span class="o">&lt;</span><span class="mi">2</span><span class="o">&gt;</span><span class="mo">00</span><span class="p">:</span><span class="mo">05</span><span class="p">:</span><span class="mf">20.346333</span> <span class="n">IP</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">9889</span> <span class="o">&gt;</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">54504</span><span class="p">:</span> <span class="n">Flags</span> <span class="p">[</span><span class="n">S</span><span class="o">.</span><span class="p">],</span> 
+<span class="n">seq</span> <span class="mi">2355231327</span> <span class="p">(</span><span class="n">server</span> <span class="n">ISN</span><span class="p">)</span> <span class="p">,</span> <span class="n">ack</span> <span class="mi">4289908547</span> <span class="p">(</span><span class="n">ack</span><span class="o">=</span><span class="n">client</span> <span class="n">ISN</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="p">,</span> <span class="n">win</span> <span class="mi">32768</span><span class="p">,</span> 
+<span class="n">options</span> <span class="p">[</span><span class="n">mss</span> <span class="mi">16396</span><span class="p">,</span><span class="n">sackOK</span><span class="p">,</span><span class="n">TS</span> <span class="n">val</span> <span class="mi">28495907</span> <span class="n">ecr</span> <span class="mi">28495907</span><span class="p">,</span><span class="n">nop</span><span class="p">,</span><span class="n">wscale</span> <span class="mi">4</span><span class="p">],</span> 
+<span class="n">length</span> <span class="mi">0</span>
+<span class="mh">0x0000</span><span class="p">:</span><span class="err"> </span> <span class="mi">4500</span> <span class="mo">003</span><span class="n">c</span> <span class="mo">0000</span> <span class="mi">4000</span> <span class="mi">4006</span> <span class="mi">3</span><span class="n">cba</span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span><span class="err"> </span> <span class="n">E</span><span class="o">..&lt;..</span><span class="nd">@.@.</span><span class="o">&lt;.....</span>
+<span class="mh">0x0010</span><span class="p">:</span><span class="err"> </span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span> <span class="mi">26</span><span class="n">a1</span> <span class="n">d4e8</span> <span class="mi">8</span><span class="n">c61</span> <span class="n">fa5f</span> <span class="n">ffb2</span> <span class="n">cf43</span><span class="err"> </span> <span class="o">....&amp;....</span><span class="n">a</span><span class="o">.</span><span class="n">_</span><span class="o">...</span><span class="n">C</span>
+<span class="mh">0x0020</span><span class="p">:</span><span class="err"> </span> <span class="n">a012</span> <span class="mi">8000</span> <span class="n">fe30</span> <span class="mo">0000</span> <span class="mo">0204</span> <span class="mi">400</span><span class="n">c</span> <span class="mo">0402</span> <span class="mi">080</span><span class="n">a</span><span class="err"> </span> <span class="o">.....</span><span class="mf">0.</span><span class="o">...</span><span class="nd">@.....</span>
+<span class="mh">0x0030</span><span class="p">:</span><span class="err"> </span> <span class="mo">01</span><span class="n">b2</span> <span class="n">d023</span> <span class="mo">01</span><span class="n">b2</span> <span class="n">d023</span> <span class="mo">0103</span> <span class="mo">0304</span><span class="err">           </span> <span class="o">...</span><span class="c">#...#....</span>
+<span class="o">&lt;</span><span class="mi">3</span><span class="o">&gt;</span><span class="mo">00</span><span class="p">:</span><span class="mo">05</span><span class="p">:</span><span class="mf">20.346347</span> <span class="n">IP</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">54504</span> <span class="o">&gt;</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">9889</span><span class="p">:</span> <span class="n">Flags</span> <span class="p">[</span><span class="o">.</span><span class="p">],</span> 
+<span class="n">ack</span> <span class="mi">2355231328</span> <span class="p">(</span><span class="n">ack</span><span class="o">=</span><span class="n">server</span> <span class="n">ISN</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="p">,</span> <span class="n">win</span> <span class="mi">2050</span><span class="p">,</span> 
+<span class="n">options</span> <span class="p">[</span><span class="n">nop</span><span class="p">,</span><span class="n">nop</span><span class="p">,</span><span class="n">TS</span> <span class="n">val</span> <span class="mi">28495907</span> <span class="n">ecr</span> <span class="mi">28495907</span><span class="p">],</span><span class="n">length</span> <span class="mi">0</span>
+<span class="mh">0x0000</span><span class="p">:</span><span class="err"> </span> <span class="mi">4500</span> <span class="mo">0034</span> <span class="mi">1</span><span class="n">f62</span> <span class="mi">4000</span> <span class="mi">4006</span> <span class="mi">1</span><span class="n">d60</span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span><span class="err"> </span> <span class="n">E</span><span class="o">..</span><span class="mf">4.</span><span class="n">b</span><span class="nd">@.@..</span><span class="err">`</span><span class="o">....</span>
+<span class="mh">0x0010</span><span class="p">:</span><span class="err"> </span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span> <span class="n">d4e8</span> <span class="mi">26</span><span class="n">a1</span> <span class="n">ffb2</span> <span class="n">cf43</span> <span class="mi">8</span><span class="n">c61</span> <span class="n">fa60</span><span class="err"> </span> <span class="o">......&amp;....</span><span class="n">C</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="err">`</span>
+<span class="mh">0x0020</span><span class="p">:</span><span class="err"> </span> <span class="mi">8010</span> <span class="mi">0802</span> <span class="n">fe28</span> <span class="mo">0000</span> <span class="mo">0101</span> <span class="mi">080</span><span class="n">a</span> <span class="mo">01</span><span class="n">b2</span> <span class="n">d023</span><span class="err"> </span> <span class="o">.....</span><span class="p">(</span><span class="o">.........</span><span class="c">#</span>
+<span class="mh">0x0030</span><span class="p">:</span><span class="err"> </span> <span class="mo">01</span><span class="n">b2</span> <span class="n">d023</span><span class="err">                               </span> <span class="o">...</span><span class="c">#</span>
+<span class="c">#tcp 3 way handshake,可以看出，这3个包都没有包含数据，</span>
+<span class="c">#由于第一次和第二次握手含有最大报文长度而第三次只含有时间戳</span>
+<span class="c">#所以TCP Header的长度不同。</span>
+
+<span class="o">&lt;</span><span class="mi">4</span><span class="o">&gt;</span><span class="mo">00</span><span class="p">:</span><span class="mo">05</span><span class="p">:</span><span class="mf">36.631501</span> <span class="n">IP</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">54504</span> <span class="o">&gt;</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">9889</span><span class="p">:</span> <span class="n">Flags</span> <span class="p">[</span><span class="n">P</span><span class="o">.</span><span class="p">],</span> 
+<span class="n">seq</span> <span class="mi">4289908547</span><span class="p">:</span><span class="mi">4289908560</span><span class="p">,</span> <span class="n">ack</span> <span class="mi">2355231328</span><span class="p">,</span> 
+<span class="n">win</span> <span class="mi">2050</span><span class="p">,</span> <span class="n">options</span> <span class="p">[</span><span class="n">nop</span><span class="p">,</span><span class="n">nop</span><span class="p">,</span><span class="n">TS</span> <span class="n">val</span> <span class="mi">28499978</span> <span class="n">ecr</span> <span class="mi">28495907</span><span class="p">],</span> <span class="n">length</span> <span class="mi">13</span>
+<span class="mh">0x0000</span><span class="p">:</span><span class="err"> </span> <span class="mi">4500</span> <span class="mo">0041</span> <span class="mi">1</span><span class="n">f63</span> <span class="mi">4000</span> <span class="mi">4006</span> <span class="mi">1</span><span class="n">d52</span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span><span class="err"> </span> <span class="n">E</span><span class="o">..</span><span class="n">A</span><span class="o">.</span><span class="n">c</span><span class="nd">@.@..R....</span>
+<span class="mh">0x0010</span><span class="p">:</span><span class="err"> </span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span> <span class="n">d4e8</span> <span class="mi">26</span><span class="n">a1</span> <span class="n">ffb2</span> <span class="n">cf43</span> <span class="mi">8</span><span class="n">c61</span> <span class="n">fa60</span><span class="err"> </span> <span class="o">......&amp;....</span><span class="n">C</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="err">`</span>
+<span class="mh">0x0020</span><span class="p">:</span><span class="err"> </span> <span class="mi">8018</span> <span class="mi">0802</span> <span class="n">fe35</span> <span class="mo">0000</span> <span class="mo">0101</span> <span class="mi">080</span><span class="n">a</span> <span class="mo">01</span><span class="n">b2</span> <span class="n">e00a</span><span class="err"> </span> <span class="o">.....</span><span class="mf">5.</span><span class="o">.........</span>
+<span class="mh">0x0030</span><span class="p">:</span><span class="err"> </span> <span class="mo">01</span><span class="n">b2</span> <span class="n">d023</span> <span class="mi">6865</span> <span class="mi">6</span><span class="n">c6c</span> <span class="mi">6</span><span class="n">f20</span> <span class="mi">776</span><span class="n">f</span> <span class="mi">726</span><span class="n">c</span> <span class="mi">647</span><span class="n">e</span><span class="err"> </span> <span class="o">...</span><span class="c">#hello.world~</span>
+<span class="mh">0x0040</span><span class="p">:</span><span class="err"> </span> <span class="mi">0</span><span class="n">a</span><span class="err">                                      </span> <span class="o">.</span>
+<span class="o">&lt;</span><span class="mi">5</span><span class="o">&gt;</span><span class="mo">00</span><span class="p">:</span><span class="mo">05</span><span class="p">:</span><span class="mf">36.631964</span> <span class="n">IP</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">9889</span> <span class="o">&gt;</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">54504</span><span class="p">:</span> <span class="n">Flags</span> <span class="p">[</span><span class="o">.</span><span class="p">],</span> 
+<span class="n">ack</span> <span class="mi">4289908560</span><span class="p">,</span> <span class="n">win</span> <span class="mi">2048</span><span class="p">,</span> <span class="n">options</span> <span class="p">[</span><span class="n">nop</span><span class="p">,</span><span class="n">nop</span><span class="p">,</span><span class="n">TS</span> <span class="n">val</span> <span class="mi">28499979</span> <span class="n">ecr</span> <span class="mi">28499978</span><span class="p">],</span>
+<span class="n">length</span> <span class="mi">0</span>
+<span class="mh">0x0000</span><span class="p">:</span><span class="err"> </span> <span class="mi">4500</span> <span class="mo">0034</span> <span class="mi">2</span><span class="n">a43</span> <span class="mi">4000</span> <span class="mi">4006</span> <span class="mi">127</span><span class="n">f</span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span><span class="err"> </span> <span class="n">E</span><span class="o">..</span><span class="mi">4</span><span class="o">*</span><span class="n">C</span><span class="nd">@.@.......</span>
+<span class="mh">0x0010</span><span class="p">:</span><span class="err"> </span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span> <span class="mi">26</span><span class="n">a1</span> <span class="n">d4e8</span> <span class="mi">8</span><span class="n">c61</span> <span class="n">fa60</span> <span class="n">ffb2</span> <span class="n">cf50</span><span class="err"> </span> <span class="o">....&amp;....</span><span class="n">a</span><span class="o">.</span><span class="err">`</span><span class="o">...</span><span class="n">P</span>
+<span class="mh">0x0020</span><span class="p">:</span><span class="err"> </span> <span class="mi">8010</span> <span class="mi">0800</span> <span class="n">fe28</span> <span class="mo">0000</span> <span class="mo">0101</span> <span class="mi">080</span><span class="n">a</span> <span class="mo">01</span><span class="n">b2</span> <span class="n">e00b</span><span class="err"> </span> <span class="o">.....</span><span class="p">(</span><span class="o">..........</span>
+<span class="mh">0x0030</span><span class="p">:</span><span class="err"> </span> <span class="mo">01</span><span class="n">b2</span> <span class="n">e00a</span><span class="err">                               </span> <span class="o">....</span>
+<span class="o">&lt;</span><span class="mi">6</span><span class="o">&gt;</span><span class="mo">00</span><span class="p">:</span><span class="mo">05</span><span class="p">:</span><span class="mf">36.632024</span> <span class="n">IP</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">9889</span> <span class="o">&gt;</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">54504</span><span class="p">:</span> <span class="n">Flags</span> <span class="p">[</span><span class="n">P</span><span class="o">.</span><span class="p">],</span> 
+<span class="n">seq</span> <span class="mi">2355231328</span><span class="p">:</span><span class="mi">2355231341</span><span class="p">,</span> <span class="n">ack</span> <span class="mi">4289908560</span><span class="p">,</span> <span class="n">win</span> <span class="mi">2048</span><span class="p">,</span> 
+<span class="n">options</span> <span class="p">[</span><span class="n">nop</span><span class="p">,</span><span class="n">nop</span><span class="p">,</span><span class="n">TS</span> <span class="n">val</span> <span class="mi">28499979</span> <span class="n">ecr</span> <span class="mi">28499978</span><span class="p">],</span> <span class="n">length</span> <span class="mi">13</span>
+<span class="mh">0x0000</span><span class="p">:</span><span class="err"> </span> <span class="mi">4500</span> <span class="mo">0041</span> <span class="mi">2</span><span class="n">a44</span> <span class="mi">4000</span> <span class="mi">4006</span> <span class="mi">1271</span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span><span class="err"> </span> <span class="n">E</span><span class="o">..</span><span class="n">A</span><span class="o">*</span><span class="n">D</span><span class="nd">@.@..q....</span>
+<span class="mh">0x0010</span><span class="p">:</span><span class="err"> </span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span> <span class="mi">26</span><span class="n">a1</span> <span class="n">d4e8</span> <span class="mi">8</span><span class="n">c61</span> <span class="n">fa60</span> <span class="n">ffb2</span> <span class="n">cf50</span><span class="err"> </span> <span class="o">....&amp;....</span><span class="n">a</span><span class="o">.</span><span class="err">`</span><span class="o">...</span><span class="n">P</span>
+<span class="mh">0x0020</span><span class="p">:</span><span class="err"> </span> <span class="mi">8018</span> <span class="mi">0800</span> <span class="n">fe35</span> <span class="mo">0000</span> <span class="mo">0101</span> <span class="mi">080</span><span class="n">a</span> <span class="mo">01</span><span class="n">b2</span> <span class="n">e00b</span><span class="err"> </span> <span class="o">.....</span><span class="mf">5.</span><span class="o">.........</span>
+<span class="mh">0x0030</span><span class="p">:</span><span class="err"> </span> <span class="mo">01</span><span class="n">b2</span> <span class="n">e00a</span> <span class="mi">6865</span> <span class="mi">6</span><span class="n">c6c</span> <span class="mi">6</span><span class="n">f20</span> <span class="mi">776</span><span class="n">f</span> <span class="mi">726</span><span class="n">c</span> <span class="mi">647</span><span class="n">e</span><span class="err"> </span> <span class="o">....</span><span class="n">hello</span><span class="o">.</span><span class="n">world</span><span class="o">~</span>
+<span class="mh">0x0040</span><span class="p">:</span><span class="err"> </span> <span class="mi">0</span><span class="n">a</span><span class="err">                                      </span> <span class="o">.</span>
+<span class="o">&lt;</span><span class="mi">7</span><span class="o">&gt;</span><span class="mo">00</span><span class="p">:</span><span class="mo">05</span><span class="p">:</span><span class="mf">36.632078</span> <span class="n">IP</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">54504</span> <span class="o">&gt;</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">9889</span><span class="p">:</span> <span class="n">Flags</span> <span class="p">[</span><span class="o">.</span><span class="p">],</span> 
+<span class="n">ack</span> <span class="mi">2355231341</span><span class="p">,</span> <span class="n">win</span> <span class="mi">2050</span><span class="p">,</span> <span class="n">options</span> <span class="p">[</span><span class="n">nop</span><span class="p">,</span><span class="n">nop</span><span class="p">,</span><span class="n">TS</span> <span class="n">val</span> <span class="mi">28499979</span> <span class="n">ecr</span> <span class="mi">28499979</span><span class="p">],</span>
+<span class="n">length</span> <span class="mi">0</span>
+<span class="mh">0x0000</span><span class="p">:</span><span class="err"> </span> <span class="mi">4500</span> <span class="mo">0034</span> <span class="mi">1</span><span class="n">f64</span> <span class="mi">4000</span> <span class="mi">4006</span> <span class="mi">1</span><span class="n">d5e</span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span><span class="err"> </span> <span class="n">E</span><span class="o">..</span><span class="mf">4.</span><span class="n">d</span><span class="nd">@.@..</span><span class="o">^....</span>
+<span class="mh">0x0010</span><span class="p">:</span><span class="err"> </span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span> <span class="n">d4e8</span> <span class="mi">26</span><span class="n">a1</span> <span class="n">ffb2</span> <span class="n">cf50</span> <span class="mi">8</span><span class="n">c61</span> <span class="n">fa6d</span><span class="err"> </span> <span class="o">......&amp;....</span><span class="n">P</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">m</span>
+<span class="mh">0x0020</span><span class="p">:</span><span class="err"> </span> <span class="mi">8010</span> <span class="mi">0802</span> <span class="n">fe28</span> <span class="mo">0000</span> <span class="mo">0101</span> <span class="mi">080</span><span class="n">a</span> <span class="mo">01</span><span class="n">b2</span> <span class="n">e00b</span><span class="err"> </span> <span class="o">.....</span><span class="p">(</span><span class="o">..........</span>
+<span class="mh">0x0030</span><span class="p">:</span><span class="err"> </span> <span class="mo">01</span><span class="n">b2</span> <span class="n">e00b</span><span class="err">                               </span> <span class="o">....</span>
+<span class="c">#4,5,6,7这4个包表示client向server发送了"hello world~\n",</span>
+<span class="c">#然后server回射给client</span>
+
+<span class="o">&lt;</span><span class="mi">8</span><span class="o">&gt;</span><span class="mo">00</span><span class="p">:</span><span class="mo">06</span><span class="p">:</span><span class="mf">11.448332</span> <span class="n">IP</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">54504</span> <span class="o">&gt;</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">9889</span><span class="p">:</span> <span class="n">Flags</span> <span class="p">[</span><span class="n">P</span><span class="o">.</span><span class="p">],</span> 
+<span class="n">seq</span> <span class="mi">4289908560</span><span class="p">:</span><span class="mi">4289908587</span><span class="p">,</span> <span class="n">ack</span> <span class="mi">2355231341</span><span class="p">,</span> <span class="n">win</span> <span class="mi">2050</span><span class="p">,</span> 
+<span class="n">options</span> <span class="p">[</span><span class="n">nop</span><span class="p">,</span><span class="n">nop</span><span class="p">,</span><span class="n">TS</span> <span class="n">val</span> <span class="mi">28508683</span> <span class="n">ecr</span> <span class="mi">28499979</span><span class="p">],</span> <span class="n">length</span> <span class="mi">27</span>
+<span class="mh">0x0000</span><span class="p">:</span><span class="err"> </span> <span class="mi">4500</span> <span class="mo">004</span><span class="n">f</span> <span class="mi">1</span><span class="n">f65</span> <span class="mi">4000</span> <span class="mi">4006</span> <span class="mi">1</span><span class="n">d42</span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span><span class="err"> </span> <span class="n">E</span><span class="o">..</span><span class="n">O</span><span class="o">.</span><span class="n">e</span><span class="nd">@.@..B....</span>
+<span class="mh">0x0010</span><span class="p">:</span><span class="err"> </span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span> <span class="n">d4e8</span> <span class="mi">26</span><span class="n">a1</span> <span class="n">ffb2</span> <span class="n">cf50</span> <span class="mi">8</span><span class="n">c61</span> <span class="n">fa6d</span><span class="err"> </span> <span class="o">......&amp;....</span><span class="n">P</span><span class="o">.</span><span class="n">a</span><span class="o">.</span><span class="n">m</span>
+<span class="mh">0x0020</span><span class="p">:</span><span class="err"> </span> <span class="mi">8018</span> <span class="mi">0802</span> <span class="n">fe43</span> <span class="mo">0000</span> <span class="mo">0101</span> <span class="mi">080</span><span class="n">a</span> <span class="mo">01</span><span class="n">b3</span> <span class="mo">020</span><span class="n">b</span><span class="err"> </span> <span class="o">.....</span><span class="n">C</span><span class="o">..........</span>
+<span class="mh">0x0030</span><span class="p">:</span><span class="err"> </span> <span class="mo">01</span><span class="n">b2</span> <span class="n">e00b</span> <span class="mi">6162</span> <span class="mi">6364</span> <span class="mi">6566</span> <span class="mi">6768</span> <span class="mi">696</span><span class="n">a</span> <span class="mi">6</span><span class="n">b6c</span><span class="err"> </span> <span class="o">....</span><span class="n">abcdefghijkl</span>
+<span class="mh">0x0040</span><span class="p">:</span><span class="err"> </span> <span class="mi">6</span><span class="n">d6e</span> <span class="mi">6</span><span class="n">f70</span> <span class="mi">7172</span> <span class="mi">7374</span> <span class="mi">7576</span> <span class="mi">7778</span> <span class="mi">797</span><span class="n">a</span> <span class="mi">0</span><span class="n">a</span><span class="err">   </span> <span class="n">mnopqrstuvwxyz</span><span class="o">.</span>
+<span class="o">&lt;</span><span class="mi">9</span><span class="o">&gt;</span><span class="mo">00</span><span class="p">:</span><span class="mo">06</span><span class="p">:</span><span class="mf">11.448524</span> <span class="n">IP</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">9889</span> <span class="o">&gt;</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">54504</span><span class="p">:</span> <span class="n">Flags</span> <span class="p">[</span><span class="n">P</span><span class="o">.</span><span class="p">],</span> 
+<span class="n">seq</span> <span class="mi">2355231341</span><span class="p">:</span><span class="mi">2355231368</span><span class="p">,</span> <span class="n">ack</span> <span class="mi">4289908587</span><span class="p">,</span> <span class="n">win</span> <span class="mi">2048</span><span class="p">,</span> 
+<span class="n">options</span> <span class="p">[</span><span class="n">nop</span><span class="p">,</span><span class="n">nop</span><span class="p">,</span><span class="n">TS</span> <span class="n">val</span> <span class="mi">28508683</span> <span class="n">ecr</span> <span class="mi">28508683</span><span class="p">],</span> <span class="n">length</span> <span class="mi">27</span>
+<span class="mh">0x0000</span><span class="p">:</span><span class="err"> </span> <span class="mi">4500</span> <span class="mo">004</span><span class="n">f</span> <span class="mi">2</span><span class="n">a45</span> <span class="mi">4000</span> <span class="mi">4006</span> <span class="mi">1262</span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span><span class="err"> </span> <span class="n">E</span><span class="o">..</span><span class="n">O</span><span class="o">*</span><span class="n">E</span><span class="nd">@.@..b....</span>
+<span class="mh">0x0010</span><span class="p">:</span><span class="err"> </span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span> <span class="mi">26</span><span class="n">a1</span> <span class="n">d4e8</span> <span class="mi">8</span><span class="n">c61</span> <span class="n">fa6d</span> <span class="n">ffb2</span> <span class="n">cf6b</span><span class="err"> </span> <span class="o">....&amp;....</span><span class="n">a</span><span class="o">.</span><span class="n">m</span><span class="o">...</span><span class="n">k</span>
+<span class="mh">0x0020</span><span class="p">:</span><span class="err"> </span> <span class="mi">8018</span> <span class="mi">0800</span> <span class="n">fe43</span> <span class="mo">0000</span> <span class="mo">0101</span> <span class="mi">080</span><span class="n">a</span> <span class="mo">01</span><span class="n">b3</span> <span class="mo">020</span><span class="n">b</span><span class="err"> </span> <span class="o">.....</span><span class="n">C</span><span class="o">..........</span>
+<span class="mh">0x0030</span><span class="p">:</span><span class="err"> </span> <span class="mo">01</span><span class="n">b3</span> <span class="mo">020</span><span class="n">b</span> <span class="mi">6162</span> <span class="mi">6364</span> <span class="mi">6566</span> <span class="mi">6768</span> <span class="mi">696</span><span class="n">a</span> <span class="mi">6</span><span class="n">b6c</span><span class="err"> </span> <span class="o">....</span><span class="n">abcdefghijkl</span>
+<span class="mh">0x0040</span><span class="p">:</span><span class="err"> </span> <span class="mi">6</span><span class="n">d6e</span> <span class="mi">6</span><span class="n">f70</span> <span class="mi">7172</span> <span class="mi">7374</span> <span class="mi">7576</span> <span class="mi">7778</span> <span class="mi">797</span><span class="n">a</span> <span class="mi">0</span><span class="n">a</span><span class="err">   </span> <span class="n">mnopqrstuvwxyz</span><span class="o">.</span>
+<span class="o">&lt;</span><span class="mi">10</span><span class="o">&gt;</span><span class="mo">00</span><span class="p">:</span><span class="mo">06</span><span class="p">:</span><span class="mf">11.448578</span> <span class="n">IP</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">54504</span> <span class="o">&gt;</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">9889</span><span class="p">:</span> <span class="n">Flags</span> <span class="p">[</span><span class="o">.</span><span class="p">],</span> 
+<span class="n">ack</span> <span class="mi">2355231368</span><span class="p">,</span> <span class="n">win</span> <span class="mi">2050</span><span class="p">,</span> <span class="n">options</span> <span class="p">[</span><span class="n">nop</span><span class="p">,</span><span class="n">nop</span><span class="p">,</span><span class="n">TS</span> <span class="n">val</span> <span class="mi">28508683</span> <span class="n">ecr</span> <span class="mi">28508683</span><span class="p">],</span> 
+<span class="n">length</span> <span class="mi">0</span>
+<span class="mh">0x0000</span><span class="p">:</span><span class="err"> </span> <span class="mi">4500</span> <span class="mo">0034</span> <span class="mi">1</span><span class="n">f66</span> <span class="mi">4000</span> <span class="mi">4006</span> <span class="mi">1</span><span class="n">d5c</span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span><span class="err"> </span> <span class="n">E</span><span class="o">..</span><span class="mf">4.</span><span class="n">f</span><span class="nd">@.@..</span>\<span class="o">....</span>
+<span class="mh">0x0010</span><span class="p">:</span><span class="err"> </span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span> <span class="n">d4e8</span> <span class="mi">26</span><span class="n">a1</span> <span class="n">ffb2</span> <span class="n">cf6b</span> <span class="mi">8</span><span class="n">c61</span> <span class="n">fa88</span><span class="err"> </span> <span class="o">......&amp;....</span><span class="n">k</span><span class="o">.</span><span class="n">a</span><span class="o">..</span>
+<span class="mh">0x0020</span><span class="p">:</span><span class="err"> </span> <span class="mi">8010</span> <span class="mi">0802</span> <span class="n">fe28</span> <span class="mo">0000</span> <span class="mo">0101</span> <span class="mi">080</span><span class="n">a</span> <span class="mo">01</span><span class="n">b3</span> <span class="mo">020</span><span class="n">b</span><span class="err"> </span> <span class="o">.....</span><span class="p">(</span><span class="o">..........</span>
+<span class="mh">0x0030</span><span class="p">:</span><span class="err"> </span> <span class="mo">01</span><span class="n">b3</span> <span class="mo">020</span><span class="n">b</span><span class="err">                               </span> <span class="o">....</span>
+<span class="c">#8,9,10包的功能和4,5,6,7类似，表示client向server发送了</span>
+<span class="c">#"abcdefghijklmnopqrstuvwxyz\n",然后server回射给client,</span>
+<span class="c">#但是这里第9个包的功能相当于5,6包的合并，为什么会出现这种情况？有待考证。</span>
+<span class="o">&lt;</span><span class="mi">11</span><span class="o">&gt;</span><span class="mo">00</span><span class="p">:</span><span class="mo">06</span><span class="p">:</span><span class="mf">14.752733</span> <span class="n">IP</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">54504</span> <span class="o">&gt;</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">9889</span><span class="p">:</span> <span class="n">Flags</span> <span class="p">[</span><span class="n">F</span><span class="o">.</span><span class="p">],</span> 
+<span class="n">seq</span> <span class="mi">4289908587</span><span class="p">,</span> <span class="n">ack</span> <span class="mi">2355231368</span><span class="p">,</span> <span class="n">win</span> <span class="mi">2050</span><span class="p">,</span> 
+<span class="n">options</span> <span class="p">[</span><span class="n">nop</span><span class="p">,</span><span class="n">nop</span><span class="p">,</span><span class="n">TS</span> <span class="n">val</span> <span class="mi">28509509</span> <span class="n">ecr</span> <span class="mi">28508683</span><span class="p">],</span> <span class="n">length</span> <span class="mi">0</span>
+<span class="mh">0x0000</span><span class="p">:</span><span class="err"> </span> <span class="mi">4500</span> <span class="mo">0034</span> <span class="mi">1</span><span class="n">f67</span> <span class="mi">4000</span> <span class="mi">4006</span> <span class="mi">1</span><span class="n">d5b</span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span><span class="err"> </span> <span class="n">E</span><span class="o">..</span><span class="mf">4.</span><span class="n">g</span><span class="nd">@.@..</span><span class="p">[</span><span class="o">....</span>
+<span class="mh">0x0010</span><span class="p">:</span><span class="err"> </span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span> <span class="n">d4e8</span> <span class="mi">26</span><span class="n">a1</span> <span class="n">ffb2</span> <span class="n">cf6b</span> <span class="mi">8</span><span class="n">c61</span> <span class="n">fa88</span><span class="err"> </span> <span class="o">......&amp;....</span><span class="n">k</span><span class="o">.</span><span class="n">a</span><span class="o">..</span>
+<span class="mh">0x0020</span><span class="p">:</span><span class="err"> </span> <span class="mi">8011</span> <span class="mi">0802</span> <span class="n">fe28</span> <span class="mo">0000</span> <span class="mo">0101</span> <span class="mi">080</span><span class="n">a</span> <span class="mo">01</span><span class="n">b3</span> <span class="mo">0545</span><span class="err"> </span> <span class="o">.....</span><span class="p">(</span><span class="o">.........</span><span class="n">E</span>
+<span class="mh">0x0030</span><span class="p">:</span><span class="err"> </span> <span class="mo">01</span><span class="n">b3</span> <span class="mo">020</span><span class="n">b</span><span class="err">                               </span> <span class="o">....</span>
+<span class="o">&lt;</span><span class="mi">12</span><span class="o">&gt;</span><span class="mo">00</span><span class="p">:</span><span class="mo">06</span><span class="p">:</span><span class="mf">14.753693</span> <span class="n">IP</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">9889</span> <span class="o">&gt;</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">54504</span><span class="p">:</span> <span class="n">Flags</span> <span class="p">[</span><span class="n">F</span><span class="o">.</span><span class="p">],</span> 
+<span class="n">seq</span> <span class="mi">2355231368</span><span class="p">,</span> <span class="n">ack</span> <span class="mi">4289908588</span><span class="p">,</span> <span class="n">win</span> <span class="mi">2048</span><span class="p">,</span> 
+<span class="n">options</span> <span class="p">[</span><span class="n">nop</span><span class="p">,</span><span class="n">nop</span><span class="p">,</span><span class="n">TS</span> <span class="n">val</span> <span class="mi">28509509</span> <span class="n">ecr</span> <span class="mi">28509509</span><span class="p">],</span> <span class="n">length</span> <span class="mi">0</span>
+<span class="mh">0x0000</span><span class="p">:</span><span class="err"> </span> <span class="mi">4500</span> <span class="mo">0034</span> <span class="mi">2</span><span class="n">a46</span> <span class="mi">4000</span> <span class="mi">4006</span> <span class="mi">127</span><span class="n">c</span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span><span class="err"> </span> <span class="n">E</span><span class="o">..</span><span class="mi">4</span><span class="o">*</span><span class="n">F</span><span class="nd">@.@..</span><span class="o">|....</span>
+<span class="mh">0x0010</span><span class="p">:</span><span class="err"> </span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span> <span class="mi">26</span><span class="n">a1</span> <span class="n">d4e8</span> <span class="mi">8</span><span class="n">c61</span> <span class="n">fa88</span> <span class="n">ffb2</span> <span class="n">cf6c</span><span class="err"> </span> <span class="o">....&amp;....</span><span class="n">a</span><span class="o">.....</span><span class="n">l</span>
+<span class="mh">0x0020</span><span class="p">:</span><span class="err"> </span> <span class="mi">8011</span> <span class="mi">0800</span> <span class="n">fe28</span> <span class="mo">0000</span> <span class="mo">0101</span> <span class="mi">080</span><span class="n">a</span> <span class="mo">01</span><span class="n">b3</span> <span class="mo">0545</span><span class="err"> </span> <span class="o">.....</span><span class="p">(</span><span class="o">.........</span><span class="n">E</span>
+<span class="mh">0x0030</span><span class="p">:</span><span class="err"> </span> <span class="mo">01</span><span class="n">b3</span> <span class="mo">0545</span><span class="err">                               </span> <span class="o">...</span><span class="n">E</span>
+<span class="o">&lt;</span><span class="mi">13</span><span class="o">&gt;</span><span class="mo">00</span><span class="p">:</span><span class="mo">06</span><span class="p">:</span><span class="mf">14.753727</span> <span class="n">IP</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">54504</span> <span class="o">&gt;</span> <span class="n">localhost</span><span class="o">.</span><span class="mi">9889</span><span class="p">:</span> <span class="n">Flags</span> <span class="p">[</span><span class="o">.</span><span class="p">],</span> 
+<span class="n">ack</span> <span class="mi">2355231369</span><span class="p">,</span> <span class="n">win</span> <span class="mi">2050</span><span class="p">,</span> <span class="n">options</span> <span class="p">[</span><span class="n">nop</span><span class="p">,</span><span class="n">nop</span><span class="p">,</span><span class="n">TS</span> <span class="n">val</span> <span class="mi">28509509</span> <span class="n">ecr</span> <span class="mi">28509509</span><span class="p">],</span> 
+<span class="n">length</span> <span class="mi">0</span>
+<span class="mh">0x0000</span><span class="p">:</span><span class="err"> </span> <span class="mi">4500</span> <span class="mo">0034</span> <span class="mi">1</span><span class="n">f68</span> <span class="mi">4000</span> <span class="mi">4006</span> <span class="mi">1</span><span class="n">d5a</span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span><span class="err"> </span> <span class="n">E</span><span class="o">..</span><span class="mf">4.</span><span class="n">h</span><span class="nd">@.@..Z....</span>
+<span class="mh">0x0010</span><span class="p">:</span><span class="err"> </span> <span class="mi">7</span><span class="n">f00</span> <span class="mo">0001</span> <span class="n">d4e8</span> <span class="mi">26</span><span class="n">a1</span> <span class="n">ffb2</span> <span class="n">cf6c</span> <span class="mi">8</span><span class="n">c61</span> <span class="n">fa89</span><span class="err"> </span> <span class="o">......&amp;....</span><span class="n">l</span><span class="o">.</span><span class="n">a</span><span class="o">..</span>
+<span class="mh">0x0020</span><span class="p">:</span><span class="err"> </span> <span class="mi">8010</span> <span class="mi">0802</span> <span class="n">fe28</span> <span class="mo">0000</span> <span class="mo">0101</span> <span class="mi">080</span><span class="n">a</span> <span class="mo">01</span><span class="n">b3</span> <span class="mo">0545</span><span class="err"> </span> <span class="o">.....</span><span class="p">(</span><span class="o">.........</span><span class="n">E</span>
+<span class="mh">0x0030</span><span class="p">:</span><span class="err"> </span> <span class="mo">01</span><span class="n">b3</span> <span class="mo">0545</span><span class="err">                               </span> <span class="o">...</span><span class="n">E</span>
+
+<span class="c">#11,12,13包是关闭TCP的连接，理论上来说这里应该有4个包，</span>
+<span class="c">#因为需要4次握手才能关闭双方的TCP连接。这里我是这样理解的：</span>
+<span class="c">#之所以4次握手，是因为当client发送FIN给server后，</span>
+<span class="c">#表示client将不会再有数据发送过来，但是server还可能发送数据给client，</span>
+<span class="c">#比如telnet一个bbs，退出的时候可能跟你说句Goodbye然后才server才断开连接，</span>
+<span class="c">#这时候抓的包应该是4次，但是这里client断开后server也立刻断开了，</span>
+<span class="c">#所以server的ack和FIN一起发送了。这只是我的猜想，还有待进一步验证。</span>
+    </code></pre></figure>
+
+<p>从这里可以看出tcpdump功能的强大。</p>
+
+
+
+    </article>
+    <span class="print-footer">tcpdump查看三次握手 - April 6, 2012 - </span>
+    <footer>
+  <hr class="slender">
+  <!-- <ul class="footer&#45;links"> -->
+  <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.twitter.com/twitter_handle"><span class="icon-twitter"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//plus.google.com/+googlePlusName"><span class="icon-googleplus"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//github.com/GithubHandle"><span class="icon-github"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.flickr.com/photos/FlickrUserID"><span class="icon-flickr"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="/feed"><span class="icon-feed"></span></a> -->
+  <!--     </li> -->
+  <!--      -->
+  <!-- </ul> -->
+<div class="credits">
+<!-- <span>&#38;copy; 2018 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp; &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>, based on <a href="//github.com/ermongroup/cs228-notes">Ermongroup</a>. &copy; 2018</span> 
+</div>  
+</footer>
+
+  </body>
+</html>

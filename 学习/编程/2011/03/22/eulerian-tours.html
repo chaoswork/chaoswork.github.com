@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>欧拉回路</title>
+  <meta name="description" content="今天做了下SGU，发现第二题是欧拉回路，于是大喜，结果WA，最后发现对欧拉回路的理解还不够深刻，总结一下：">
+
+
+  <link rel="stylesheet" href="/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75587219-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+
+  <link rel="canonical" href="http://localhost:4000/%E5%AD%A6%E4%B9%A0/%E7%BC%96%E7%A8%8B/2011/03/22/eulerian-tours.html">
+  <link rel="alternate" type="application/rss+xml" title="Chaos.Work" href="http://localhost:4000/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+        <a href="/">Blog</a>
+	<a href="http://github.com/chaoswork">Github</a>
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>欧拉回路</h1>
+<p class="subtitle">March 22, 2011</p>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      Macros: {
+        e: "\\epsilon",
+        xti: "x^{(i)}",
+        yti: "y^{(i)}",
+        bfy: "{\\bf y}",
+        bfx: "{\\bf x}",
+        bfg: "{\\bf g}",
+        bfbeta: "{\\bf \\beta}",
+        tp: "\\tilde p",
+        pt: "p_\\theta",
+        Exp: "{\\mathbb{E}}",
+        Ind: "{\\mathbb{I}}",
+        KL: "{\\mathbb{KL}}",
+        Dc: "{\\mathcal{D}}",
+        Tc: "{\\mathcal{T}}",
+        Xc: "{\\mathcal{X}}",
+        note: ["\\textcolor{blue}{[NOTE: #1]}",1]
+      }
+    }
+  });
+</script>
+
+
+<p>今天做了下SGU，发现第二题是欧拉回路，于是大喜，结果WA，最后发现对欧拉回路的理解还不够深刻，总结一下：</p>
+
+<p>欧拉回路的模型：</p>
+
+<p>本来来自欧拉的七桥问题：</p>
+
+<p><img src="/images/topcoder/image_thumb5.png" alt="image" /></p>
+
+<p>用图论抽象就是：一副无向图，每条边只能通过一次，问是否存在一条路径经过所有的边，这样的路径叫欧拉路径，如果起点和终点相同，则成为欧拉回路。</p>
+
+<p>欧拉路径存在的条件：</p>
+
+<p>1.图是连通的；</p>
+
+<p>2.奇数度的顶点只允许有0个(存在欧拉回路)或者2个(存在欧拉路径)。</p>
+
+<p>算法思想：</p>
+
+<p>对于每一个访问到的顶点，先解决这个顶点的欧拉回路问题，此时肯定还剩一条边，这条边上的另一个端点就是下个要访问的点，如此可以找到所有的欧拉回路。</p>
+
+<p>因为奇数度顶点为2的问题可以转换为奇数度顶点为0的，所有下面只讨论欧拉回路的情况。(转换方法：设两个度为奇数的点为s和e，而且这两个点肯定是顶点和终点，则从s到e肯定存在某条路径，因为图是想通的，删去这条路径，则剩下的子图的顶点的度权威偶数，因为这条路径上除了s和e，其余点都又进又出，删去的度为2。这样，就把欧拉路径问题转换为了欧拉回路的问题。)</p>
+
+<p>这里有几个问题可能比较难以想通，首先，在解决被访问到的欧拉回路问题时，能确保路径还能回到这一点？答案是肯定的，因为所有顶点度为偶数，如果从一个偶数度的点出去而回不来的话，说明这个顶点的两条路径出去的子图是不相通的，这样的话这两个子图的度的综合就要为奇数，这与先前设定是矛盾的。</p>
+
+<p>所有，基本思想就是访问可访问的节点，对于每个节点，首先解决自己节点的欧拉回路问题，除了进来的边和要出去的边，这样等节点遍历完了，欧拉回路也就出来了。</p>
+
+<p>代码如下：</p>
+
+<figure class="highlight"><pre><code class="language-c--" data-lang="c++"><span class="kt">void</span> <span class="nf">findEuler</span><span class="p">(</span><span class="kt">int</span> <span class="n">v</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+    <span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="n">i</span><span class="o">&lt;</span><span class="n">N</span><span class="p">;</span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span><span class="p">(</span><span class="n">connected</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">i</span><span class="p">))</span> 
+        <span class="p">{</span>
+            <span class="n">delEdge</span><span class="p">(</span><span class="n">v</span><span class="p">,</span><span class="n">i</span><span class="p">);</span>
+            <span class="n">findEuler</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">euler</span><span class="p">[</span><span class="n">eulerPos</span><span class="o">++</span><span class="p">]</span><span class="o">=</span><span class="n">v</span><span class="p">;</span>
+ 
+<span class="p">}</span></code></pre></figure>
+
+<p>至于有向图的欧拉回路问题，和上面类似。</p>
+
+<p>如果一个有向图所有顶点的入度等于出度，则该图存在欧拉回路。如果有顶点x的出度比入度大1，y的入度比出度大1，其余顶点的入度等于出度，则存在从x到y的欧拉路径。</p>
+
+<p>至于混合图，有待学习。。。</p>
+
+
+
+    </article>
+    <span class="print-footer">欧拉回路 - March 22, 2011 - </span>
+    <footer>
+  <hr class="slender">
+  <!-- <ul class="footer&#45;links"> -->
+  <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.twitter.com/twitter_handle"><span class="icon-twitter"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//plus.google.com/+googlePlusName"><span class="icon-googleplus"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//github.com/GithubHandle"><span class="icon-github"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.flickr.com/photos/FlickrUserID"><span class="icon-flickr"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="/feed"><span class="icon-feed"></span></a> -->
+  <!--     </li> -->
+  <!--      -->
+  <!-- </ul> -->
+<div class="credits">
+<!-- <span>&#38;copy; 2018 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp; &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>, based on <a href="//github.com/ermongroup/cs228-notes">Ermongroup</a>. &copy; 2018</span> 
+</div>  
+</footer>
+
+  </body>
+</html>

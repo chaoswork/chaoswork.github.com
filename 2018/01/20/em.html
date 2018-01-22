@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Expectation Maximization</title>
+  <meta name="description" content="Definition: MLE(or MAP) when some data is missing or hidden">
+
+
+  <link rel="stylesheet" href="/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75587219-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+
+  <link rel="canonical" href="http://localhost:4000/2018/01/20/em.html">
+  <link rel="alternate" type="application/rss+xml" title="Chaos.Work" href="http://localhost:4000/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+        <a href="/">Blog</a>
+	<a href="http://github.com/chaoswork">Github</a>
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>Expectation maximization</h1>
+<p class="subtitle">January 20, 2018</p>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      Macros: {
+        e: "\\epsilon",
+        xti: "x^{(i)}",
+        yti: "y^{(i)}",
+        bfy: "{\\bf y}",
+        bfx: "{\\bf x}",
+        bfg: "{\\bf g}",
+        bfbeta: "{\\bf \\beta}",
+        tp: "\\tilde p",
+        pt: "p_\\theta",
+        Exp: "{\\mathbb{E}}",
+        Ind: "{\\mathbb{I}}",
+        KL: "{\\mathbb{KL}}",
+        Dc: "{\\mathcal{D}}",
+        Tc: "{\\mathcal{T}}",
+        Xc: "{\\mathcal{X}}",
+        note: ["\\textcolor{blue}{[NOTE: #1]}",1]
+      }
+    }
+  });
+</script>
+
+
+<p><em>Definition</em>: MLE(or MAP) when some data is missing or hidden</p>
+
+<p><em>Given</em>: <script type="math/tex">x=(x_1, …, x_n)</script> observed</p>
+
+<p><em>Model</em>: <script type="math/tex">X,Z \sim P_{\theta}</script> for some (unknown) <script type="math/tex">\theta \in \Theta</script>, <script type="math/tex">P_\theta</script> usually a type of exponential family. <label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">X表示观测变量数据，Z表示隐藏变量数据。X和Z在一起表示完全数据(complete-data), 单独X表示不完全数据(incomplete-data) </span></p>
+
+<p><em>Goal</em>: <script type="math/tex">\theta_{MLE} \in \underset{\theta}{\operatorname{argmax}} P_{\theta}(X)</script></p>
+
+<p><em>Issue</em>: <script type="math/tex">P_{\theta}(X)=\sum_{z}P_{\theta}(X,Z)</script> difficult to maximization. <label for="gmm3" class="margin-toggle">⊕</label><input type="checkbox" id="gmm3" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/images/em/gmm3.png" /><br />比如GMM，难以找到最优解.</span></p>
+
+<p><em>Algo</em>:</p>
+
+<ul>
+  <li>Initinalize <script type="math/tex">\theta_0 \in \Theta</script></li>
+  <li>For <script type="math/tex">t=0,1,2, …</script>
+    <ul>
+      <li>E-step: determine <script type="math/tex">P(Z \mid X)</script> and <script type="math/tex">Q(\theta, \theta_t) = E_{\theta_t}(log P_{\theta}(X,Z) \mid X=x)=\sum_{z}log P(X,Z)P(Z \mid X)</script></li>
+      <li>M-step: <script type="math/tex">\theta_{t+1} \in \underset{\theta}{\operatorname{argmax}} Q(\theta, \theta_t)</script>, with <script type="math/tex">P(Z \mid X)</script> fixed</li>
+    </ul>
+  </li>
+</ul>
+
+<p><em>Notes</em>:</p>
+
+<ul>
+  <li>Not guaranteed to give <script type="math/tex">\theta_{MLE}</script></li>
+  <li>Convergence can be slow</li>
+  <li>MLE may overfit, MAP maybe better</li>
+</ul>
+
+<h2 id="直观解释">直观解释</h2>
+
+<p>假设有A，B两个硬币，这两个硬币扔出正面(head那一面)的概率未知，按下面步骤进行估计。</p>
+
+<ul>
+  <li><em>step 1</em>: 随机选择一个硬币，用选中硬币扔10次，得到一组实验数据序列(比如：H,T,H,T,H,H,T…)</li>
+  <li><em>step 2</em>: 上述步骤共做5组。</li>
+</ul>
+
+<h3 id="5组实验选择的硬币已知">5组实验选择的硬币已知</h3>
+
+<p><img src="/images/em/whatisem_mle.png" alt="whatisem" /></p>
+
+<h3 id="5组实验选择的硬币未知">5组实验选择的硬币未知</h3>
+
+<p><img src="/images/em/whatisem_em.png" alt="whatisem" /></p>
+
+<ul>
+  <li>假设<script type="math/tex">x=(1,0,1,1,0,1,...)</script>是观测到的序列(H记为1,T记为0组成的长度为10的序列)，</li>
+  <li>选硬币A的概率为<script type="math/tex">P(z=A)=\pi_1</script>,选硬币B的概率为<script type="math/tex">P(z=B)=\pi_2 = 1-\pi_1</script></li>
+  <li>A出现正面的概率为<script type="math/tex">\theta_1</script>,B出现正面的概率为<script type="math/tex">\theta_2</script></li>
+</ul>
+
+<p>则一组实验模型可写作<script type="math/tex">P_{\theta}(x)=\sum_{z}P_{\theta}(x,z) =\sum_{z}P(z)P(x \mid z)=\pi_1\theta_{1}^{x}(1-\theta_{1})^{1-x}+\pi_2\theta_{2}^{x}(1-\theta_{2})^{1-x}</script></p>
+
+<p>整个实验可以写作<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote"><script type="math/tex">z_{i}=[1,0]</script>表示第i组实验选择的是A硬币,<script type="math/tex">z_i=[0,1]</script>表示第i组选择的是B硬币 </span></p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+
+\begin{align*}P(X_1, .., X_5,z_1,…,z_5) &=\prod_{i=1}^{5}P(\{x_{i}^1,…,x_{i}^{10}\} \mid z_i)\prod_{i=1}^{5}P(z_i) \\ &=\prod_{i=1}^{5}\prod_{j=1}^{10} P(x_{i}^j \mid z_i)\prod_{i=1}^{5}\prod_{k=1}^{2}\pi_{k}^{z_{ik}} \\ &=\prod_{i=1}^{5}\prod_{j=1}^{10}\prod_{k=1}^{2}[\theta_{k}^{x_{i}^j}(1-\theta_k)^{(1-x_{i}^j)}]^{z_{ik}}\prod_{i=1}^{5}\prod_{k=1}^{2}\pi_{k}^{z_{ik}} \end{align*}
+
+</script></div>
+
+<h3 id="initinalize">Initinalize</h3>
+
+<p>看公式，参数有3个<label for="1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1" class="margin-toggle" /><span class="sidenote">图片中并未显示的表明<script type="math/tex">\pi_1=0.5</script>,但是后续可以推导出当<script type="math/tex">\pi_1=0.5</script>时，<script type="math/tex">\pi_1</script>后续的估计值依然是0.5，故整个过程将该参数省略 </span>：<script type="math/tex">\pi_1,\theta_1,\theta_2</script></p>
+
+<p>假设: <script type="math/tex">\pi_1=0.5;\theta_1=0.6;\theta_2=0.5</script></p>
+
+<h3 id="e-step">E-step</h3>
+
+<p><em>Determine</em> <script type="math/tex">P(Z \mid X)</script> :</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+
+\begin{align*}P(z_{ik} \mid \{x_{i}^1,…,x_{i}^{10}\}) &= \frac{P(x_i,z_{ik})}{P(x_i)}=\frac{P(z_{ik})P(x_i \mid z_{ik})}{P(x_i)} \\&=\frac{\pi_k\prod_{j=1}^{10}\theta_{k}^{x_{i}^j}(1-\theta_k)^{(1-x_{i}^j)}}{\pi_1\prod_{j=1}^{10}\theta_{1}^{x_{i}^j}(1-\theta_1)^{(1-x_{i}^j)}+\pi_2\prod_{j=1}^{10}\theta_{2}^{x_{i}^j}(1-\theta_2)^{(1-x_{i}^j)}} \end{align*}
+
+</script></div>
+
+<p>比如对于第一组实验，估计是硬币A的概率为<script type="math/tex">P(z_{11} \mid x_1)=\frac{0.5 \times 0.6^{5} \times 0.4^{5}}{0.5 \times 0.6^{5} \times 0.4^{5}+0.5 \times 0.5^{10}}\approx 0.45</script></p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+
+\begin{align*}Q(\theta, \theta_t) &= E_{\theta_t}(log P_{\theta}(X,Z) \mid X=x) \\ &=\sum_{z}log P(X,Z)P(Z \mid X) \\&=\sum_{i=1}^{5}\sum_{j=1}^{10}\sum_{k=1}^{2}P(z_{ik} \mid x_i)z_{ik}log[\theta_{k}^{x_{i}^j}(1-\theta_k)^{(1-x_{i}^j)}]+\sum_{i=1}^{5}\sum_{k=1}^{2}P(z_{ik} \mid x_i)z_{ik}log(\pi_{k}) \\ &=\sum_{i=1}^{5}\sum_{j=1}^{10}\sum_{k=1}^{2}P(z_{ik} \mid x_i)z_{ik}[{x_{i}^j}log(\theta_{k})+{(1-x_{i}^j)}log(1-\theta_k)]+const\end{align*}
+
+</script></div>
+
+<h3 id="m-step">M-step</h3>
+
+<p>对<script type="math/tex">Q(\theta, \theta_t)</script>中的参数求导，得到</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+
+\begin{align*} \frac{\partial Q}{ \partial \theta_1}=\sum_{i=1}^{5}\sum_{j=1}^{10}P(z_{i1} \mid x_i)[\frac{x_{i}^j}{\theta_1}-\frac{1-x_{i}^j}{1-\theta_1}]=0\end{align*}
+
+</script></div>
+
+<p>最终可得到</p>
+
+<div class="mathblock"><script type="math/tex; mode=display">
+
+\begin{align*}\theta_1=\frac{\sum_{i=1}^{5}\sum_{j=1}^{10}P(z_{i1} \mid x_i)x_{i}^j}{\sum_{i=1}^{5}10 \times P(z_{i1} \mid x_i)} \\
+
+\theta_2=\frac{\sum_{i=1}^{5}\sum_{j=1}^{10}P(z_{i2} \mid x_i)x_{i}^j}{\sum_{i=1}^{5}10 \times P(z_{i2} \mid x_i)} \end{align*}
+
+</script></div>
+
+<p>比如: <script type="math/tex">\theta_1=\frac{0.45 \times 5+0.8 \times 9 + 0.73 \times 8 + 0.35 \times 4 + 0.65 \times 7}{0.45 \times 10+0.8 \times 10 + 0.73 \times 10 + 0.35 \times 10 + 0.65 \times 10} \approx 0.71</script></p>
+
+<h2 id="reference">Reference</h2>
+
+<ol>
+  <li><a href="https://www.youtube.com/watch?v=AnbiNaVp3eQ&amp;index=116&amp;list=PLD0F06AA0D2E8FFBA">mathematicalmonk:(ML 16.3) Expectation-Maximization (EM) algorithm</a></li>
+  <li><a href="http://ai.stanford.edu/~chuongdo/papers/em_tutorial.pdf">What is the expectation maximization algorithm?</a></li>
+  <li>李航.《统计学习方法》第九章-EM算法及其推广</li>
+  <li><a href="https://ibug.doc.ic.ac.uk/media/uploads/documents/expectation_maximization-1.pdf">Stefanos Zafeiriou Adv. Statistical Machine Learning (course 495)</a></li>
+</ol>
+
+
+
+    </article>
+    <span class="print-footer">Expectation Maximization - January 20, 2018 - </span>
+    <footer>
+  <hr class="slender">
+  <!-- <ul class="footer&#45;links"> -->
+  <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.twitter.com/twitter_handle"><span class="icon-twitter"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//plus.google.com/+googlePlusName"><span class="icon-googleplus"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//github.com/GithubHandle"><span class="icon-github"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.flickr.com/photos/FlickrUserID"><span class="icon-flickr"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="/feed"><span class="icon-feed"></span></a> -->
+  <!--     </li> -->
+  <!--      -->
+  <!-- </ul> -->
+<div class="credits">
+<!-- <span>&#38;copy; 2018 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp; &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>, based on <a href="//github.com/ermongroup/cs228-notes">Ermongroup</a>. &copy; 2018</span> 
+</div>  
+</footer>
+
+  </body>
+</html>

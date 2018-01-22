@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>寻找哈密顿回路</title>
+  <meta name="description" content="前几天做sgu 122，结果官网给挂了，没提交上，今天已提交，竟然过了，哈哈，总结一下在图上找哈密顿回路的方法。">
+
+
+  <link rel="stylesheet" href="/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75587219-1', 'auto');
+  ga('send', 'pageview');
+
+  </script>
+
+  <link rel="canonical" href="http://localhost:4000/%E5%AD%A6%E4%B9%A0/%E7%BC%96%E7%A8%8B/2011/05/01/hamiltonian-basic.html">
+  <link rel="alternate" type="application/rss+xml" title="Chaos.Work" href="http://localhost:4000/feed.xml" />
+</head>
+
+  <body>
+    <!--- Header and nav template site-wide -->
+<header>
+    <nav class="group">
+        <a href="/">Blog</a>
+	<a href="http://github.com/chaoswork">Github</a>
+	</nav>
+</header>
+
+    <article class="group">
+      <h1>寻找哈密顿回路</h1>
+<p class="subtitle">May 1, 2011</p>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      Macros: {
+        e: "\\epsilon",
+        xti: "x^{(i)}",
+        yti: "y^{(i)}",
+        bfy: "{\\bf y}",
+        bfx: "{\\bf x}",
+        bfg: "{\\bf g}",
+        bfbeta: "{\\bf \\beta}",
+        tp: "\\tilde p",
+        pt: "p_\\theta",
+        Exp: "{\\mathbb{E}}",
+        Ind: "{\\mathbb{I}}",
+        KL: "{\\mathbb{KL}}",
+        Dc: "{\\mathcal{D}}",
+        Tc: "{\\mathcal{T}}",
+        Xc: "{\\mathcal{X}}",
+        note: ["\\textcolor{blue}{[NOTE: #1]}",1]
+      }
+    }
+  });
+</script>
+
+
+<p>前几天做sgu 122，结果官网给挂了，没提交上，今天已提交，竟然过了，哈哈，总结一下在图上找哈密顿回路的方法。</p>
+
+<p>下面引用自wikipedia</p>
+
+<p>“<strong>哈密顿图</strong>（<a href="http://zh.wikipedia.org/wiki/%E8%8B%B1%E8%AF%AD">英语</a>：Hamiltonian path，或Traceable path）是一个<a href="http://zh.wikipedia.org/wiki/%E7%84%A1%E5%90%91%E5%9C%96">无向图</a>，由天文学家<a href="http://zh.wikipedia.org/wiki/%E5%93%88%E5%AF%86%E9%A1%BF">哈密顿</a>提出，由指定的起点前往指定的终点，途中经过所有其他节点且只经过一次。在<a href="http://zh.wikipedia.org/wiki/%E5%9B%BE%E8%AE%BA">图论</a>中是指含有哈密顿回路的图，闭合的哈密顿路径称作<strong>哈密顿回路</strong>（<strong>Hamiltonian cycle</strong>），含有图中所有顶的路径称作<strong>哈密顿路径</strong>。</p>
+
+<p>美国<a href="http://zh.wikipedia.org/wiki/%E5%9B%BE%E8%AE%BA">图论</a><a href="http://zh.wikipedia.org/wiki/%E6%95%B0%E5%AD%A6%E5%AE%B6">数学家</a><a href="http://zh.wikipedia.org/w/index.php?title=%E5%A5%A5%E5%8B%92&amp;action=edit&amp;redlink=1">奥勒</a>在<a href="http://zh.wikipedia.org/wiki/1960%E5%B9%B4">1960年</a>给出了一个图是哈密尔顿图的<a href="http://zh.wikipedia.org/wiki/%E5%85%85%E5%88%86%E6%9D%A1%E4%BB%B6">充分条件</a>：对于顶点个数大于2的图，如果图中任意两点度的和大于或等于顶点总数，那这个图一定是哈密尔顿图。</p>
+
+<p>寻找哈密顿路径是一个典型的<a href="http://zh.wikipedia.org/wiki/NP-%E5%AE%8C%E5%85%A8">NP-完全</a>问题。后来人们也证明了，找一条哈密顿路的近似比为常数的近似算法也是NP-完全的。</p>
+
+<p>寻找哈密顿路的确定算法虽然很难有多项式时间的，但是这并不意味着只能进行<a href="http://zh.wikipedia.org/wiki/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6">时间复杂度</a>为O(n!<em>n)暴力搜索。利用<a href="http://zh.wikipedia.org/w/index.php?title=%E7%8A%B6%E6%80%81%E5%8E%8B%E7%BC%A9%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92&amp;action=edit&amp;redlink=1">状态压缩动态规划</a>，我们可以将时间复杂度降低到O(2^n</em>n^3)，具体算法是建立方程<code class="highlighter-rouge">f[i][S][j]</code>，表示经过了i个节点，节点都是集合S的，到达节点j时的最短路径。每次我们都按照点j所连的节点进行转移。”</p>
+
+<p>其中Ore性质可以表示为：</p>
+
+<p>对所有不邻接的不同点对，有<code class="highlighter-rouge">deg(x)+deg(y)&gt;=n</code></p>
+
+<p>《组合数学》书上同时给出了一个满足Ore性质的稠密图的O(V^2)的算法，算法描述如下：</p>
+
+<p>1）从任意一个顶点开始，在它的两端邻接一个顶点，构造一个越来越长的链，直到不能再长为止。设该链为</p>
+
+<p>y1-y2-y3-…-ym</p>
+
+<p>2）检查y1和ym是否邻接。</p>
+
+<blockquote>
+  <p>a)如果不邻接则转3),如果邻接，转b）</p>
+
+  <p>b)如果m=n，则停止构造，并输出链y1-y2-…-ym-y1;否则转c)</p>
+
+  <p>c)找一个不在链上的顶点z和在链上的顶点yk,满足yk和z邻接，则得到一条m+1的新链</p>
+
+  <p>z-yk-…ym-y1-y2-…y(k-1)</p>
+</blockquote>
+
+<p>3)在链上找出一个yk，满足y1和yk邻接，y(k-1)和ym邻接，则将链转换为y1-…-y(k-1)-ym-…yk,则y1和yk邻接，转b)</p>
+
+
+
+    </article>
+    <span class="print-footer">寻找哈密顿回路 - May 1, 2011 - </span>
+    <footer>
+  <hr class="slender">
+  <!-- <ul class="footer&#45;links"> -->
+  <!--   <li><a href="mailto:hate@spam.net"><span class="icon&#45;mail"></span></a></li>     -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.twitter.com/twitter_handle"><span class="icon-twitter"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//plus.google.com/+googlePlusName"><span class="icon-googleplus"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//github.com/GithubHandle"><span class="icon-github"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="//www.flickr.com/photos/FlickrUserID"><span class="icon-flickr"></span></a> -->
+  <!--     </li> -->
+  <!--    -->
+  <!--     <li> -->
+  <!--       <a href="/feed"><span class="icon-feed"></span></a> -->
+  <!--     </li> -->
+  <!--      -->
+  <!-- </ul> -->
+<div class="credits">
+<!-- <span>&#38;copy; 2018 <!&#45;&#45; &#38;#38;nbsp;&#38;#38;nbsp; &#45;&#45;></span></br> <br> -->
+<span>Site created with <a href="//jekyllrb.com">Jekyll</a> using the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a>, based on <a href="//github.com/ermongroup/cs228-notes">Ermongroup</a>. &copy; 2018</span> 
+</div>  
+</footer>
+
+  </body>
+</html>
